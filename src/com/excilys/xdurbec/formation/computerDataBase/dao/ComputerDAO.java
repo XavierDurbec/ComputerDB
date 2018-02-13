@@ -76,7 +76,10 @@ public class ComputerDAO implements EntityDAO<Computer>{
 		}
 		@Override
 		public void deleteById(int id) throws SQLException {
-			// TODO Auto-generated method stub
+			Connection con = cm.getConnection();
+			Statement stat = con.createStatement();
+			stat.executeUpdate("DELETE FROM computer WHERE id ="+id+";");
+			con.close();
 			
 		}
 		
