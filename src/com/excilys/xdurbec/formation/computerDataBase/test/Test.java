@@ -37,12 +37,18 @@ public class Test {
 
 			//ComputerDAO.getComputerDAO().create(new Computer("Dell4852",Date.valueOf("1991-06-30"),Date.valueOf("2012-08-13"), CompanyDAO.getCompanyDAO().getById(25)));
 			
+			/*
 			System.out.println(ComputerDAO.getComputerDAO().getById(576));
 			Computer cp = new Computer("Loool",Date.valueOf("1991-07-30"),Date.valueOf("2012-08-13"),CompanyDAO.getCompanyDAO().getById(22));
 					cp.setId(576);
 			ComputerDAO.getComputerDAO().update(cp);
 			System.out.println(ComputerDAO.getComputerDAO().getById(576));
-			ComputerDAO.getComputerDAO().deleteById(576);
+			ComputerDAO.getComputerDAO().deleteById(576);*/
+			
+			List<Computer> lcp = ComputerDAO.getComputerDAO().getAll();
+			for(Computer cp : lcp) {
+				System.out.println(cp);
+			}
 		
 		}
 }

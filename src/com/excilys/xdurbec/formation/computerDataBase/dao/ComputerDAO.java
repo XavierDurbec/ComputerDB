@@ -1,6 +1,7 @@
 package com.excilys.xdurbec.formation.computerDataBase.dao;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
 
@@ -54,8 +55,38 @@ public class ComputerDAO implements EntityDAO<Computer>{
 		
 		@Override
 		public List<Computer> getAll() throws SQLException {
-			// TODO Auto-generated method stub
-			return null;
+			Connection con = cm.getConnection();
+			Statement stat = con.createStatement();
+	
+			stat.executeQuery("SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.id, company.name FROM computer LEFT JOIN company ON computer.company_id = company.id;"); 
+
+			ResultSet rs = stat.getResultSet();
+			
+			List<Computer> lcp = new ArrayList<Computer>();
+
+
+			
+			while(rs.next()) {
+				Company company = new Company();
+				Computer computer =  new Computer();
+				if(rs.getInt("computer.company_id") == 0) {
+					company.setId(rs.getInt("company.id"));
+					company.setName(rs.getString("company.name"));
+				}
+				else {
+					company.setId(0);
+					company.setName(null);
+				}
+				
+				computer.setId(rs.getInt("computer.id"));
+				computer.setIntroduced(rs.getDate("computer.introduced"));
+				computer.setDiscontinued(rs.getDate("computer.discontinued"));
+				computer.setCompany(company);
+				
+				lcp.add(computer);
+			}
+			
+			return lcp;
 		}
 		
 		@Override

@@ -16,7 +16,7 @@ public class Computer {
 	private Date discontinued;
 	private Company company;
 	
-	
+	public Computer() {}
 	public Computer(String name, Date introduced, Date discontinued, Company company) {
 		super();
 		this.name = name;
