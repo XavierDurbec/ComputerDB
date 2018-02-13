@@ -78,8 +78,10 @@ public class CompanyDAO implements EntityDAO<Company> {
 
 		@Override
 		public void set(Company entity)  throws SQLException{
-			// TODO Auto-generated method stub
-			
+			Connection con = cm.getConnection();
+			Statement stat = con.createStatement();
+			stat.executeUpdate("UPDATE company SET name =\""+entity.getName()+"\" WHERE id ="+entity.getId()+";");
+			con.close();			
 		}
 
 		@Override
