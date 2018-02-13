@@ -17,7 +17,6 @@ public class Computer {
 	private Company company;
 	
 	
-	
 	public Computer(String name, Date introduced, Date discontinued, Company company) {
 		super();
 		this.name = name;

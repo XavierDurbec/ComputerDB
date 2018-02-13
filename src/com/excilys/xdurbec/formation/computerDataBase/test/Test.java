@@ -1,5 +1,6 @@
 package com.excilys.xdurbec.formation.computerDataBase.test;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,8 +35,8 @@ public class Test {
 			CompanyDAO.getCompanyDAO().create(companyForCreation);
 		*/	
 
-			
-			System.out.println(ComputerDAO.getComputerDAO().get(123));
+			//ComputerDAO.getComputerDAO().create(new Computer("Dell4852",Date.valueOf("1991-06-30"),Date.valueOf("2012-08-13"), CompanyDAO.getCompanyDAO().getById(25)));
+			System.out.println(ComputerDAO.getComputerDAO().getById(55));
 			
 		
 		}

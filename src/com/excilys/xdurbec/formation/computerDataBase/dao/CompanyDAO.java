@@ -34,7 +34,7 @@ public class CompanyDAO implements EntityDAO<Company> {
 		
 		
 		@Override
-		public Company get(int id) throws SQLException {
+		public Company getById(int id) throws SQLException {
 			Connection con = cm.getConnection();
 			Statement stat = con.createStatement();
 			stat.executeQuery("SELECT id, name FROM company WHERE id = "+id+";"); 
@@ -83,7 +83,7 @@ public class CompanyDAO implements EntityDAO<Company> {
 		}
 
 		@Override
-		public void delete(int id)  throws SQLException{
+		public void deleteById(int id)  throws SQLException{
 			Connection con = cm.getConnection();
 			Statement stat = con.createStatement();
 			stat.executeUpdate("DELETE FROM company WHERE id ="+id+";");

@@ -24,31 +24,29 @@ public class ComputerDAO implements EntityDAO<Computer>{
 		}
 		
 		
-		//TODO: A faire avec une requête SQL
+
+		// TODO: Add gestion of null company
 		@Override
-		public Computer get(int id) throws SQLException {
+		public Computer getById(int id) throws SQLException {
 			Connection con = cm.getConnection();
 			Statement stat = con.createStatement();
-			stat.executeQuery("SELECT id, name, introduced, discontinued, company_id FROM computer WHERE id = "+id+";"); 
+			stat.executeQuery("SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.id, company.name FROM computer INNER JOIN company ON computer.company_id = company.id WHERE computer.id = "+id+";"); 
 			ResultSet rs = stat.getResultSet();
+			
 			rs.next();
-			String name = rs.getString("name");
-			Date introduced = rs.getDate("introduced");
-			Date discontinued = rs.getDate("discontinued");
-			int idT = rs.getInt("id");
-			int idComp= rs.getInt("company_id");
-
-			System.out.println("IdCOM :"+idComp);
+			
+			Company company = new Company();
+			
+			if(rs.getInt("company.id") != 0) {
+				company.setName(rs.getString("company.name"));
+				company.setId(rs.getInt("company.id"));
+			}	
+			
+			Computer computer = new Computer(rs.getString("computer.name"), rs.getDate("computer.introduced"), rs.getDate("computer.discontinued"),company);
+			computer.setId(rs.getInt("computer.id"));
+			
 			con.close();
 			
-			Company company = null;
-			
-			if(idComp != 0) {
-				company = CompanyDAO.getCompanyDAO().get(idComp);
-			}
-			
-			Computer computer = new Computer(name, introduced, discontinued, company);
-			computer.setId(idT);
 			return computer;
 		}
 		
@@ -64,7 +62,7 @@ public class ComputerDAO implements EntityDAO<Computer>{
 		public void create(Computer entity) throws SQLException {
 			Connection con = cm.getConnection();
 			Statement stat = con.createStatement();
-			stat.executeUpdate("INSERT INTO computer (name,introduced,discontinued,company_id) VALUES(\""+entity.getName()+"\",);");
+			stat.executeUpdate("INSERT INTO computer (name, introduced, discontinued, company_id) VALUES(\""+entity.getName()+"\",\""+entity.getIntroduced()+"\",\""+entity.getDiscontinued()+"\",\""+entity.getCompany().getId()+"\");");
 			con.close();			
 		}
 		
@@ -74,7 +72,7 @@ public class ComputerDAO implements EntityDAO<Computer>{
 			
 		}
 		@Override
-		public void delete(int id) throws SQLException {
+		public void deleteById(int id) throws SQLException {
 			// TODO Auto-generated method stub
 			
 		}
