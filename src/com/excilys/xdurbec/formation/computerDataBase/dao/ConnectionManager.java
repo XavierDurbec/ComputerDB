@@ -5,7 +5,7 @@ public class ConnectionManager {
 	
 	private static ConnectionManager cm;
 	
-	private String url = "jdbc:mysql://127.0.0.1:3306/computer-database-db";
+	private String url = "jdbc:mysql://127.0.0.1:3306/computer-database-db?useSSL=false";
 	private String user= "admincdb";
 	private String passeWord ="qwerty1234";
 	

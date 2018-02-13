@@ -1,5 +1,6 @@
 package com.excilys.xdurbec.formation.computerDataBase.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
 
@@ -14,14 +15,15 @@ public class CompanyDAO implements EntityDAO<Company> {
 			this.cm = cm;
 		}
 		
-		public static CompanyDAO getCompanyDAO(String url, String user, String passeWord) {
+		public static CompanyDAO getCompanyDAO() {
 			if(companyDAO == null) {
 				companyDAO = new CompanyDAO(ConnectionManager.getCM());
 			}
 			return companyDAO;
 			
 		}
-
+		
+		
 		
 		
 		
@@ -32,16 +34,32 @@ public class CompanyDAO implements EntityDAO<Company> {
 			stat.executeQuery("SELECT id, name FROM company WHERE id = "+id+";"); 
 			ResultSet rs = stat.getResultSet();
 			rs.next();
-			Company c = new Company( rs.getString("name") );
-			c.setId(rs.getInt("id"));
+			Company company = new Company( rs.getString("name") );
+			company.setId(rs.getInt("id"));
 			con.close();
-			return c;
+			return company;
 		}
 
 		@Override
 		public List<Company> getAll()  throws SQLException {
-			// TODO Auto-generated method stub
-			return null;
+			
+			List<Company> companyList = new ArrayList<Company>();
+			
+			
+			Connection con = cm.getConnection();
+			Statement stat = con.createStatement();
+			stat.executeQuery("SELECT id, name FROM company;"); 
+			ResultSet rs = stat.getResultSet();
+			
+			
+			while(rs.next()) {
+				Company c = new Company(rs.getString("name"));
+				c.setId(rs.getInt("id"));
+				companyList.add(c);
+			}
+						
+			con.close();
+			return companyList;
 		}
 
 		@Override
