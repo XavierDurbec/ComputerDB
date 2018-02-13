@@ -13,11 +13,15 @@ public class Test {
 		public static void main(String args[]) throws SQLException {
 			
 			Company cFU = new Company("GameWorkshop");
-			cFU.setId(25);
+			cFU.setId(44);
+			
 			CompanyDAO.getCompanyDAO().set(cFU);
 			
-			Company company = CompanyDAO.getCompanyDAO().get(43);
+			Company company = CompanyDAO.getCompanyDAO().get(44);
 			System.out.println(company);
+			
+			
+			CompanyDAO.getCompanyDAO().delete(44);
 			
 			List<Company> lc = CompanyDAO.getCompanyDAO().getAll();
 			

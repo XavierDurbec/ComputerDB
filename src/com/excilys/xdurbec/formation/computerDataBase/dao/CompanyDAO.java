@@ -85,8 +85,11 @@ public class CompanyDAO implements EntityDAO<Company> {
 		}
 
 		@Override
-		public void delete(Company entity)  throws SQLException{
-			// TODO Auto-generated method stub
+		public void delete(int id)  throws SQLException{
+			Connection con = cm.getConnection();
+			Statement stat = con.createStatement();
+			stat.executeUpdate("DELETE FROM company WHERE id ="+id+";");
+			con.close();
 			
 		}
 		

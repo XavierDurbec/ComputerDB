@@ -45,7 +45,7 @@ public class ComputerDAO implements EntityDAO<Computer>{
 			
 		}
 		@Override
-		public void delete(Computer entity) {
+		public void delete(int id) {
 			// TODO Auto-generated method stub
 			
 		}

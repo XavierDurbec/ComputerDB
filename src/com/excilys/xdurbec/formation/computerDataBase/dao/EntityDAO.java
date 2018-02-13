@@ -8,6 +8,6 @@ public interface EntityDAO<T>  {
 	public List<T> getAll() throws SQLException;
 	public void create(T entity)throws SQLException;
 	public void set(T entity)throws SQLException;
-	public void delete(T entity)throws SQLException;
+	public void delete(int id)throws SQLException;
 	
 }
