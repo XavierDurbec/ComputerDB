@@ -20,5 +20,9 @@ public class Test {
 				System.out.println(c);
 			}
 			
+		
+			Company companyForCreation = new Company("Umbrela");
+			CompanyDAO.getCompanyDAO().create(companyForCreation);
+		
 		}
 }

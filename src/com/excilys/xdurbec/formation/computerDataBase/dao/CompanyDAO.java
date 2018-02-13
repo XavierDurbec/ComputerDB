@@ -6,6 +6,12 @@ import java.sql.*;
 
 import com.excilys.xdurbec.formation.computerDataBase.model.Company;
 
+
+/**
+ * Crude gestion of Company.
+ * @author excilys
+ *
+ */
 public class CompanyDAO implements EntityDAO<Company> {
 		private static CompanyDAO companyDAO;
 		
@@ -64,8 +70,10 @@ public class CompanyDAO implements EntityDAO<Company> {
 
 		@Override
 		public void create(Company entity)  throws SQLException{
-			// TODO Auto-generated method stub
-			
+			Connection con = cm.getConnection();
+			Statement stat = con.createStatement();
+			stat.executeUpdate("INSERT INTO company (name) VALUES(\""+entity.getName()+"\");");
+			con.close();
 		}
 
 		@Override
