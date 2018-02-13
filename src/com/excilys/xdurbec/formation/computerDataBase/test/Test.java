@@ -36,7 +36,12 @@ public class Test {
 		*/	
 
 			//ComputerDAO.getComputerDAO().create(new Computer("Dell4852",Date.valueOf("1991-06-30"),Date.valueOf("2012-08-13"), CompanyDAO.getCompanyDAO().getById(25)));
-			System.out.println(ComputerDAO.getComputerDAO().getById(55));
+			
+			System.out.println(ComputerDAO.getComputerDAO().getById(576));
+			Computer cp = new Computer("Lol",Date.valueOf("1991-07-30"),Date.valueOf("2012-08-13"),CompanyDAO.getCompanyDAO().getById(22));
+					cp.setId(576);
+			ComputerDAO.getComputerDAO().update(cp);
+			System.out.println(ComputerDAO.getComputerDAO().getById(576));
 			
 		
 		}

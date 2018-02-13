@@ -75,7 +75,7 @@ public class CompanyDAO implements EntityDAO<Company> {
 		}
 
 		@Override
-		public void set(Company entity)  throws SQLException{
+		public void update(Company entity)  throws SQLException{
 			Connection con = cm.getConnection();
 			Statement stat = con.createStatement();
 			stat.executeUpdate("UPDATE company SET name =\""+entity.getName()+"\" WHERE id ="+entity.getId()+";");

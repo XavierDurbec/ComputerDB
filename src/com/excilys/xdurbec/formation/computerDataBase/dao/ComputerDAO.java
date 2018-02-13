@@ -30,7 +30,7 @@ public class ComputerDAO implements EntityDAO<Computer>{
 		public Computer getById(int id) throws SQLException {
 			Connection con = cm.getConnection();
 			Statement stat = con.createStatement();
-			stat.executeQuery("SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.id, company.name FROM computer INNER JOIN company ON computer.company_id = company.id WHERE computer.id = "+id+";"); 
+			stat.executeQuery("SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.id, company.name FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE computer.id = "+id+";"); 
 			ResultSet rs = stat.getResultSet();
 			
 			rs.next();
@@ -67,8 +67,11 @@ public class ComputerDAO implements EntityDAO<Computer>{
 		}
 		
 		@Override
-		public void set(Computer entity) throws SQLException {
-			// TODO Auto-generated method stub
+		public void update(Computer entity) throws SQLException {
+			Connection con = cm.getConnection();
+			Statement stat = con.createStatement();
+			stat.executeUpdate("UPDATE computer SET name =\""+entity.getName()+"\", introduced =\""+entity.getIntroduced()+"\", discontinued=\""+entity.getDiscontinued() +"\", company_id=\""+entity.getCompany().getId() +"\" WHERE id ="+entity.getId()+";");
+			con.close();
 			
 		}
 		@Override
