@@ -50,8 +50,6 @@ public class CompanyDAO implements EntityDAO<Company> {
 		public List<Company> getAll()  throws SQLException {
 			
 			List<Company> companyList = new ArrayList<Company>();
-			
-			
 			Connection con = cm.getConnection();
 			Statement stat = con.createStatement();
 			stat.executeQuery("SELECT id, name FROM company;"); 

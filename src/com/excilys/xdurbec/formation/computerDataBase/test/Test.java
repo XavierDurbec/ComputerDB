@@ -11,7 +11,7 @@ import com.excilys.xdurbec.formation.computerDataBase.model.Computer;
 
 public class Test {
 		public static void main(String args[]) throws SQLException {
-			
+			/*
 			Company cFU = new Company("GameWorkshop");
 			cFU.setId(44);
 			
@@ -29,11 +29,13 @@ public class Test {
 				System.out.println(c);
 			}
 			
-		/*
+		
 			Company companyForCreation = new Company("Umbrela");
 			CompanyDAO.getCompanyDAO().create(companyForCreation);
 		*/	
 
+			
+			System.out.println(ComputerDAO.getComputerDAO().get(123));
 			
 		
 		}
