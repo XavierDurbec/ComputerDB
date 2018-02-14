@@ -20,11 +20,9 @@ public class CompanyService implements EntityService<Company>{
 	
 	public static CompanyService getCompanyService() {
 		if (companyService == null) {
-			return new CompanyService();
+			companyService = new CompanyService();
 		}
-		else {
 			return companyService;
-		}
 	}
 	
 	

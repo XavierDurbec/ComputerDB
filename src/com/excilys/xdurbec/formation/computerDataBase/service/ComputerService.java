@@ -17,11 +17,9 @@ public class ComputerService implements EntityService<Computer>{
 		
 		private static ComputerService getComputerService() {
 			if(computerService == null) {
-				return new ComputerService();
+			 computerService = new ComputerService();
 			}
-			else {
 				return computerService;
-			}
 		}
 		
 		
