@@ -10,4 +10,5 @@ public interface EntityDAO<T>  {
 	public void update(T entity)throws SQLException;
 	public void deleteById(int id)throws SQLException;
 	
+	
 }

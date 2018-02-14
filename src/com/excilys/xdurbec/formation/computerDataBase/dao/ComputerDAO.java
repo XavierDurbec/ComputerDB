@@ -25,17 +25,18 @@ public class ComputerDAO implements EntityDAO<Computer>{
 		}
 		
 		
-
-		// TODO: Add gestion of null company
+		//TODO 	faire des constant pour les String de requête. 
 		@Override
 		public Computer getById(int id) throws SQLException {
 			Connection con = cm.getConnection();
 			Statement stat = con.createStatement();
-			stat.executeQuery("SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.id, company.name FROM computer LEFT JOIN company ON computer.company_id = company.id WHERE computer.id = "+id+";"); 
+			stat.executeQuery("SELECT computer.id, computer.name, computer.introduced,"
+					+ " computer.discontinued, computer.company_id, company.id, company.name "
+					+ "FROM computer LEFT JOIN company "
+					+ "ON computer.company_id = company.id "
+					+ "WHERE computer.id = "+id+";"); 
 			ResultSet rs = stat.getResultSet();
-			
 			rs.next();
-			
 			Company company = new Company();
 			
 			if(rs.getInt("company.id") != 0) {
@@ -58,13 +59,14 @@ public class ComputerDAO implements EntityDAO<Computer>{
 			Connection con = cm.getConnection();
 			Statement stat = con.createStatement();
 	
-			stat.executeQuery("SELECT computer.id, computer.name, computer.introduced, computer.discontinued, computer.company_id, company.id, company.name FROM computer LEFT JOIN company ON computer.company_id = company.id;"); 
+			stat.executeQuery("SELECT computer.id, computer.name, computer.introduced, "
+					+ "computer.discontinued, computer.company_id, company.id, company.name "
+					+ "FROM computer LEFT JOIN company "
+					+ "ON computer.company_id = company.id;"); 
 
 			ResultSet rs = stat.getResultSet();
 			
 			List<Computer> lcp = new ArrayList<Computer>();
-
-
 			
 			while(rs.next()) {
 				Company company = new Company();
@@ -93,7 +95,11 @@ public class ComputerDAO implements EntityDAO<Computer>{
 		public void create(Computer entity) throws SQLException {
 			Connection con = cm.getConnection();
 			Statement stat = con.createStatement();
-			stat.executeUpdate("INSERT INTO computer (name, introduced, discontinued, company_id) VALUES(\""+entity.getName()+"\",\""+entity.getIntroduced()+"\",\""+entity.getDiscontinued()+"\",\""+entity.getCompany().getId()+"\");");
+			stat.executeUpdate("INSERT INTO computer (name, introduced, discontinued, company_id) "
+					+ "VALUES(\""+entity.getName()+"\",\""
+					+entity.getIntroduced()+"\",\""
+					+entity.getDiscontinued()+"\",\""
+					+entity.getCompany().getId()+"\");");
 			con.close();			
 		}
 		
@@ -101,7 +107,11 @@ public class ComputerDAO implements EntityDAO<Computer>{
 		public void update(Computer entity) throws SQLException {
 			Connection con = cm.getConnection();
 			Statement stat = con.createStatement();
-			stat.executeUpdate("UPDATE computer SET name =\""+entity.getName()+"\", introduced =\""+entity.getIntroduced()+"\", discontinued=\""+entity.getDiscontinued() +"\", company_id=\""+entity.getCompany().getId() +"\" WHERE id ="+entity.getId()+";");
+			stat.executeUpdate("UPDATE computer SET name =\""+entity.getName()+"\","
+					+ " introduced =\""+entity.getIntroduced()+"\","
+					+ " discontinued=\""+entity.getDiscontinued() +"\","
+					+ " company_id=\""+entity.getCompany().getId() +"\" "
+					+ "WHERE id ="+entity.getId()+";");
 			con.close();
 			
 		}
