@@ -23,7 +23,7 @@ public class ComputerService implements EntityService<Computer>{
 		}
 		
 		
-		@Override
+		
 		public Computer getById(int id) throws SQLException {
 			return computerDAO.getById(id);
 		}
@@ -33,17 +33,17 @@ public class ComputerService implements EntityService<Computer>{
 			return computerDAO.getAll();
 		}
 
-		@Override
+		
 		public void create(Computer entity) throws SQLException {
 			computerDAO.create(entity);
 		}
 
-		@Override
+		
 		public void update(Computer entity) throws SQLException {
 			computerDAO.update(entity);
 		}
 
-		@Override
+		
 		public void deleteById(int id) throws SQLException {
 			computerDAO.deleteById(id);
 		}

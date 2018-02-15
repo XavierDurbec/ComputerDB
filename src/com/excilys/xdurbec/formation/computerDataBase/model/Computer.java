@@ -15,7 +15,7 @@ public class Computer {
 	private Date introduced;
 	private Date discontinued;
 	private Company company;
-	
+
 	public Computer() {}
 	public Computer(String name, Date introduced, Date discontinued, Company company) {
 		super();
@@ -24,8 +24,8 @@ public class Computer {
 		this.discontinued = discontinued;
 		this.company = company;
 	}
-	
-	
+
+
 	public int getId() {
 		return id;
 	}
@@ -56,7 +56,7 @@ public class Computer {
 	public void setCompany(Company company) {
 		this.company = company;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -64,7 +64,7 @@ public class Computer {
 		result = prime * result + id;
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -84,6 +84,6 @@ public class Computer {
 				+ ", company=" + company + "]";
 	}
 
-	
-	
+
+
 }

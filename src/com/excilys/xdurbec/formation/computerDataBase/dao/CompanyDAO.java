@@ -30,21 +30,6 @@ public class CompanyDAO implements EntityDAO<Company> {
 		}
 		
 		
-		
-		
-		
-		@Override
-		public Company getById(int id) throws SQLException {
-			Connection con = cm.getConnection();
-			Statement stat = con.createStatement();
-			stat.executeQuery("SELECT id, name FROM company WHERE id = "+id+";"); 
-			ResultSet rs = stat.getResultSet();
-			rs.next();
-			Company company = new Company( rs.getString("name") );
-			company.setId(rs.getInt("id"));
-			con.close();
-			return company;
-		}
 
 		@Override
 		public List<Company> getAll()  throws SQLException {
@@ -66,30 +51,6 @@ public class CompanyDAO implements EntityDAO<Company> {
 			return companyList;
 		}
 
-		@Override
-		public void create(Company entity)  throws SQLException{
-			Connection con = cm.getConnection();
-			Statement stat = con.createStatement();
-			stat.executeUpdate("INSERT INTO company (name) VALUES(\""+entity.getName()+"\");");
-			con.close();
-		}
-
-		@Override
-		public void update(Company entity)  throws SQLException{
-			Connection con = cm.getConnection();
-			Statement stat = con.createStatement();
-			stat.executeUpdate("UPDATE company SET name =\""+entity.getName()+"\" WHERE id ="+entity.getId()+";");
-			con.close();			
-		}
-
-		@Override
-		public void deleteById(int id)  throws SQLException{
-			Connection con = cm.getConnection();
-			Statement stat = con.createStatement();
-			stat.executeUpdate("DELETE FROM company WHERE id ="+id+";");
-			con.close();
-			
-		}
 		
 		
 		
