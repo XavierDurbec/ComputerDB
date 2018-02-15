@@ -9,6 +9,17 @@ import com.excilys.xdurbec.formation.computerDataBase.model.Company;
 import com.excilys.xdurbec.formation.computerDataBase.model.Computer;
 
 public class ComputerDAO implements EntityDAO<Computer>{
+	private static final String GET_BY_ID_REQUEST = "SELECT computer.id, computer.name, computer.introduced,"
+			+ " computer.discontinued, computer.company_id, company.id, company.name "
+			+ "FROM computer LEFT JOIN company "
+			+ "ON computer.company_id = company.id;"
+			+ "WHERE computer.id = ? ;";
+	private static final String GET_ALL_REQUEST = "SELECT computer.id, computer.name, computer.introduced, "
+			+ "computer.discontinued, computer.company_id, company.id, company.name "
+			+ "FROM computer LEFT JOIN company "
+			+ "ON computer.company_id = company.id;";
+	private static final String DELETE_REQUEST = "DELETE FROM computer WHERE id =?;";
+			
 	private static ComputerDAO computerDAO;
 
 	private ConnectionManager cm;
@@ -25,15 +36,12 @@ public class ComputerDAO implements EntityDAO<Computer>{
 	}
 
 
-	//TODO 	faire des constant pour les String de requête. 
 	public Computer getById(int id) throws SQLException {
 		Connection con = cm.getConnection();
-		Statement stat = con.createStatement();
-		stat.executeQuery("SELECT computer.id, computer.name, computer.introduced,"
-				+ " computer.discontinued, computer.company_id, company.id, company.name "
-				+ "FROM computer LEFT JOIN company "
-				+ "ON computer.company_id = company.id "
-				+ "WHERE computer.id = "+id+";"); 
+		PreparedStatement stat = con.prepareStatement(GET_BY_ID_REQUEST);
+		stat.setInt(1, id);
+		stat.executeQuery(); 
+		
 		ResultSet rs = stat.getResultSet();
 		rs.next();
 		Company company = new Company();
@@ -117,8 +125,9 @@ public class ComputerDAO implements EntityDAO<Computer>{
 	
 	public void deleteById(int id) throws SQLException {
 		Connection con = cm.getConnection();
-		Statement stat = con.createStatement();
-		stat.executeUpdate("DELETE FROM computer WHERE id ="+id+";");
+		PreparedStatement stat = con.prepareStatement(DELETE_REQUEST);
+		stat.setInt(1, id);
+		stat.executeUpdate();
 		con.close();
 
 	}

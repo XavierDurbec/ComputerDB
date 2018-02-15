@@ -5,7 +5,7 @@ import java.util.List;
 import java.sql.*;
 
 import com.excilys.xdurbec.formation.computerDataBase.model.Company;
-
+import com.excilys.xdurbec.formation.computerDataBase.model.ConstantString;
 
 /**
  * Crude gestion of Company.
@@ -13,6 +13,8 @@ import com.excilys.xdurbec.formation.computerDataBase.model.Company;
  *
  */
 public class CompanyDAO implements EntityDAO<Company> {
+		private static final String GET_ALL=("SELECT id, name FROM company;");
+		
 		private static CompanyDAO companyDAO;
 		
 		private  ConnectionManager cm;
@@ -37,13 +39,13 @@ public class CompanyDAO implements EntityDAO<Company> {
 			List<Company> companyList = new ArrayList<Company>();
 			Connection con = cm.getConnection();
 			Statement stat = con.createStatement();
-			stat.executeQuery("SELECT id, name FROM company;"); 
+			stat.executeQuery(GET_ALL); 
 			ResultSet rs = stat.getResultSet();
 			
 			
 			while(rs.next()) {
-				Company c = new Company(rs.getString("name"));
-				c.setId(rs.getInt("id"));
+				Company c = new Company(rs.getString(ConstantString.NAME));
+				c.setId(rs.getInt(ConstantString.ID));
 				companyList.add(c);
 			}
 						
