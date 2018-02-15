@@ -30,6 +30,4 @@ public class CompanyService implements EntityService<Company>{
 	public List<Company> getAll() throws SQLException{
 		return companyDAO.getAll();
 	}
-
-
 }

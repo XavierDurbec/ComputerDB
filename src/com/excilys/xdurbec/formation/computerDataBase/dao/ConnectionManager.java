@@ -20,10 +20,14 @@ public class ConnectionManager {
 
 	}
 	
-	public Connection getConnection() throws SQLException {
-		
-		Connection con = DriverManager.getConnection(cm.url, cm.user, cm.passeWord); 
-		return con;
+	public Connection getConnection() throws ExceptionDAO {
+		try {
+			Connection con = DriverManager.getConnection(cm.url, cm.user, cm.passeWord); 
+			return con;
+		}
+		catch(SQLException e) {
+			throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
+		}
 	}
 	
 	

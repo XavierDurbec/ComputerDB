@@ -9,17 +9,30 @@ import com.excilys.xdurbec.formation.computerDataBase.model.Company;
 import com.excilys.xdurbec.formation.computerDataBase.model.Computer;
 
 public class ComputerDAO implements EntityDAO<Computer>{
+
 	private static final String GET_BY_ID_REQUEST = "SELECT computer.id, computer.name, computer.introduced,"
 			+ " computer.discontinued, computer.company_id, company.id, company.name "
 			+ "FROM computer LEFT JOIN company "
 			+ "ON computer.company_id = company.id;"
 			+ "WHERE computer.id = ? ;";
+
 	private static final String GET_ALL_REQUEST = "SELECT computer.id, computer.name, computer.introduced, "
 			+ "computer.discontinued, computer.company_id, company.id, company.name "
 			+ "FROM computer LEFT JOIN company "
 			+ "ON computer.company_id = company.id;";
+
+	private static final String CREATE_REQUEST = "INSERT INTO computer (name, introduced, discontinued, company_id) "
+			+ "VALUES(?,?,?,?);";
+
+	private static final String UPDATE_REQUEST = "UPDATE computer SET "
+			+ "name =?, "
+			+ "introduced =?, "
+			+ "discontinued=?, "
+			+ "company_id=? "
+			+ "WHERE id =?;";
+
 	private static final String DELETE_REQUEST = "DELETE FROM computer WHERE id =?;";
-			
+
 	private static ComputerDAO computerDAO;
 
 	private ConnectionManager cm;
@@ -36,100 +49,149 @@ public class ComputerDAO implements EntityDAO<Computer>{
 	}
 
 
-	public Computer getById(int id) throws SQLException {
+	public Computer getById(int id) throws ExceptionDAO {
 		Connection con = cm.getConnection();
-		PreparedStatement stat = con.prepareStatement(GET_BY_ID_REQUEST);
-		stat.setInt(1, id);
-		stat.executeQuery(); 
-		
-		ResultSet rs = stat.getResultSet();
-		rs.next();
-		Company company = new Company();
-
-		if(rs.getInt("company.id") != 0) {
-			company.setName(rs.getString("company.name"));
-			company.setId(rs.getInt("company.id"));
-		}	
-
-		Computer computer = new Computer(rs.getString("computer.name"), rs.getDate("computer.introduced"), rs.getDate("computer.discontinued"),company);
-		computer.setId(rs.getInt("computer.id"));
-
-		con.close();
-
-		return computer;
+		try(PreparedStatement stat = con.prepareStatement(GET_BY_ID_REQUEST)){
+			stat.setInt(1, id);
+			stat.executeQuery(); 
+			ResultSet rs = stat.getResultSet();
+			rs.next();
+			Company company = new Company();
+			if(rs.getInt(ConstantStringDAO.ID_OF_COMPANY) != 0) {
+				company.setName(rs.getString(ConstantStringDAO.NAME_OF_COMPANY));
+				company.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPANY));
+			}	
+			Computer computer = new Computer(rs.getString(ConstantStringDAO.ID_OF_COMPUTER), rs.getDate(ConstantStringDAO.INTRODUCED_OF_COMPUTER), rs.getDate(ConstantStringDAO.DISCONTINUED_OF_COMPUTER),company);
+			computer.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPUTER));
+			return computer;
+		}
+		catch(SQLException e) {
+			throw new ExceptionDAO(ExceptionDAO.ID_COMPUTER_ERROR);
+		}
+		finally {
+			try {
+				con.close();
+			}
+			catch(SQLException e) {
+				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
+			}
+		}
 	}
 
 
 
 	@Override
-	public List<Computer> getAll() throws SQLException {
+	public List<Computer> getAll() throws ExceptionDAO {
 		Connection con = cm.getConnection();
-		Statement stat = con.createStatement();
+		try(Statement stat = con.createStatement()){
 
-		stat.executeQuery("SELECT computer.id, computer.name, computer.introduced, "
-				+ "computer.discontinued, computer.company_id, company.id, company.name "
-				+ "FROM computer LEFT JOIN company "
-				+ "ON computer.company_id = company.id;"); 
+			stat.executeQuery(GET_ALL_REQUEST); 
 
-		ResultSet rs = stat.getResultSet();
+			ResultSet rs = stat.getResultSet();
 
-		List<Computer> listComputer = new ArrayList<Computer>();
+			List<Computer> listComputer = new ArrayList<Computer>();
 
-		while(rs.next()) {
-			Company company = new Company();
-			Computer computer =  new Computer();
-			if(rs.getInt("computer.company_id") == 0) {
-				company.setId(rs.getInt("company.id"));
-				company.setName(rs.getString("company.name"));
+			while(rs.next()) {
+				Company company = new Company();
+				Computer computer =  new Computer();
+				if(rs.getInt(ConstantStringDAO.ID_OF_COMPANY) == 0) {
+					company.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPANY));
+					company.setName(rs.getString(ConstantStringDAO.NAME_OF_COMPANY));
+				}
+				else {
+					company.setId(0);
+					company.setName(null);
+				}
+
+				computer.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPUTER));
+				computer.setIntroduced(rs.getDate(ConstantStringDAO.INTRODUCED_OF_COMPUTER));
+				computer.setDiscontinued(rs.getDate(ConstantStringDAO.DISCONTINUED_OF_COMPUTER));
+				computer.setCompany(company);
+
+				listComputer.add(computer);
 			}
-			else {
-				company.setId(0);
-				company.setName(null);
-			}
 
-			computer.setId(rs.getInt("computer.id"));
-			computer.setIntroduced(rs.getDate("computer.introduced"));
-			computer.setDiscontinued(rs.getDate("computer.discontinued"));
-			computer.setCompany(company);
-
-			listComputer.add(computer);
+			return listComputer;
 		}
-
-		return listComputer;
+		catch(SQLException e) {
+			throw new ExceptionDAO(ExceptionDAO.GET_ALL_ERROR);
+		}
+		finally {
+			try {
+				con.close();
+			}
+			catch(SQLException e) {
+				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
+			}
+		}
 	}
 
-	
-	public void create(Computer entity) throws SQLException {
+
+	public void create(Computer entity) throws ExceptionDAO {
 		Connection con = cm.getConnection();
-		Statement stat = con.createStatement();
-		stat.executeUpdate("INSERT INTO computer (name, introduced, discontinued, company_id) "
-				+ "VALUES(\""+entity.getName()+"\",\""
-				+entity.getIntroduced()+"\",\""
-				+entity.getDiscontinued()+"\",\""
-				+entity.getCompany().getId()+"\");");
-		con.close();			
+		try(PreparedStatement stat = con.prepareStatement(CREATE_REQUEST)){
+			stat.setString(1, entity.getName());
+			stat.setDate(2, entity.getIntroduced());
+			stat.setDate(3, entity.getDiscontinued());
+			stat.setInt(4, entity.getId());
+			stat.executeQuery();
+		}
+		catch(SQLException e) {
+			throw new ExceptionDAO(ExceptionDAO.DELETE_ERROR);
+		}
+		finally {
+			try {
+				con.close();
+			}
+			catch(SQLException e) {
+				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
+			}
+		}
 	}
 
-	
-	public void update(Computer entity) throws SQLException {
-		Connection con = cm.getConnection();
-		Statement stat = con.createStatement();
-		stat.executeUpdate("UPDATE computer SET name =\""+entity.getName()+"\","
-				+ " introduced =\""+entity.getIntroduced()+"\","
-				+ " discontinued=\""+entity.getDiscontinued() +"\","
-				+ " company_id=\""+entity.getCompany().getId() +"\" "
-				+ "WHERE id ="+entity.getId()+";");
-		con.close();
 
+	public void update(Computer entity) throws ExceptionDAO {
+		Connection con = cm.getConnection();
+
+		try(PreparedStatement stat = con.prepareStatement(UPDATE_REQUEST)){
+			stat.setString(1,entity.getName());
+			stat.setDate(2,entity.getIntroduced());
+			stat.setDate(3, entity.getDiscontinued());
+			stat.setInt(4, entity.getCompany().getId());
+			stat.setInt(5, entity.getId());
+			stat.executeQuery();
+		}
+		catch(SQLException e) {
+			throw new ExceptionDAO(ExceptionDAO.UPDATE_ERROR);
+		}
+		finally {
+			try {
+				con.close();
+			}
+			catch(SQLException e) {
+				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
+			}
+		}
 	}
-	
-	public void deleteById(int id) throws SQLException {
-		Connection con = cm.getConnection();
-		PreparedStatement stat = con.prepareStatement(DELETE_REQUEST);
-		stat.setInt(1, id);
-		stat.executeUpdate();
-		con.close();
 
+	public void deleteById(int id) throws ExceptionDAO {
+		Connection con = cm.getConnection();
+		try{
+			PreparedStatement stat = con.prepareStatement(DELETE_REQUEST);
+			stat.setInt(1, id);
+			stat.executeUpdate();
+		}
+		catch(SQLException e) {
+			throw new ExceptionDAO(ExceptionDAO.DELETE_ERROR);
+		}
+		finally {
+			try {
+				con.close();
+			}
+			catch(SQLException e) {
+				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
+			}
+		}
 	}
 
 }
