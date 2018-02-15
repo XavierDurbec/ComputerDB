@@ -44,6 +44,7 @@ public class CommandLineInterfaceControler {
 				msg = getEntity(commandSplit, nbArguments);
 				break;
 				case "getAll":
+					msg = getAllEntity(commandSplit);
 					break;
 				case "create":
 					break;

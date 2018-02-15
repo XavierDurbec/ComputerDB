@@ -9,11 +9,13 @@ public class CommandLineInterface {
 		public static void launchCLI() throws IOException, SQLException {
 			
 			CommandLineInterfaceControler cliControler = CommandLineInterfaceControler.getCommandLineInterfaceControler();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-			String line = "";
+			BufferedReader reader = new BufferedReader(new InputStreamReader(System.in)); 
+			String line = reader.readLine();
+			
 			while(!line.equals("exit")) {
-				line = reader.readLine();
 				System.out.println(cliControler.pars(line));
+				line = reader.readLine();
+
 			}
 		}
 		
