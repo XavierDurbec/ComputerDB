@@ -28,7 +28,7 @@ public class CompanyService implements EntityService<Company>{
 	
 
 	@Override
-	public Company getById(int id) throws SQLException{
+	public Company getById(int id) throws SQLException {
 		return companyDAO.getById(id);
 	}
 

@@ -30,7 +30,8 @@ public class CommandLineInterfaceControler {
 	}
 	
 	
-	public String pars(String command) {
+	public String pars(String command)  {
+		
 		String msg = "";
 		if(command == null) {
 			return msg; 
@@ -40,8 +41,8 @@ public class CommandLineInterfaceControler {
 			int nbArguments = commandSplit.length - 2 ;
 			switch (commandSplit[0]){
 				case "get":
-					msg = getEntity(commandSplit, nbArguments);
-					break;
+				msg = getEntity(commandSplit, nbArguments);
+				break;
 				case "getAll":
 					break;
 				case "create":
@@ -56,9 +57,10 @@ public class CommandLineInterfaceControler {
 		
 		return msg;
 		}
+
 	}
 		
-		private String getEntity (String[] args, int nbArguments ) throws SQLException {
+		private String getEntity (String[] args, int nbArguments )  {
 			if(nbArguments < 1) {
 				return "too few argument";
 			}
@@ -77,8 +79,11 @@ public class CommandLineInterfaceControler {
 			}
 			
 			}
-			catch(NumberFormatException e){
-				return "Arg not valide. Need an integer.";
+			catch(NumberFormatException nfeE){
+				return "Need an integer. Error:"+nfeE.getMessage();
+			}
+			catch(SQLException sqlE) {
+				return sqlE.getMessage();
 			}
 			
 		}
@@ -86,14 +91,19 @@ public class CommandLineInterfaceControler {
 		
 		
 		
-		private String getAllEntity(String[] command) throws SQLException {
-			switch(command[1]) {
-			case "company":
-				return companyDAO.getAll().toString();
-			case "computer":
-				return computerDAO.getAll().toString();
-			default:
-				return "Entity inconnue.";
+		private String getAllEntity(String[] command)  {
+			try {
+				switch(command[1]) {
+					case "company":
+						return companyDAO.getAll().toString();
+					case "computer":
+						return computerDAO.getAll().toString();
+					default:
+						return "Entity inconnue.";
+				}
+			}
+			catch (SQLException sqlE) {
+				return sqlE.getMessage();
 			}
 		}
 		private String createComputer (String[] args) {
