@@ -99,4 +99,5 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 		}
 
 	}
+	
 }

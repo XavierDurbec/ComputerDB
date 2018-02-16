@@ -14,10 +14,12 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 	private static ComputerService computerService;
 	private ComputerDAO computerDAO;
 	private CompanyDAO companyDAO;
-
+	private CompanyService companyService;
+	
 	private ComputerService() {
 		this.computerDAO = ComputerDAO.getComputerDAO();
 		this.companyDAO = CompanyDAO.getCompanyDAO();
+		this.companyService = CompanyService.getCompanyService();
 	}
 
 	public static ComputerService getComputerService() {
@@ -25,24 +27,6 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 			computerService = new ComputerService();
 		}
 		return computerService;
-	}
-
-
-	private  Boolean companyExistenceVerification(Company company) throws ExceptionService {
-		try {
-		if(companyDAO.doesExist(company.getId())) {
-
-			return true;
-		}
-		else {
-			log.error(ExceptionService.DOES_EXIST_ERROR);
-			throw new ExceptionService(ExceptionService.DOES_EXIST_ERROR);
-		}
-		}
-		catch(ExceptionDAO e) {
-			throw new ExceptionService(ExceptionService.STATEMENT_ERROR);
-		}
-
 	}
 
 	public Computer getById(int id) throws ExceptionService {
@@ -66,7 +50,7 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 
 
 	public void create(Computer entity) throws  ExceptionService {
-		this.companyExistenceVerification(entity.getCompany());
+		companyService.companyExistenceVerification(entity.getCompany().getId());
 		try{
 			computerDAO.create(entity);
 		}

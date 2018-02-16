@@ -10,7 +10,7 @@ import com.excilys.xdurbec.formation.computerDataBase.dao.ComputerDAO;
 import com.excilys.xdurbec.formation.computerDataBase.dao.ExceptionDAO;
 import com.excilys.xdurbec.formation.computerDataBase.model.Company;
 
-public class CompanyService implements EntityServiceComportment<Company>{
+public class CompanyService extends EntityService implements EntityServiceComportment<Company>{
 
 	private static CompanyService companyService;
 
@@ -28,7 +28,6 @@ public class CompanyService implements EntityServiceComportment<Company>{
 		return companyService;
 	}
 
-
 	@Override
 	public List<Company> getAll() throws ExceptionService{
 		try {
@@ -40,4 +39,21 @@ public class CompanyService implements EntityServiceComportment<Company>{
 	}
 
 
+	public Boolean companyExistenceVerification(int id) {
+		try {
+			if(companyDAO.doesExist(id)) {
+
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+		catch(ExceptionDAO e) {
+			log.error(ExceptionService.STATEMENT_ERROR);		
+			return false;
+		}
+
+
+	}
 }
