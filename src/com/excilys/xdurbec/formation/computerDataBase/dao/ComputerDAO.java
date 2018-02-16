@@ -132,26 +132,33 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 
 
 	public void create(Computer entity) throws ExceptionDAO {
-		Connection con = cm.getConnection();
-		try(PreparedStatement stat = con.prepareStatement(CREATE_REQUEST)){
-			stat.setString(1, entity.getName());
-			stat.setDate(2, entity.getIntroduced());
-			stat.setDate(3, entity.getDiscontinued());
-			stat.setInt(4, entity.getId());
-			stat.executeQuery();
-		}
-		catch(SQLException e) {
-			showLogSQLException(e);
-			throw new ExceptionDAO(ExceptionDAO.DELETE_ERROR);
-		}
-		finally {
-			try {
-				con.close();
+		if(CompanyDAO.getCompanyDAO().doesExist(entity.getCompany().getId())) {
+
+			Connection con = cm.getConnection();
+			try(PreparedStatement stat = con.prepareStatement(CREATE_REQUEST)){
+				stat.setString(1, entity.getName());
+				stat.setDate(2, entity.getIntroduced());
+				stat.setDate(3, entity.getDiscontinued());
+				stat.setInt(4, entity.getCompany().getId());
+				stat.executeQuery();
 			}
 			catch(SQLException e) {
 				showLogSQLException(e);
-				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
+				throw new ExceptionDAO(ExceptionDAO.DELETE_ERROR);
 			}
+			finally {
+				try {
+					con.close();
+				}
+				catch(SQLException e) {
+					showLogSQLException(e);
+					throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
+				}
+			}
+		}
+		else {
+			log.error(ExceptionDAO.DOES_EXIST_ERROR);
+			throw new ExceptionDAO(ExceptionDAO.DOES_EXIST_ERROR);
 		}
 	}
 

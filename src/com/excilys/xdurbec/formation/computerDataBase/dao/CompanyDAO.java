@@ -86,7 +86,7 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 		}
 		catch(SQLException e) {
 			showLogSQLException(e);
-			throw new ExceptionDAO(ExceptionDAO.DOES_EXIST_ERROR);
+			throw new ExceptionDAO(ExceptionDAO.STATEMENT_ERROR);
 		}
 		finally{
 			try {
