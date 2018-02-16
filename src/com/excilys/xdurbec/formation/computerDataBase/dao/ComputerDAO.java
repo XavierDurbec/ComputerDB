@@ -8,7 +8,7 @@ import java.sql.*;
 import com.excilys.xdurbec.formation.computerDataBase.model.Company;
 import com.excilys.xdurbec.formation.computerDataBase.model.Computer;
 
-public class ComputerDAO implements EntityDAO<Computer>{
+public class ComputerDAO implements EntityDAOComportment<Computer>{
 
 	private static final String GET_BY_ID_REQUEST = "SELECT computer.id, computer.name, computer.introduced,"
 			+ " computer.discontinued, computer.company_id, company.id, company.name "
