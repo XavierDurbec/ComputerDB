@@ -8,12 +8,12 @@ import java.sql.*;
 import com.excilys.xdurbec.formation.computerDataBase.model.Company;
 import com.excilys.xdurbec.formation.computerDataBase.model.Computer;
 
-public class ComputerDAO implements EntityDAOComportment<Computer>{
+public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Computer>{
 
 	private static final String GET_BY_ID_REQUEST = "SELECT computer.id, computer.name, computer.introduced,"
 			+ " computer.discontinued, computer.company_id, company.id, company.name "
 			+ "FROM computer LEFT JOIN company "
-			+ "ON computer.company_id = company.id;"
+			+ "ON computer.company_id = company.id "
 			+ "WHERE computer.id = ? ;";
 
 	private static final String GET_ALL_REQUEST = "SELECT computer.id, computer.name, computer.introduced, "
@@ -66,6 +66,7 @@ public class ComputerDAO implements EntityDAOComportment<Computer>{
 			return computer;
 		}
 		catch(SQLException e) {
+			showLogSQLException(e);
 			throw new ExceptionDAO(ExceptionDAO.ID_COMPUTER_ERROR);
 		}
 		finally {
@@ -73,6 +74,7 @@ public class ComputerDAO implements EntityDAOComportment<Computer>{
 				con.close();
 			}
 			catch(SQLException e) {
+				showLogSQLException(e);
 				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 			}
 		}
@@ -114,6 +116,7 @@ public class ComputerDAO implements EntityDAOComportment<Computer>{
 			return listComputer;
 		}
 		catch(SQLException e) {
+			showLogSQLException(e);
 			throw new ExceptionDAO(ExceptionDAO.GET_ALL_ERROR);
 		}
 		finally {
@@ -121,6 +124,7 @@ public class ComputerDAO implements EntityDAOComportment<Computer>{
 				con.close();
 			}
 			catch(SQLException e) {
+				showLogSQLException(e);
 				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 			}
 		}
@@ -137,6 +141,7 @@ public class ComputerDAO implements EntityDAOComportment<Computer>{
 			stat.executeQuery();
 		}
 		catch(SQLException e) {
+			showLogSQLException(e);
 			throw new ExceptionDAO(ExceptionDAO.DELETE_ERROR);
 		}
 		finally {
@@ -144,6 +149,7 @@ public class ComputerDAO implements EntityDAOComportment<Computer>{
 				con.close();
 			}
 			catch(SQLException e) {
+				showLogSQLException(e);
 				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 			}
 		}
@@ -162,6 +168,7 @@ public class ComputerDAO implements EntityDAOComportment<Computer>{
 			stat.executeQuery();
 		}
 		catch(SQLException e) {
+			showLogSQLException(e);
 			throw new ExceptionDAO(ExceptionDAO.UPDATE_ERROR);
 		}
 		finally {
@@ -169,6 +176,7 @@ public class ComputerDAO implements EntityDAOComportment<Computer>{
 				con.close();
 			}
 			catch(SQLException e) {
+				showLogSQLException(e);
 				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 			}
 		}
@@ -182,6 +190,7 @@ public class ComputerDAO implements EntityDAOComportment<Computer>{
 			stat.executeUpdate();
 		}
 		catch(SQLException e) {
+			showLogSQLException(e);
 			throw new ExceptionDAO(ExceptionDAO.DELETE_ERROR);
 		}
 		finally {
@@ -189,6 +198,7 @@ public class ComputerDAO implements EntityDAOComportment<Computer>{
 				con.close();
 			}
 			catch(SQLException e) {
+				showLogSQLException(e);
 				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 			}
 		}

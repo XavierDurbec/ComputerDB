@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 public class CommandLineInterface {
 	public static void launchCLI() throws IOException, SQLException {
-
+		/*
 		CommandLineInterfaceControler cliControler = CommandLineInterfaceControler.getCommandLineInterfaceControler();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(System.in)); 
 		String line = reader.readLine();
@@ -16,7 +16,7 @@ public class CommandLineInterface {
 			System.out.println(cliControler.pars(line));
 			line = reader.readLine();
 
-		}
+		}*/
 	}
 
 

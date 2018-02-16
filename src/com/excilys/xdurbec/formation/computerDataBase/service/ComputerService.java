@@ -17,7 +17,7 @@ public class ComputerService implements EntityServiceComportment<Computer>{
 			this.computerDAO = ComputerDAO.getComputerDAO();
 		}
 		
-		private static ComputerService getComputerService() {
+		public static ComputerService getComputerService() {
 			if(computerService == null) {
 			 computerService = new ComputerService();
 			}

@@ -9,6 +9,9 @@ import com.excilys.xdurbec.formation.computerDataBase.dao.CompanyDAO;
 import com.excilys.xdurbec.formation.computerDataBase.dao.ComputerDAO;
 import com.excilys.xdurbec.formation.computerDataBase.model.Company;
 import com.excilys.xdurbec.formation.computerDataBase.model.Computer;
+import com.excilys.xdurbec.formation.computerDataBase.service.CompanyService;
+import com.excilys.xdurbec.formation.computerDataBase.service.ComputerService;
+import com.excilys.xdurbec.formation.computerDataBase.service.ExceptionService;
 
 public class Test {
 		public static void main(String args[]) throws SQLException {
@@ -43,12 +46,20 @@ public class Test {
 					cp.setId(576);
 			ComputerDAO.getComputerDAO().update(cp);
 			System.out.println(ComputerDAO.getComputerDAO().getById(576));
-			ComputerDAO.getComputerDAO().deleteById(576);*/
+			ComputerDAO.getComputerDAO().deleteById(576);
 			
 			List<Computer> lcp = ComputerDAO.getComputerDAO().getAll();
 			for(Computer cp : lcp) {
 				System.out.println(cp);
 			}
-		
+			
+			*/
+			
+			try {
+			    System.out.println(ComputerService.getComputerService().getAll());
+			}
+			catch(ExceptionService e) {
+				System.out.println("final:"+e.getMessage());
+			}
 		}
 }

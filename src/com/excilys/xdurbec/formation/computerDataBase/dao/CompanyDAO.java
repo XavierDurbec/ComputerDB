@@ -16,8 +16,7 @@ import com.excilys.xdurbec.formation.computerDataBase.service.ComputerService;
  * @author excilys
  *
  */
-public class CompanyDAO implements EntityDAOComportment<Company> {
-	private static Logger log = Logger.getLogger(ComputerService.class);
+public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Company> {
 
 	private static final String GET_ALL = "SELECT id, name FROM company;";
 	private static final String DOES_COMPANY_EXIST = "SELECT count(*) FROM company WHERE id = ?;";
@@ -37,9 +36,6 @@ public class CompanyDAO implements EntityDAOComportment<Company> {
 
 	}
 
-	private void logSQLError(SQLException e) {
-			log.error(e.getMessage());
-	}
 
 	@Override
 	public List<Company>  getAll()  throws  ExceptionDAO {
@@ -59,7 +55,7 @@ public class CompanyDAO implements EntityDAOComportment<Company> {
 			return companyList;
 		}
 		catch(SQLException e) {
-			logSQLError(e);
+			showLogSQLException(e);
 			throw new ExceptionDAO(ExceptionDAO.STATEMENT_ERROR);
 		}
 		finally {
@@ -67,7 +63,7 @@ public class CompanyDAO implements EntityDAOComportment<Company> {
 				con.close();
 			}
 			catch(SQLException e) {
-				logSQLError(e);
+				showLogSQLException(e);
 				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 			}
 		}
@@ -89,7 +85,7 @@ public class CompanyDAO implements EntityDAOComportment<Company> {
 			}
 		}
 		catch(SQLException e) {
-			logSQLError(e);
+			showLogSQLException(e);
 			throw new ExceptionDAO(ExceptionDAO.DOES_EXIST_ERROR);
 		}
 		finally{
@@ -97,7 +93,7 @@ public class CompanyDAO implements EntityDAOComportment<Company> {
 				con.close();
 			}
 			catch(SQLException e) {
-				logSQLError(e);
+				showLogSQLException(e);
 				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 			}
 		}
