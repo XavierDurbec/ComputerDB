@@ -130,41 +130,19 @@ public class CommandLineInterface {
 		this.setLocalComputerName(computer);
 		
 		this.setLocalComuterIntroducedDate(computer);
-
 		
-		System.out.println("Give an id for set a company to your computer (/cancel for return and /skip for  go to company set):");
-		stayIn = true;
-		while(stayIn) {
-			this.readLine();
-			switch(line) {
-			case("/cancel"):
-				return;
-			case("/skip"):
-				stayIn = false;
-			default:
-				Company company = new Company();
-				try {
-					int company_id = Integer.valueOf(line);
-					if(companyService.companyExistenceVerification(company_id)) {
-						company.setId(company_id);
-						stayIn = false;
-						computer.setCompany(company);
-						
-					}
-					else{
-						System.out.println("This company doesn't existe, give a valide id or write /skip");
-					}
-				}catch(IllegalArgumentException e) {
-						System.out.println("id have to be a number.");
-				}
-			}
-		}
+		this.setLocalComputerDiscontinuedDate(computer);
+		
+		this.setLocalComputerCompany(computer);
+		
 		try {
 			computerService.create(computer);
 		} catch (ExceptionService e) {
 			System.out.println(e.getMessage());
 			return;
 		}
+		
+		
 	}
 
 	private void setLocalComputerName(Computer computer) {
@@ -190,7 +168,7 @@ public class CommandLineInterface {
 		}
 	}
 	
-	private void setLocalComuterDiscontinuedDate(Computer computer) {
+	private void setLocalComputerDiscontinuedDate(Computer computer) {
 		System.out.println("Give a date for discontinued (AAAA-MM-DD) (/cancel for return and /skip for go to company set):");
 		Boolean stayIn = true;
 		while(stayIn) {
@@ -217,6 +195,37 @@ public class CommandLineInterface {
 			}
 		}
 
+	}
+	
+	private void setLocalComputerCompany(Computer computer) {
+		System.out.println("Give an id for set a company to your computer (/cancel for return and /skip for  go to company set):");
+		Boolean stayIn = true;
+		while(stayIn) {
+			this.readLine();
+			switch(line) {
+			case("/cancel"):
+				return;
+			case("/skip"):
+				stayIn = false;
+			default:
+				Company company = new Company();
+				try {
+					int company_id = Integer.valueOf(line);
+					if(companyService.companyExistenceVerification(company_id)) {
+						company.setId(company_id);
+						stayIn = false;
+						computer.setCompany(company);
+						
+					}
+					else{
+						System.out.println("This company doesn't existe, give a valide id or write /skip");
+					}
+				}catch(IllegalArgumentException e) {
+						System.out.println("id have to be a number.");
+				}
+			}
+		}
+		
 	}
 	
 	private void deleteComputer() {
