@@ -126,23 +126,23 @@ public class CommandLineInterface {
 
 	private void createComputer()  {
 		Computer computer = new Computer();
-		
+
 		this.setLocalComputerName(computer);
-		
+
 		this.setLocalComuterIntroducedDate(computer);
-		
+
 		this.setLocalComputerDiscontinuedDate(computer);
-		
+
 		this.setLocalComputerCompany(computer);
-		
+
 		try {
 			computerService.create(computer);
 		} catch (ExceptionService e) {
 			System.out.println(e.getMessage());
 			return;
 		}
-		
-		
+
+
 	}
 
 	private void setLocalComputerName(Computer computer) {
@@ -150,7 +150,7 @@ public class CommandLineInterface {
 		this.readLine();
 		computer.setName(line);
 	}
-	
+
 	private void setLocalComuterIntroducedDate(Computer computer) {
 		System.out.println("Give a date of introduction (AAAA-MM-DD) (/cancel for return):");
 		Boolean stayIn = true;
@@ -167,7 +167,7 @@ public class CommandLineInterface {
 			}
 		}
 	}
-	
+
 	private void setLocalComputerDiscontinuedDate(Computer computer) {
 		System.out.println("Give a date for discontinued (AAAA-MM-DD) (/cancel for return and /skip for go to company set):");
 		Boolean stayIn = true;
@@ -196,7 +196,7 @@ public class CommandLineInterface {
 		}
 
 	}
-	
+
 	private void setLocalComputerCompany(Computer computer) {
 		System.out.println("Give an id for set a company to your computer (/cancel for return and /skip for  go to company set):");
 		Boolean stayIn = true;
@@ -215,19 +215,57 @@ public class CommandLineInterface {
 						company.setId(company_id);
 						stayIn = false;
 						computer.setCompany(company);
-						
+
 					}
 					else{
 						System.out.println("This company doesn't existe, give a valide id or write /skip");
 					}
 				}catch(IllegalArgumentException e) {
-						System.out.println("id have to be a number.");
+					System.out.println("id have to be a number.");
 				}
 			}
 		}
-		
+
 	}
-	
+
+
+	private void setLocalComputerId(Computer computer) {
+		System.out.println("Write the id od computer to update:");
+		Boolean stayIn = true;
+		while(stayIn) {
+			this.readLine();
+			if(line.equals("/cancel")) {
+				return;
+			}
+			else {
+				try {
+					int id = Integer.valueOf(line);
+					computer.setId(id);
+					stayIn = false;
+				}
+				catch(IllegalArgumentException e) {
+					System.out.println("Id have to be a number. try more or /cancel");
+				}
+
+			}
+		}
+	}
+	private void updateComputer() {
+		Computer computer= new Computer();
+
+		this.setLocalComputerId(computer);
+		this.setLocalComputerName(computer);
+		this.setLocalComuterIntroducedDate(computer);
+		this.setLocalComputerDiscontinuedDate(computer);
+		this.setLocalComputerCompany(computer);
+		try {
+			computerService.update(computer);
+			System.out.println("Computer has been update");
+		}catch(ExceptionService e) {
+			System.out.println(e.getMessage());
+			return;
+		}
+	}
 	private void deleteComputer() {
 		System.out.println("Give the computer id:");
 		this.readLine();
