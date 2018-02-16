@@ -6,12 +6,12 @@ package com.excilys.xdurbec.formation.computerDataBase.model;
  *
  */
 public class Company {
-	
+
 	private int id;
 	private String name;
-	
+
 	public Company() {}
-	
+
 	public Company(String name) {
 		this.name = name;
 	}
@@ -69,10 +69,5 @@ public class Company {
 		}
 		return true;
 	}
-	
-	
-	
-	
-	
 
 }

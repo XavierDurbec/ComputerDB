@@ -12,4 +12,5 @@ public abstract class EntityDAO {
 	protected void showLogSQLException(SQLException e) {
 		log.error(e.getMessage());
 	}
+	
 }

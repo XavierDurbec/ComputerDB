@@ -3,18 +3,22 @@ package com.excilys.xdurbec.formation.computerDataBase.service;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.excilys.xdurbec.formation.computerDataBase.dao.CompanyDAO;
 import com.excilys.xdurbec.formation.computerDataBase.dao.ComputerDAO;
 import com.excilys.xdurbec.formation.computerDataBase.dao.ExceptionDAO;
+import com.excilys.xdurbec.formation.computerDataBase.model.Company;
 import com.excilys.xdurbec.formation.computerDataBase.model.Computer;
 import org.apache.log4j.Logger;
-public class ComputerService implements EntityServiceComportment<Computer>{
+public class ComputerService extends EntityService implements EntityServiceComportment<Computer>{
 
 	private static ComputerService computerService;
 	private static Logger log = Logger.getLogger(ComputerService.class);
 	private ComputerDAO computerDAO;
+	private CompanyDAO companyDAO;
 
 	private ComputerService() {
 		this.computerDAO = ComputerDAO.getComputerDAO();
+		this.companyDAO = CompanyDAO.getCompanyDAO();
 	}
 
 	public static ComputerService getComputerService() {
@@ -25,6 +29,22 @@ public class ComputerService implements EntityServiceComportment<Computer>{
 	}
 
 
+	private  Boolean companyExistenceVerification(Company company) throws ExceptionService {
+		try {
+		if(companyDAO.doesExist(company.getId())) {
+
+			return true;
+		}
+		else {
+			log.error(ExceptionService.DOES_EXIST_ERROR);
+			throw new ExceptionService(ExceptionService.DOES_EXIST_ERROR);
+		}
+		}
+		catch(ExceptionDAO e) {
+			throw new ExceptionService(ExceptionService.STATEMENT_ERROR);
+		}
+
+	}
 
 	public Computer getById(int id) throws ExceptionService {
 		try {
@@ -47,6 +67,7 @@ public class ComputerService implements EntityServiceComportment<Computer>{
 
 
 	public void create(Computer entity) throws  ExceptionService {
+		this.companyExistenceVerification(entity.getCompany());
 		try{
 			computerDAO.create(entity);
 		}
