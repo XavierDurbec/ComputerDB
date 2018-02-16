@@ -13,7 +13,6 @@ import com.excilys.xdurbec.formation.computerDataBase.model.Company;
 public class CompanyService implements EntityServiceComportment<Company>{
 
 	private static CompanyService companyService;
-	private static Logger log = Logger.getLogger(CompanyService.class);
 
 	private CompanyDAO companyDAO;
 

@@ -12,7 +12,6 @@ import org.apache.log4j.Logger;
 public class ComputerService extends EntityService implements EntityServiceComportment<Computer>{
 
 	private static ComputerService computerService;
-	private static Logger log = Logger.getLogger(ComputerService.class);
 	private ComputerDAO computerDAO;
 	private CompanyDAO companyDAO;
 

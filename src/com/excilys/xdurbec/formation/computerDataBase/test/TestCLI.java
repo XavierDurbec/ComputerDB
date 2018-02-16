@@ -9,6 +9,6 @@ import com.excilys.xdurbec.formation.computerDataBase.userInterface.commandeLine
 
 public class TestCLI {
 	public static void main(String arg[]) throws IOException, SQLException  {
-		CommandLineInterface.launchCLI();
+		CommandLineInterface.getCommandLineInterface().launch();
 	}
 }
