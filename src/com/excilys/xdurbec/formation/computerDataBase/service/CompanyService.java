@@ -38,7 +38,10 @@ public class CompanyService extends EntityService implements EntityServiceCompor
 		}
 	}
 
-
+	public CompanyPage getCompanyPage(int pageNumber,int nbCompanyByPage) throws ExceptionService {
+		return new CompanyPage(pageNumber,nbCompanyByPage);
+	}
+	
 	public Boolean companyExistenceVerification(int id) {
 		try {
 			if(companyDAO.doesExist(id)) {

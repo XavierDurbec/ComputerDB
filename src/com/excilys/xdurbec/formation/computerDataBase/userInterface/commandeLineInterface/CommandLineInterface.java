@@ -78,6 +78,9 @@ public class CommandLineInterface {
 				this.deleteComputer();
 			break;
 			case("help"):
+				this.help();
+				break;
+			case("getAllPage"):
 				break;
 			default:
 				System.out.println("Command not reconize.");
@@ -332,4 +335,10 @@ public class CommandLineInterface {
 			System.out.println("You have to write an number.");
 		}
 	}
+	
+
+	private void help() {
+		System.out.println("All command: \n   -create\n   -update\n   -get\n   -getAll\n   -getAllPage\n\nAnywhere you can quit with /exit or cancel a command with /cancel");
+	}
+	
 }

@@ -19,7 +19,9 @@ import com.excilys.xdurbec.formation.computerDataBase.service.ComputerService;
 public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Company> {
 
 	private static final String GET_ALL = "SELECT id, name FROM company;";
+	private static final String GET_ALL_PAGE = "SELECT id, name FROM company LIMIT ? OFFSET ?;";
 	private static final String DOES_COMPANY_EXIST = "SELECT count(*) FROM company WHERE id = ?;";
+	
 	private static CompanyDAO companyDAO;
 
 	private  ConnectionManager cm;
@@ -68,7 +70,7 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 			}
 		}
 	}
-
+	
 
 	public Boolean doesExist(int id) throws  ExceptionDAO {
 		Connection con = cm.getConnection();
@@ -98,6 +100,36 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 			}
 		}
 
+	}
+
+	@Override
+	public List<Company> getAllPage(int pageNumber, int nbCompanyPerPage) throws ExceptionDAO {
+		List<Company> companyList = new ArrayList();
+		Connection con = cm.getConnection();
+		try(PreparedStatement stat = con.prepareStatement(GET_ALL_PAGE)){
+			stat.setInt(1, nbCompanyPerPage);
+			stat.setInt(2,pageNumber);
+			stat.executeQuery();
+			ResultSet rs = stat.getResultSet();
+			while(rs.next()) {
+				Company company = new Company(rs.getString(2));
+				company.setId(rs.getInt(1));
+				companyList.add(company);
+			}
+			return companyList;
+		}catch(SQLException e) {
+			showLogSQLException(e);
+			throw new ExceptionDAO(ExceptionDAO.STATEMENT_ERROR);
+		}
+		finally {
+			try {
+				con.close();
+			}
+			catch(SQLException e) {
+				showLogSQLException(e);
+				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
+			}
+		}
 	}
 	
 }

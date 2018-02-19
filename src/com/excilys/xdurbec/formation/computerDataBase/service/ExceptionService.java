@@ -13,6 +13,7 @@ public class ExceptionService extends Exception{
 	public static final String STATEMENT_ERROR = "Statement initialisation fail.";
 	public static final String DOES_EXIST_ERROR = "Does exist fail.";
 	public static final String GET_ALL_ERROR = "Get all fail.";
+	public static final String GET_ALL_ERROR_PAGE = "Get all page fail.";
 
 
 	ExceptionService(String msg){

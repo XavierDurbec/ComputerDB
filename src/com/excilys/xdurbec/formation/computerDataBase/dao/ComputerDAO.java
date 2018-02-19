@@ -217,4 +217,12 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 		}
 	}
 
+	@Override
+	public List<Computer> getAllPage(int pageNumber, int nbEntityPerPage) throws ExceptionDAO {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+
 }
