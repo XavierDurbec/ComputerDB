@@ -69,9 +69,11 @@ public class CommandLineInterface {
 				this.getAll();
 			break;
 			case("create"):
-				break;
+				this.createComputer();
+			break;
 			case("update"):
-				break;
+				this.updateComputer();
+			break;
 			case("delete"):
 				this.deleteComputer();
 			break;
@@ -117,7 +119,7 @@ public class CommandLineInterface {
 				}
 			break;
 			default:
-				System.out.println("command not reconize.");
+				System.out.println("command not recognized.");
 			}
 		}catch(ExceptionService e) {
 			System.out.println(e.getMessage());
@@ -128,25 +130,31 @@ public class CommandLineInterface {
 		Computer computer = new Computer();
 
 		this.setLocalComputerName(computer);
+		if(this.line.equals("/cancel")) {return;}
 
 		this.setLocalComuterIntroducedDate(computer);
+		if(this.line.equals("/cancel")) {return;}
 
 		this.setLocalComputerDiscontinuedDate(computer);
+		if(this.line.equals("/cancel")) {return;}
 
 		this.setLocalComputerCompany(computer);
+		if(this.line.equals("/cancel")) {return;}
 
 		try {
 			computerService.create(computer);
+			System.out.println("Computer "+computer.getName()+" has been created");
 		} catch (ExceptionService e) {
 			System.out.println(e.getMessage());
 			return;
 		}
 
 
+
 	}
 
 	private void setLocalComputerName(Computer computer) {
-		System.out.println("Give a name for your company:");
+		System.out.println("Give a name for your computer:");
 		this.readLine();
 		computer.setName(line);
 	}
@@ -177,21 +185,15 @@ public class CommandLineInterface {
 			case("/cancel"):
 				return;
 			case("/skip"):
-				stayIn = false;
-			break;
+				System.out.println("Discontinued date skiped");
+			return;
 			default:
 				try {
 					computer.setDiscontinued(Date.valueOf(line));
+					return;
 				}catch(IllegalArgumentException e){
 					System.out.println("Your date is not good. (AAAA-MM-DD) (/cancel for return and /skip for  go to company set)");
 				}
-				System.out.println("Discontinued Date skiped.");
-			}
-			try { 
-				computer.setIntroduced(Date.valueOf(line));
-				break;
-			}catch(IllegalArgumentException e) {
-				System.out.println("Your date is not good. (AAAA-MM-DD) (/cancel for return and /skip for  go to company set)");
 			}
 		}
 
@@ -206,16 +208,16 @@ public class CommandLineInterface {
 			case("/cancel"):
 				return;
 			case("/skip"):
-				stayIn = false;
+				System.out.println("Company skiped");
+			return;
 			default:
 				Company company = new Company();
 				try {
 					int company_id = Integer.valueOf(line);
 					if(companyService.companyExistenceVerification(company_id)) {
 						company.setId(company_id);
-						stayIn = false;
 						computer.setCompany(company);
-
+						stayIn = false;
 					}
 					else{
 						System.out.println("This company doesn't existe, give a valide id or write /skip");
@@ -229,35 +231,30 @@ public class CommandLineInterface {
 	}
 
 
-	private void setLocalComputerId(Computer computer) {
-		System.out.println("Write the id od computer to update:");
-		Boolean stayIn = true;
-		while(stayIn) {
-			this.readLine();
-			if(line.equals("/cancel")) {
-				return;
-			}
-			else {
-				try {
-					int id = Integer.valueOf(line);
-					computer.setId(id);
-					stayIn = false;
-				}
-				catch(IllegalArgumentException e) {
-					System.out.println("Id have to be a number. try more or /cancel");
-				}
-
-			}
-		}
-	}
 	private void updateComputer() {
-		Computer computer= new Computer();
+		int id = verifyId();
+		if(this.line.equals("/cancel")) {return;}
+		Computer computer;
 
-		this.setLocalComputerId(computer);
-		this.setLocalComputerName(computer);
-		this.setLocalComuterIntroducedDate(computer);
+		try {
+			computer = computerService.getById(id);
+		} catch (ExceptionService e) {
+			System.out.println("Update cancel because: " + e.getMessage());
+			return;
+		}
+
+		this.updateLocalComputerName(computer);
+		if(this.line.equals("/cancel")) {return;}
+
+		this.updateLocalComuterIntroducedDate(computer);
+		if(this.line.equals("/cancel")) {return;}
+
 		this.setLocalComputerDiscontinuedDate(computer);
+		if(this.line.equals("/cancel")) {return;}
+
 		this.setLocalComputerCompany(computer);
+		if(this.line.equals("/cancel")) {return;}
+
 		try {
 			computerService.update(computer);
 			System.out.println("Computer has been update");
@@ -266,12 +263,67 @@ public class CommandLineInterface {
 			return;
 		}
 	}
+	private void updateLocalComputerName(Computer computer) {
+		System.out.println("Give a name for your computer (/skip for ignore this):");
+		this.readLine();
+		switch(line){
+		case ("/cancel"):
+			return;
+		case ("/skip"):
+			System.out.println("Name skiped.");
+			return;
+		default:
+			System.out.println("line: " +line);
+			computer.setName(line);
+		}
+	}
+
+	private void updateLocalComuterIntroducedDate(Computer computer) {
+		System.out.println("Give a date of introduction (AAAA-MM-DD) (/skip for ignore this):");
+		while(true) {
+			this.readLine();
+			switch(line) {
+			case("/cancel"):
+				return;
+			case("/skip"):
+				System.out.println("Introduced date skiped.");
+				return;
+			default:
+				try { 
+					computer.setIntroduced(Date.valueOf(line));
+					return;
+				}catch(IllegalArgumentException e) {
+					System.out.println("Your date is not good. (AAAA-MM-DD) (/cancel for return)");
+				}
+			}
+			
+		}
+	}
+
+	private int verifyId() {
+		while(true) {				
+			System.out.println("Enter id of computer to update.");
+			this.readLine();
+			try {
+				if(this.line.equals("/cancel")) {
+					return 0;
+				}
+				else {
+					return Integer.valueOf(line);
+				}
+			}catch(IllegalArgumentException e){
+				System.out.println("id have to be a number. You write : "+line);
+			}
+		}
+	}
+
 	private void deleteComputer() {
-		System.out.println("Give the computer id:");
 		this.readLine();
 		try {
 			int id = Integer.parseInt(line);
 			computerService.deleteById(id);
+			if(this.line.equals("/cancel")) {return;}
+
 			System.out.println("Computer "+id+" as been removed.");
 		} catch (ExceptionService e) {
 			System.out.println(e.getMessage());

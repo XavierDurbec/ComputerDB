@@ -50,12 +50,17 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 
 
 	public void create(Computer entity) throws  ExceptionService {
-		companyService.companyExistenceVerification(entity.getCompany().getId());
+		
+		if(entity.getCompany() == null || companyService.companyExistenceVerification(entity.getCompany().getId()) ) {
 		try{
 			computerDAO.create(entity);
 		}
 		catch(ExceptionDAO e){
 			throw new ExceptionService(ExceptionService.CREATE_ERROR);
+		}
+		}
+		else {
+			throw new ExceptionService(ExceptionService.DOES_EXIST_ERROR);
 		}
 	}
 

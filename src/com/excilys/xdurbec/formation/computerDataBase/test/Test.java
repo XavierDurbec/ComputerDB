@@ -54,12 +54,15 @@ public class Test {
 			}
 
 		 */
-
+		Company company = new Company();
+		company.setId(0);
+		Computer c = new Computer("Test",Date.valueOf("1991-06-30"),null,null);
+		c.setId(590);
 		try {
-			System.out.println(ComputerService.getComputerService().getById(4654564));
-		}
-		catch(ExceptionService e) {
-			System.out.println("final:"+e.getMessage());
+			ComputerService.getComputerService().update(c);
+		} catch (ExceptionService e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

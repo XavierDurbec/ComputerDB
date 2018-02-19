@@ -133,12 +133,20 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 
 	public void create(Computer entity) throws ExceptionDAO {
 		Connection con = cm.getConnection();
-		try(PreparedStatement stat = con.prepareStatement(CREATE_REQUEST)){
-			stat.setString(1, entity.getName());
-			stat.setDate(2, entity.getIntroduced());
-			stat.setDate(3, entity.getDiscontinued());
+		try(PreparedStatement stat = con.prepareStatement(CREATE_REQUEST)){;
+		stat.setString(1, entity.getName());
+		stat.setDate(2, entity.getIntroduced());
+
+		stat.setDate(3, entity.getDiscontinued());
+
+		if(entity.getCompany() != null) {
 			stat.setInt(4, entity.getCompany().getId());
-			stat.executeQuery();
+		}
+		else {
+			stat.setNull(4,Types.INTEGER);
+		}
+
+		stat.executeUpdate();
 		}
 		catch(SQLException e) {
 			showLogSQLException(e);
@@ -159,14 +167,18 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 
 	public void update(Computer entity) throws ExceptionDAO {
 		Connection con = cm.getConnection();
-
 		try(PreparedStatement stat = con.prepareStatement(UPDATE_REQUEST)){
 			stat.setString(1,entity.getName());
 			stat.setDate(2,entity.getIntroduced());
 			stat.setDate(3, entity.getDiscontinued());
-			stat.setInt(4, entity.getCompany().getId());
+			if(entity.getCompany() != null && entity.getCompany().getId() != 0) {
+				stat.setInt(4, entity.getCompany().getId());
+			}
+			else {
+				stat.setNull(4,Types.INTEGER);
+			}
 			stat.setInt(5, entity.getId());
-			stat.executeQuery();
+			stat.executeUpdate();
 		}
 		catch(SQLException e) {
 			showLogSQLException(e);
