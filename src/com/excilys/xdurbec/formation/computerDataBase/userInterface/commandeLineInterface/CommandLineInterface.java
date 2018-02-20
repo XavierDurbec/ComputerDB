@@ -5,11 +5,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
 import com.excilys.xdurbec.formation.computerDataBase.model.Company;
 import com.excilys.xdurbec.formation.computerDataBase.model.Computer;
+import com.excilys.xdurbec.formation.computerDataBase.service.CompanyPage;
 import com.excilys.xdurbec.formation.computerDataBase.service.CompanyService;
 import com.excilys.xdurbec.formation.computerDataBase.service.ComputerService;
 import com.excilys.xdurbec.formation.computerDataBase.service.ExceptionService;
@@ -17,6 +20,7 @@ import com.excilys.xdurbec.formation.computerDataBase.service.ExceptionService;
 public class CommandLineInterface {
 	private static CommandLineInterface commandLineInterface;
 
+	private int nbElementPerPage = 20; 
 	private Logger log = Logger.getLogger(CompanyService.class);
 	private BufferedReader reader; 
 	private CompanyService companyService;
@@ -79,9 +83,10 @@ public class CommandLineInterface {
 			break;
 			case("help"):
 				this.help();
-				break;
+			break;
 			case("getAllPage"):
-				break;
+				this.getAllPage();
+			break;
 			default:
 				System.out.println("Command not reconize.");
 			}
@@ -274,7 +279,7 @@ public class CommandLineInterface {
 			return;
 		case ("/skip"):
 			System.out.println("Name skiped.");
-			return;
+		return;
 		default:
 			System.out.println("line: " +line);
 			computer.setName(line);
@@ -290,7 +295,7 @@ public class CommandLineInterface {
 				return;
 			case("/skip"):
 				System.out.println("Introduced date skiped.");
-				return;
+			return;
 			default:
 				try { 
 					computer.setIntroduced(Date.valueOf(line));
@@ -299,7 +304,7 @@ public class CommandLineInterface {
 					System.out.println("Your date is not good. (AAAA-MM-DD) (/cancel for return)");
 				}
 			}
-			
+
 		}
 	}
 
@@ -321,6 +326,7 @@ public class CommandLineInterface {
 	}
 
 	private void deleteComputer() {
+		System.out.println("Enter id of computer to remove.");
 		this.readLine();
 		try {
 			int id = Integer.parseInt(line);
@@ -335,10 +341,63 @@ public class CommandLineInterface {
 			System.out.println("You have to write an number.");
 		}
 	}
-	
+
 
 	private void help() {
 		System.out.println("All command: \n   -create\n   -update\n   -get\n   -getAll\n   -getAllPage\n\nAnywhere you can quit with /exit or cancel a command with /cancel");
 	}
-	
+
+
+	private void getAllPage() {
+		System.out.println("Computer or company?");
+		while(true) {
+			this.readLine();
+			switch(this.line) {
+			case("cancel"):
+				return;
+			case("company"):
+				this.getAllPageCompany();
+			return;
+			case("computer"):
+			default:
+				System.out.println("write company or computer.");
+			}
+		}
+	}
+
+	private void getAllPageCompany() {
+		int currentPage = 1;
+		try {
+			CompanyPage companyPage = companyService.getCompanyPage(currentPage, this.nbElementPerPage);
+
+			while(companyPage.getCompanyList().size() > 0) {
+				System.out.println("=================Page n°"+currentPage+"=================");
+				for(Company company : companyPage.getCompanyList()) {
+					System.out.println(company);
+				}
+				System.out.println("(Enter for next page, /r for précédente page)");
+				this.readLine();
+				switch(this.line) {
+				case("/cancel"):
+					return;
+				case("/r"):
+					if(--currentPage > 0) {
+						companyPage.setPageNumber(currentPage);
+					}
+					else {
+						currentPage++;
+						System.out.println("Aucune page précédente.");
+					}
+				break;
+				default:
+					companyPage.setPageNumber(++currentPage);		
+				}
+				companyPage.refresh();
+			}
+		}catch(ExceptionService e) {
+			System.out.println(e.getMessage());
+		}
+		System.out.println("return on main menu.");
+	}
+
 }

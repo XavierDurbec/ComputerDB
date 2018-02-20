@@ -108,7 +108,7 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 		Connection con = cm.getConnection();
 		try(PreparedStatement stat = con.prepareStatement(GET_ALL_PAGE)){
 			stat.setInt(1, nbCompanyPerPage);
-			stat.setInt(2,pageNumber);
+			stat.setInt(2,(pageNumber-1)*nbCompanyPerPage);
 			stat.executeQuery();
 			ResultSet rs = stat.getResultSet();
 			while(rs.next()) {
