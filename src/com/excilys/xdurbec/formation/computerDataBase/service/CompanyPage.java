@@ -36,7 +36,7 @@ public class CompanyPage {
 		public CompanyPage(int pageNulber, int nbCompanyPerPage) throws ExceptionService {
 			this.pageNumber = pageNulber;
 			this.nbCompanyPerPage = nbCompanyPerPage;
-			refresh();
+			this.refresh();
 		}
 		
 		

@@ -30,6 +30,13 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 			+ "discontinued=?, "
 			+ "company_id=? "
 			+ "WHERE id =?;";
+	
+	private static final String GET_PAGE_REQUEST = "SELECT computer.id, computer.name, computer.introduced, "
+			+ "computer.discontinued, computer.company_id, company.id, company.name "
+			+ "FROM computer LEFT JOIN company "
+			+ "ON computer.company_id = company.id "
+			+ "LIMIT ? "
+			+ "OFFSET ?;";
 
 	private static final String DELETE_REQUEST = "DELETE FROM computer WHERE id =?;";
 
@@ -219,8 +226,49 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 
 	@Override
 	public List<Computer> getAllPage(int pageNumber, int nbEntityPerPage) throws ExceptionDAO {
-		// TODO Auto-generated method stub
-		return null;
+			Connection con = cm.getConnection();
+			List<Computer> computerList = new ArrayList<>();
+			
+			try(PreparedStatement stat = con.prepareStatement(GET_PAGE_REQUEST)){
+				stat.setInt(1, nbEntityPerPage);
+				stat.setInt(2,(pageNumber-1)*nbEntityPerPage);
+				stat.executeQuery();
+				ResultSet rs = stat.getResultSet();
+				 
+				while(rs.next()) {
+					Company company = new Company();
+					Computer computer =  new Computer();
+					if(rs.getInt(ConstantStringDAO.ID_OF_COMPANY) == 0) {
+						company.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPANY));
+						company.setName(rs.getString(ConstantStringDAO.NAME_OF_COMPANY));
+					}
+					else {
+						company.setId(0);
+						company.setName(null);
+					}
+
+					computer.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPUTER));
+					computer.setIntroduced(rs.getDate(ConstantStringDAO.INTRODUCED_OF_COMPUTER));
+					computer.setDiscontinued(rs.getDate(ConstantStringDAO.DISCONTINUED_OF_COMPUTER));
+					computer.setCompany(company);
+
+					computerList.add(computer);
+				}
+				return computerList;
+			}catch(SQLException e) {
+				showLogSQLException(e);
+				throw new ExceptionDAO(ExceptionDAO.GET_ALL_ERROR);
+			}
+			finally {
+				try {
+					con.close();
+				}
+				catch(SQLException e) {
+					showLogSQLException(e);
+					throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
+				}
+			}
+				
 	}
 
 	

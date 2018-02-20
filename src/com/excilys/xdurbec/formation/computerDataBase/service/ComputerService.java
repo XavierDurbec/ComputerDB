@@ -83,4 +83,8 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 			throw new ExceptionService(ExceptionService.DELETE_ERROR);
 		}
 	}
+	
+	public ComputerPage getComputerPage(int pageNumber,int nbComputerByPage) throws ExceptionService {
+		return new ComputerPage( pageNumber, nbComputerByPage);
+	}
 }

@@ -14,6 +14,7 @@ import com.excilys.xdurbec.formation.computerDataBase.model.Company;
 import com.excilys.xdurbec.formation.computerDataBase.model.Computer;
 import com.excilys.xdurbec.formation.computerDataBase.service.CompanyPage;
 import com.excilys.xdurbec.formation.computerDataBase.service.CompanyService;
+import com.excilys.xdurbec.formation.computerDataBase.service.ComputerPage;
 import com.excilys.xdurbec.formation.computerDataBase.service.ComputerService;
 import com.excilys.xdurbec.formation.computerDataBase.service.ExceptionService;
 
@@ -359,6 +360,8 @@ public class CommandLineInterface {
 				this.getAllPageCompany();
 			return;
 			case("computer"):
+				this.getAllPageComputer();
+			return;
 			default:
 				System.out.println("write company or computer.");
 			}
@@ -386,7 +389,7 @@ public class CommandLineInterface {
 					}
 					else {
 						currentPage++;
-						System.out.println("Aucune page précédente.");
+						System.out.println("No précédente page.");
 					}
 				break;
 				default:
@@ -398,6 +401,41 @@ public class CommandLineInterface {
 			System.out.println(e.getMessage());
 		}
 		System.out.println("return on main menu.");
+	}
+	
+	private void getAllPageComputer() {
+		int currentPage = 1;
+		try {
+			ComputerPage computerPage = computerService.getComputerPage(currentPage, this.nbElementPerPage);
+			
+			while(computerPage.getComputerList().size() > 0) {
+				System.out.println("=================Page n°"+currentPage+"=================");
+				for(Computer computer : computerPage.getComputerList()) {
+					System.out.println(computer);
+				}
+				System.out.println("(Enter for next page, /r for précédente page)");
+				this.readLine();
+				switch(this.line) {
+				case("/cancel"):
+					return;
+				case("/r"):
+					if(--currentPage >0) {
+						computerPage.setPageNumber(currentPage);
+					}
+					else {
+						currentPage++;
+						System.out.println("No précédente page.");
+					}
+				break;
+				default:
+					computerPage.setPageNumber(++currentPage);
+				}
+				
+			}
+			System.out.println("return on main menu");
+		}catch(ExceptionService e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 }
