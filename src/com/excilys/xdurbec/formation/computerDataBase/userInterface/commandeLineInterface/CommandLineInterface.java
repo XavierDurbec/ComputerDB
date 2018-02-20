@@ -8,7 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.excilys.xdurbec.formation.computerDataBase.model.Company;
 import com.excilys.xdurbec.formation.computerDataBase.model.Computer;
@@ -22,7 +23,7 @@ public class CommandLineInterface {
 	private static CommandLineInterface commandLineInterface;
 
 	private int nbElementPerPage = 20; 
-	private Logger log = Logger.getLogger(CompanyService.class);
+	private Logger log = LogManager.getLogger(CompanyService.class);
 	private BufferedReader reader; 
 	private CompanyService companyService;
 	private ComputerService computerService;
@@ -430,7 +431,7 @@ public class CommandLineInterface {
 				default:
 					computerPage.setPageNumber(++currentPage);
 				}
-				
+				computerPage.refresh();
 			}
 			System.out.println("return on main menu");
 		}catch(ExceptionService e) {

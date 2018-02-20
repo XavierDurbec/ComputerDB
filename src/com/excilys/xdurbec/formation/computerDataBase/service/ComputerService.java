@@ -8,7 +8,7 @@ import com.excilys.xdurbec.formation.computerDataBase.dao.ComputerDAO;
 import com.excilys.xdurbec.formation.computerDataBase.dao.ExceptionDAO;
 import com.excilys.xdurbec.formation.computerDataBase.model.Company;
 import com.excilys.xdurbec.formation.computerDataBase.model.Computer;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Logger;
 public class ComputerService extends EntityService implements EntityServiceComportment<Computer>{
 
 	private static ComputerService computerService;

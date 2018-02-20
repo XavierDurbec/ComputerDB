@@ -3,8 +3,7 @@ package com.excilys.xdurbec.formation.computerDataBase.service;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.apache.log4j.Logger;
-
+import org.apache.logging.log4j.Logger;
 import com.excilys.xdurbec.formation.computerDataBase.dao.CompanyDAO;
 import com.excilys.xdurbec.formation.computerDataBase.dao.ComputerDAO;
 import com.excilys.xdurbec.formation.computerDataBase.dao.ExceptionDAO;
@@ -41,7 +40,7 @@ public class CompanyService extends EntityService implements EntityServiceCompor
 	public CompanyPage getCompanyPage(int pageNumber,int nbCompanyByPage) throws ExceptionService {
 		return new CompanyPage(pageNumber,nbCompanyByPage);
 	}
-	
+
 	public Boolean companyExistenceVerification(int id) {
 		try {
 			if(companyDAO.doesExist(id)) {
