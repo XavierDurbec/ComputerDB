@@ -4,16 +4,14 @@
 	<groupId>fr.excilys.formation.xdurbec.ComputerDB</groupId>
 	<artifactId>ComputerDB</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+  
+   <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <powermock.version>1.7.1</powermock.version>
+  </properties>
+  
+  
   <build>
-    <sourceDirectory>src</sourceDirectory>
-    <resources>
-      <resource>
-        <directory>src</directory>
-        <excludes>
-          <exclude>**/*.java</exclude>
-        </excludes>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
@@ -23,6 +21,7 @@
           <target>1.8</target>
         </configuration>
       </plugin>
+      
       <plugin>
         <artifactId>maven-war-plugin</artifactId>
         <version>3.0.0</version>
@@ -33,6 +32,7 @@
     </plugins>
   </build>
   
+
   <dependencies>
   		<dependency>
     		<groupId>org.apache.logging.log4j</groupId>
@@ -64,6 +64,29 @@
     	<version>4.12</version>
     	<scope>test</scope>
 	</dependency>
+
+	
+	<dependency>
+   	 	<groupId>org.hsqldb</groupId>
+    	<artifactId>hsqldb</artifactId>
+    	<version>2.4.0</version>
+    <scope>test</scope>
+</dependency>
+
+   <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-module-junit4</artifactId>
+      <version>${powermock.version}</version>
+      <scope>test</scope>
+   </dependency>
+   
+   <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-api-mockito</artifactId>
+      <version>${powermock.version}</version>
+      <scope>test</scope>
+   </dependency>
+   
  </dependencies>
   
 

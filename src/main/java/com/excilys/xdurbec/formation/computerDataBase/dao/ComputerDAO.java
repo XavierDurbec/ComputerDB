@@ -69,7 +69,11 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 				company.setName(rs.getString(ConstantStringDAO.NAME_OF_COMPANY));
 				company.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPANY));
 			}	
-			Computer computer = new Computer(rs.getString(ConstantStringDAO.ID_OF_COMPUTER), rs.getDate(ConstantStringDAO.INTRODUCED_OF_COMPUTER), rs.getDate(ConstantStringDAO.DISCONTINUED_OF_COMPUTER),company);
+			Computer computer = new Computer(rs.getString(ConstantStringDAO.NAME_OF_COMPUTER), 
+					rs.getDate(ConstantStringDAO.INTRODUCED_OF_COMPUTER), 
+					rs.getDate(ConstantStringDAO.DISCONTINUED_OF_COMPUTER), 
+					company);
+	
 			computer.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPUTER));
 			return computer;
 		} catch (SQLException e) {
@@ -91,13 +95,10 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 	public List<Computer> getAll() throws ExceptionDAO {
 		Connection con = cm.getConnection();
 		try (Statement stat = con.createStatement()) {
-
-			stat.executeQuery(GET_ALL_REQUEST); 
-
+			stat.executeQuery(GET_ALL_REQUEST);
 			ResultSet rs = stat.getResultSet();
-
 			List<Computer> listComputer = new ArrayList<Computer>();
-
+			
 			while (rs.next()) {
 				Company company = new Company();
 				Computer computer =  new Computer();
@@ -108,24 +109,23 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 					company.setId(0);
 					company.setName(null);
 				}
-
 				computer.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPUTER));
+				computer.setName(rs.getString(ConstantStringDAO.NAME_OF_COMPUTER));
 				computer.setIntroduced(rs.getDate(ConstantStringDAO.INTRODUCED_OF_COMPUTER));
 				computer.setDiscontinued(rs.getDate(ConstantStringDAO.DISCONTINUED_OF_COMPUTER));
 				computer.setCompany(company);
 
 				listComputer.add(computer);
 			}
-
 			return listComputer;
 		} catch (SQLException e) {
+
 			showLogSQLException(e);
 			throw new ExceptionDAO(ExceptionDAO.GET_ALL_ERROR);
 		} finally {
 			try {
 				con.close();
-			}
-			catch (SQLException e) {
+			} catch (SQLException e) {
 				showLogSQLException(e);
 				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 			}
@@ -229,12 +229,10 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 						company.setId(0);
 						company.setName(null);
 					}
-
 					computer.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPUTER));
 					computer.setIntroduced(rs.getDate(ConstantStringDAO.INTRODUCED_OF_COMPUTER));
 					computer.setDiscontinued(rs.getDate(ConstantStringDAO.DISCONTINUED_OF_COMPUTER));
 					computer.setCompany(company);
-
 					computerList.add(computer);
 				}
 				return computerList;
