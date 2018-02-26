@@ -1,10 +1,12 @@
 package com.excilys.xdurbec.formation.computerDataBase.service;
 
+import java.nio.channels.NetworkChannel;
 import java.util.List;
 
 import com.excilys.xdurbec.formation.computerDataBase.dao.CompanyDAO;
 import com.excilys.xdurbec.formation.computerDataBase.dao.ExceptionDAO;
 import com.excilys.xdurbec.formation.computerDataBase.model.Company;
+import com.excilys.xdurbec.formation.computerDataBase.servlet.dto.CompanyDTO;
 
 public class CompanyService extends EntityService implements EntityServiceComportment<Company>{
 

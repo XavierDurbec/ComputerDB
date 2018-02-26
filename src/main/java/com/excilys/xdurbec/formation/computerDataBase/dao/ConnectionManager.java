@@ -25,6 +25,7 @@ public class ConnectionManager {
 
 	public Connection getConnection() throws ExceptionDAO {
 		try {
+			//TODO : Class.forName()
 			Connection con = DriverManager.getConnection(cm.url, cm.user, cm.passeWord); 
 			return con;
 		} catch (SQLException e) {
