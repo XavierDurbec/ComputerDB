@@ -101,7 +101,7 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 			while (rs.next()) {
 				Company company = new Company();
 				Computer computer =  new Computer();
-				if (rs.getInt(ConstantStringDAO.ID_OF_COMPANY) == 0) {
+				if (rs.getInt(ConstantStringDAO.ID_OF_COMPANY) != 0) {
 					company.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPANY));
 					company.setName(rs.getString(ConstantStringDAO.NAME_OF_COMPANY));
 				} else {
@@ -110,6 +110,7 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 				}
 
 				computer.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPUTER));
+				computer.setName(rs.getString(ConstantStringDAO.NAME_OF_COMPUTER));
 				computer.setIntroduced(rs.getDate(ConstantStringDAO.INTRODUCED_OF_COMPUTER));
 				computer.setDiscontinued(rs.getDate(ConstantStringDAO.DISCONTINUED_OF_COMPUTER));
 				computer.setCompany(company);
@@ -222,7 +223,7 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 				while (rs.next()) {
 					Company company = new Company();
 					Computer computer =  new Computer();
-					if (rs.getInt(ConstantStringDAO.ID_OF_COMPANY) == 0) {
+					if (rs.getInt(ConstantStringDAO.ID_OF_COMPANY) != 0) {
 						company.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPANY));
 						company.setName(rs.getString(ConstantStringDAO.NAME_OF_COMPANY));
 					} else {
@@ -231,6 +232,7 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 					}
 
 					computer.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPUTER));
+					computer.setName(rs.getString(ConstantStringDAO.NAME_OF_COMPUTER));
 					computer.setIntroduced(rs.getDate(ConstantStringDAO.INTRODUCED_OF_COMPUTER));
 					computer.setDiscontinued(rs.getDate(ConstantStringDAO.DISCONTINUED_OF_COMPUTER));
 					computer.setCompany(company);
