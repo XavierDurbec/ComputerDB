@@ -1,4 +1,9 @@
+
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+  
+
 <!DOCTYPE html>
+
 <html>
 <head>
 <title>Computer Database</title>
@@ -15,16 +20,12 @@
             <a class="navbar-brand" href="dashboard.html"> Application - Computer Database </a>
         </div>
     </header>
-
     <section id="main">
         <div class="container">
-            <h1 id="homeTitle">
-                164654Computers found
-            </h1>
+            <h1 id="homeTitle">${computerCount} computers found.</h1>
             <div id="actions" class="form-horizontal">
                 <div class="pull-left">
                     <form id="searchForm" action="#" method="GET" class="form-inline">
-
                         <input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" />
                         <input type="submit" id="searchsubmit" value="Filter by name"
                         class="btn btn-primary" />
@@ -37,6 +38,18 @@
             </div>
         </div>
 
+
+		<c:forEach items="${computerList}" var="computer">
+                        <tr>
+                            <td class="editMode"><input type="checkbox" name="cb"
+                                class="cb" value="0"></td>
+                            <td><a href="editComputer" onclick="">${computer.name}</a></td>
+                            <td>${computer.introduced}</td>
+                            <td>${computer.discontinued}</td>
+                            <td>${computer.companyId}</td>
+                        </tr>
+          </c:forEach>
+                    
         <form id="deleteForm" action="#" method="POST">
             <input type="hidden" name="selection" value="">
         </form>

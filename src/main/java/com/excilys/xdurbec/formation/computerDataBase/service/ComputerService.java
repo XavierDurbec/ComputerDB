@@ -35,11 +35,11 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 	}
 
 	@Override
-	public List<Computer> getAll() throws  ExceptionService {
+	public List<Computer> getAll() throws ExceptionService {
 		try {
 			return computerDAO.getAll();
 		} catch (ExceptionDAO e) {
-			throw new ExceptionService(ExceptionService.GET_ALL_ERROR);
+				throw new ExceptionService(ExceptionService.GET_ALL_ERROR);
 		}
 	}
 
