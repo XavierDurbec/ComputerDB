@@ -1,7 +1,6 @@
 package com.excilys.xdurbec.formation.computerDataBase.servlet;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,10 +26,12 @@ public class DashboardServlet extends HttpServlet{
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
 
 		try {
+			pageNb = Integer.valueOf(request.getParameter("page"));
 			request.setAttribute("computerCount", computerService.getAll().size());
-
+			
 			request.setAttribute("computerList", ComputerMapperDTO
 					.toComputerDTOList(computerService.getComputerPage(pageNb, nbComputerByPage).getComputerList()));
+			request.setAttribute("maxPage", getNbComputerPage());
 			
 			//request.setAttribute("computerList", computerService.getComputerPage(pageNb, nbComputerByPage).getComputerList());
 		} catch (ExceptionService e) {
@@ -41,18 +42,17 @@ public class DashboardServlet extends HttpServlet{
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
 	}	
 
-
-	//	private CompanyDTO companyToDTO(Company company) {
-	//		CompanyDTO companyDTO = new CompanyDTO();
-	//		companyDTO.setId(company.getId());
-	//		companyDTO.setName(company.getName());
-	//		return companyDTO;
-	//	}
-	//
-	//	private Company dtoToCompany(CompanyDTO companyDTO) {
-	//		Company company =  new Company();
-	//		company.setId(companyDTO.getId());
-	//		company.setName(companyDTO.getName());
-	//		return company;
-	//	}
+	private int getNbComputerPage() {
+		try {
+			int nbPage = computerService.getAll().size() / this.nbComputerByPage;
+			if (computerService.getAll().size() % this.nbComputerByPage != 0) {
+				nbPage++;
+			}
+			return nbPage;
+		} catch (ExceptionService e) {
+			System.out.println(e.getMessage());
+			return 0;
+			
+		}  
+	}
 }

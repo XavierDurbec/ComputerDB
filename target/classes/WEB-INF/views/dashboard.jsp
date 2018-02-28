@@ -103,11 +103,9 @@
                       <span aria-hidden="true">&laquo;</span>
                   </a>
               </li>
-              <li><a href="#">1</a></li>
-              <li><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><a href="#">4</a></li>
-              <li><a href="#">5</a></li>
+				<c:forEach  begin="1" end="${ maxPage }" step = "1" var="i" >
+    	            <li><a href="dashboard?page=${i}">${ i }</a></li>        
+                </c:forEach>
               <li>
                 <a href="#" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>

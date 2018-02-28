@@ -103,9 +103,9 @@
                       <span aria-hidden="true">&laquo;</span>
                   </a>
               </li>
-              <c:forEach items="${computerList}" var="computer">
-              	<li><a href="#">1</a></li>
-         	  </c:forEach>
+				<c:forEach  begin="1" end="${ maxPage }" step = "1" var="i" >
+    	            <li><a href="dashboard?page=${i}">${ i }</a></li>        
+                </c:forEach>
               <li>
                 <a href="#" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
