@@ -6,8 +6,8 @@ public class ComputerDTO {
 			private int id;
 			private String name;
 			private String introduced;
-			private String discoutinued;
-			private CompanyDAO company;
+			private String discontinued;
+			private CompanyDTO company;
 			
 			
 			public int getId() {
@@ -28,16 +28,16 @@ public class ComputerDTO {
 			public void setIntroduced(String introduced) {
 				this.introduced = introduced;
 			}
-			public String getDiscoutinued() {
-				return discoutinued;
+			public String getDiscontinued() {
+				return discontinued;
 			}
-			public void setDiscoutinued(String discoutinued) {
-				this.discoutinued = discoutinued;
+			public void setDiscontinued(String discontinued) {
+				this.discontinued = discontinued;
 			}
-			public CompanyDAO getCompany() {
+			public CompanyDTO getCompany() {
 				return company;
 			}
-			public void setCompany(CompanyDAO company) {
+			public void setCompany(CompanyDTO company) {
 				this.company = company;
 			}
 			

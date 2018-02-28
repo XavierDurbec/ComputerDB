@@ -39,6 +39,7 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 		try {
 			return computerDAO.getAll();
 		} catch (ExceptionDAO e) {
+				System.out.println("Dao Exception : " + e.getMessage());
 				throw new ExceptionService(ExceptionService.GET_ALL_ERROR);
 		}
 	}

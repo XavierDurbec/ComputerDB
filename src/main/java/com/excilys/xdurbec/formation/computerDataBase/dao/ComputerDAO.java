@@ -91,7 +91,6 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 	public List<Computer> getAll() throws ExceptionDAO {
 		Connection con = cm.getConnection();
 		try (Statement stat = con.createStatement()) {
-
 			stat.executeQuery(GET_ALL_REQUEST); 
 
 			ResultSet rs = stat.getResultSet();
@@ -120,7 +119,7 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 
 			return listComputer;
 		} catch (SQLException e) {
-			showLogSQLException(e);
+			System.out.println("sqlException: " + e.getMessage());
 			throw new ExceptionDAO(ExceptionDAO.GET_ALL_ERROR);
 		} finally {
 			try {

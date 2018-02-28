@@ -25,10 +25,14 @@ public class ConnectionManager {
 
 	public Connection getConnection() throws ExceptionDAO {
 		try {
-			//TODO : Class.forName()
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con = DriverManager.getConnection(cm.url, cm.user, cm.passeWord); 
 			return con;
 		} catch (SQLException e) {
+			throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 			throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 		}
 	}
