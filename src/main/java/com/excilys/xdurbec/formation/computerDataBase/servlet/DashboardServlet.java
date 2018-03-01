@@ -24,7 +24,6 @@ public class DashboardServlet extends HttpServlet{
 	//private static final long serialVersionUID = 1L;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
-
 		try {
 			String pageString = request.getParameter("page");
 			if (pageString != null) {
@@ -58,4 +57,7 @@ public class DashboardServlet extends HttpServlet{
 			return 0;
 		}
 	}
+	
+	
+	
 }

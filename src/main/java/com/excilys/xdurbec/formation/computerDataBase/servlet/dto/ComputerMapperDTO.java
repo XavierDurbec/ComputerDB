@@ -8,12 +8,16 @@ import com.excilys.xdurbec.formation.computerDataBase.model.Computer;
 
 public class ComputerMapperDTO {
 	public static Computer toComputer(ComputerDTO computerDTO) {
+		try {
 		Computer computer = new Computer(computerDTO.getName(), 
 				Date.valueOf(computerDTO.getIntroduced()), 
 				Date.valueOf(computerDTO.getDiscontinued()), 
 				CompanyMapperDTO.toCompany((computerDTO.getCompany())));
 		computer.setId(computerDTO.getId());
 		return computer;
+		} catch () {
+			
+		}
 	}
 
 	public static ComputerDTO toComputerDTO(Computer computer) {
@@ -46,5 +50,9 @@ public class ComputerMapperDTO {
 			computerDTOList.add(toComputerDTO(computer));
 		}
 		return computerDTOList;
+	}
+	
+	private static boolean computerParseValidator(ComputerDTO computerDTO) {
+		return false;
 	}
 }

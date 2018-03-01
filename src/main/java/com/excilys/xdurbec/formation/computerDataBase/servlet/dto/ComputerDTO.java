@@ -1,7 +1,5 @@
 package com.excilys.xdurbec.formation.computerDataBase.servlet.dto;
 
-import com.excilys.xdurbec.formation.computerDataBase.dao.CompanyDAO;
-
 public class ComputerDTO {
 			private int id;
 			private String name;

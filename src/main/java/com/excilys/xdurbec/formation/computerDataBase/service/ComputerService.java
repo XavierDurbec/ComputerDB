@@ -12,7 +12,7 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 	private ComputerDAO computerDAO;
 	private CompanyDAO companyDAO;
 	private CompanyService companyService;
-	
+
 	private ComputerService() {
 		this.computerDAO = ComputerDAO.getComputerDAO();
 		this.companyDAO = CompanyDAO.getCompanyDAO();
@@ -39,8 +39,8 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 		try {
 			return computerDAO.getAll();
 		} catch (ExceptionDAO e) {
-				System.out.println("Dao Exception : " + e.getMessage());
-				throw new ExceptionService(ExceptionService.GET_ALL_ERROR);
+			System.out.println("Dao Exception : " + e.getMessage());
+			throw new ExceptionService(ExceptionService.GET_ALL_ERROR);
 		}
 	}
 
@@ -48,11 +48,11 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 	public void create(Computer entity) throws  ExceptionService {
 		
 		if (entity.getCompany() == null || companyService.companyExistenceVerification(entity.getCompany().getId())) {
-		try {
-			computerDAO.create(entity);
-		} catch (ExceptionDAO e) {
-			throw new ExceptionService(ExceptionService.CREATE_ERROR);
-		}
+			try {
+				computerDAO.create(entity);
+			} catch (ExceptionDAO e) {
+				throw new ExceptionService(ExceptionService.CREATE_ERROR);
+			}
 		} else {
 			throw new ExceptionService(ExceptionService.DOES_EXIST_ERROR);
 		}
@@ -75,11 +75,11 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 			throw new ExceptionService(ExceptionService.DELETE_ERROR);
 		}
 	}
-	
+
 	public ComputerPage getComputerPage(int pageNumber, int nbComputerByPage) throws ExceptionService {
 		return new ComputerPage(pageNumber, nbComputerByPage);
 	}
-	
+
 	public int getComputerNumber() throws ExceptionService {
 		try {
 			return computerDAO.getComputerNumber();
@@ -88,4 +88,15 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 			throw new ExceptionService(ExceptionService.COMPUTER_NUMBER_ERROR);
 		}
 	}
+
+
+	public Boolean computerDateValidator(Computer computer) {
+		if (computer.getIntroduced() != null && computer.getDiscontinued() != null 
+				&& computer.getIntroduced().before(computer.getDiscontinued())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 }
