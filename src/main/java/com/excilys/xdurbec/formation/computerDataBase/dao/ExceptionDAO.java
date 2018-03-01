@@ -14,6 +14,7 @@ public class ExceptionDAO extends Exception {
 	public static final String GET_ALL_ERROR = "Get all fail.";
 	public static final String CLASS_NOT_FOUND_ERROR = "Driver for connection not found.";
 	public static final String COMPUTER_NUMBER_ERROR = "Computer number error";
+	public static final String GET_BY_ID_COMPANY = "Get company error";
 	public ExceptionDAO(String msg) {
 		super(msg);
 	}

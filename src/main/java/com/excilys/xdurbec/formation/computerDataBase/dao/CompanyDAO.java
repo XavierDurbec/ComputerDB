@@ -21,6 +21,7 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 	private static final String GET_ALL = "SELECT id, name FROM company;";
 	private static final String GET_ALL_PAGE = "SELECT id, name FROM company LIMIT ? OFFSET ?;";
 	private static final String DOES_COMPANY_EXIST = "SELECT count(*) FROM company WHERE id = ?;";
+	private static final String GET_BY_ID = "SELECT id, name FROM company WHERE id = ?;";
 
 	private static CompanyDAO companyDAO;
 
@@ -108,15 +109,37 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 		} catch (SQLException e) {
 			showLogSQLException(e);
 			throw new ExceptionDAO(ExceptionDAO.STATEMENT_ERROR);
-		}
-		finally {
+		} finally {
 			try {
 				con.close();
-			}
-			catch (SQLException e) {
+			} catch (SQLException e) {
 				showLogSQLException(e);
 				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 			}
+		}
+	}
+	
+	public Company getById(int id) throws ExceptionDAO {
+		Connection con = cm.getConnection();
+		try (PreparedStatement stat = con.prepareStatement(GET_BY_ID)) {
+			stat.setInt(1, id);
+			stat.executeQuery();
+			ResultSet res = stat.getResultSet();
+			res.next();
+			Company company = new Company(res.getString(2));
+			company.setId(res.getInt(1));
+			return company;
+		} catch (SQLException e) {
+			log.error(e.getMessage());
+			throw new ExceptionDAO(ExceptionDAO.GET_BY_ID_COMPANY);
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				log.error(e.getMessage());
+				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
+			}
+			
 		}
 	}
 
