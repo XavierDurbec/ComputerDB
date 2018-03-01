@@ -13,7 +13,7 @@ public class ExceptionDAO extends Exception {
 	public static final String DOES_EXIST_ERROR = "Does exist fail.";
 	public static final String GET_ALL_ERROR = "Get all fail.";
 	public static final String CLASS_NOT_FOUND_ERROR = "Driver for connection not found.";
-	
+	public static final String COMPUTER_NUMBER_ERROR = "Computer number error";
 	public ExceptionDAO(String msg) {
 		super(msg);
 	}

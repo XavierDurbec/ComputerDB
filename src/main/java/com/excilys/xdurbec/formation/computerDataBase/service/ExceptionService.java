@@ -14,6 +14,8 @@ public class ExceptionService extends Exception {
 	public static final String DOES_EXIST_ERROR = "Does exist fail.";
 	public static final String GET_ALL_ERROR = "Get all Service fail.";
 	public static final String GET_ALL_ERROR_PAGE = "Get all page fail.";
+	public static final String COMPUTER_NUMBER_ERROR = "Computer number error";
+
 
 
 	ExceptionService(String msg) {

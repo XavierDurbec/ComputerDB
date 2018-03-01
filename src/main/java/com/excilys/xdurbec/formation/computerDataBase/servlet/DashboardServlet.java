@@ -26,13 +26,15 @@ public class DashboardServlet extends HttpServlet{
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
 
 		try {
-			pageNb = Integer.valueOf(request.getParameter("page"));
+			String pageString = request.getParameter("page");
+			if (pageString != null) {
+				pageNb = Integer.valueOf(request.getParameter("page"));
+			}
 			request.setAttribute("computerCount", computerService.getAll().size());
-			
 			request.setAttribute("computerList", ComputerMapperDTO
 					.toComputerDTOList(computerService.getComputerPage(pageNb, nbComputerByPage).getComputerList()));
 			request.setAttribute("maxPage", getNbComputerPage());
-			
+
 			//request.setAttribute("computerList", computerService.getComputerPage(pageNb, nbComputerByPage).getComputerList());
 		} catch (ExceptionService e) {
 			e.printStackTrace();
@@ -43,16 +45,17 @@ public class DashboardServlet extends HttpServlet{
 	}	
 
 	private int getNbComputerPage() {
+		int nbPage;
 		try {
-			int nbPage = computerService.getAll().size() / this.nbComputerByPage;
-			if (computerService.getAll().size() % this.nbComputerByPage != 0) {
+			nbPage = computerService.getComputerNumber() / this.nbComputerByPage;
+
+			if (computerService.getComputerNumber() % this.nbComputerByPage != 0) {
 				nbPage++;
 			}
-			return nbPage;
+			return nbPage;  
 		} catch (ExceptionService e) {
 			System.out.println(e.getMessage());
 			return 0;
-			
-		}  
+		}
 	}
 }

@@ -40,6 +40,8 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 			+ "OFFSET ?;";
 
 	private static final String DELETE_REQUEST = "DELETE FROM computer WHERE id =?;";
+	
+	private static final String NUMBER_REQUEST = "SELECT count(*) FROM computer;";
 
 	private static ComputerDAO computerDAO;
 
@@ -250,5 +252,30 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 					throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 				}
 			}			
+	}
+	
+	
+	public int getComputerNumber() throws ExceptionDAO {
+		Connection con = cm.getConnection();
+		
+		try (Statement stat = con.createStatement()) {
+			stat.executeQuery(NUMBER_REQUEST);
+			ResultSet res = stat.getResultSet();
+			res.next();
+			return res.getInt("count(*)");
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			throw new ExceptionDAO(ExceptionDAO.COMPUTER_NUMBER_ERROR);
+			
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				System.out.println("dao sql: " + e.getMessage());
+				showLogSQLException(e);
+				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
+			}
+		}
 	}
 }

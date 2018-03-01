@@ -79,4 +79,13 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 	public ComputerPage getComputerPage(int pageNumber, int nbComputerByPage) throws ExceptionService {
 		return new ComputerPage(pageNumber, nbComputerByPage);
 	}
+	
+	public int getComputerNumber() throws ExceptionService {
+		try {
+			return computerDAO.getComputerNumber();
+		} catch (ExceptionDAO e) {
+			System.out.println(e.getMessage());
+			throw new ExceptionService(ExceptionService.COMPUTER_NUMBER_ERROR);
+		}
+	}
 }
