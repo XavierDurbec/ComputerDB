@@ -3,6 +3,7 @@ package com.excilys.xdurbec.formation.computerDataBase.servlet;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,12 +27,17 @@ public class ComputerAddServlet extends HttpServlet {
 	private CompanyService companyService = CompanyService.getCompanyService();
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
+		try {
+			request.setAttribute("companyList", CompanyMapperDTO.toCompanyDTOList(companyService.getAll()));
+		} catch (ExceptionService e) {
+			System.out.println(e.getMessage());
+		}
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
 	}	
 
 
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response){
+	public void doPost(HttpServletRequest request, HttpServletResponse response) {
 		ComputerDTO computerDTO = new ComputerDTO();
 		try {
 			computerDTO.setName(request.getParameter("companyName"));
@@ -44,12 +50,9 @@ public class ComputerAddServlet extends HttpServlet {
 			
 			computerService.create(ComputerMapperDTO.toComputer(computerDTO));
 
-		} catch (ParseException e) {
+		} catch (ParseException | ExceptionService e) {
 			System.out.println(e.getMessage());
-		} catch (ExceptionService e) {
-			System.out.println(e.getMessage());
-		} 
-		
+		}
 	}
 
 	private CompanyDTO getCompanyById(int id) {
