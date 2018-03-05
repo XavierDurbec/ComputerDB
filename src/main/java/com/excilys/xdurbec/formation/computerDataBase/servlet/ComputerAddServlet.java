@@ -23,10 +23,15 @@ import com.excilys.xdurbec.formation.computerDataBase.servlet.dto.ComputerMapper
 
 @WebServlet("/addcomputer")
 public class ComputerAddServlet extends HttpServlet {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ComputerService computerService = ComputerService.getComputerService();
 	private CompanyService companyService = CompanyService.getCompanyService();
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
+		System.out.println("computerDTO");
 		try {
 			request.setAttribute("companyList", CompanyMapperDTO.toCompanyDTOList(companyService.getAll()));
 		} catch (ExceptionService e) {
@@ -38,20 +43,17 @@ public class ComputerAddServlet extends HttpServlet {
 
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) {
+
 		ComputerDTO computerDTO = new ComputerDTO();
 		try {
-			System.out.println("computerDTO");
-			computerDTO.setName(request.getParameter("companyName"));
-			SimpleDateFormat simpleFormat = new SimpleDateFormat("dd-mm-yyyy");
-			simpleFormat.parse(request.getParameter("introduced"));
-			computerDTO.setIntroduced(simpleFormat.getTimeInstance().toString());
-			simpleFormat.parse(request.getParameter("discontinued"));
-			computerDTO.setDiscontinued(simpleFormat.getTimeInstance().toString());
+			computerDTO.setName(request.getParameter("computerName"));
+
+			computerDTO.setIntroduced(request.getParameter("introduced"));
+			computerDTO.setDiscontinued(request.getParameter("discontinued"));
 			computerDTO.setCompany(getCompanyById(Integer.valueOf(request.getParameter("companyId"))));
-			System.out.println("DOT : " + computerDTO.getName());
 			computerService.create(ComputerMapperDTO.toComputer(computerDTO));
 			response.sendRedirect("dashboard");
-		} catch (ParseException | ExceptionService | IOException e) {
+		} catch (ExceptionService | IOException e) {
 			System.out.println(e.getMessage());
 		}
 	}
