@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.excilys.xdurbec.formation.computerDataBase.service.ComputerService;
 import com.excilys.xdurbec.formation.computerDataBase.service.ExceptionService;
 import com.excilys.xdurbec.formation.computerDataBase.servlet.dto.ComputerMapperDTO;
@@ -15,13 +18,10 @@ import com.excilys.xdurbec.formation.computerDataBase.servlet.dto.ComputerMapper
 @WebServlet("/dashboard")
 public class DashboardServlet extends HttpServlet{
 	private static ComputerService computerService = ComputerService.getComputerService();
+
 	private int nbComputerByPage = 20;
 	private int pageNb = 1;
-
-	/**
-	 * 
-	 */
-	//private static final long serialVersionUID = 1L;
+	protected Logger log = LogManager.getLogger(this.getClass());
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
 		try {
@@ -33,11 +33,9 @@ public class DashboardServlet extends HttpServlet{
 			request.setAttribute("computerList", ComputerMapperDTO
 					.toComputerDTOList(computerService.getComputerPage(pageNb, nbComputerByPage).getComputerList()));
 			request.setAttribute("maxPage", getNbComputerPage());
-			request.setAttribute("pageNb",this.pageNb);
-			//request.setAttribute("computerList", computerService.getComputerPage(pageNb, nbComputerByPage).getComputerList());
+			request.setAttribute("pageNb", this.pageNb);
 		} catch (ExceptionService e) {
-			e.printStackTrace();
-			System.out.println("Salut 0: " + e.getMessage());
+			log.error(e.getMessage());
 		}
 
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
@@ -53,11 +51,11 @@ public class DashboardServlet extends HttpServlet{
 			}
 			return nbPage;  
 		} catch (ExceptionService e) {
-			System.out.println(e.getMessage());
+			log.error(e.getMessage());
 			return 0;
 		}
 	}
-	
-	
-	
+
+
+
 }

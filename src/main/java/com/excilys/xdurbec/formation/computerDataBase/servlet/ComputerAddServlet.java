@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.excilys.xdurbec.formation.computerDataBase.service.CompanyService;
 import com.excilys.xdurbec.formation.computerDataBase.service.ComputerService;
 import com.excilys.xdurbec.formation.computerDataBase.service.ExceptionService;
@@ -23,19 +26,18 @@ import com.excilys.xdurbec.formation.computerDataBase.servlet.dto.ComputerMapper
 
 @WebServlet("/addcomputer")
 public class ComputerAddServlet extends HttpServlet {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
+	
+	protected Logger log = LogManager.getLogger(this.getClass());
+
 	private ComputerService computerService = ComputerService.getComputerService();
 	private CompanyService companyService = CompanyService.getCompanyService();
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
-		System.out.println("computerDTO");
 		try {
 			request.setAttribute("companyList", CompanyMapperDTO.toCompanyDTOList(companyService.getAll()));
 		} catch (ExceptionService e) {
-			System.out.println(e.getMessage());
+			log.error(e.getMessage());
 		}
 		this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
 	}	
@@ -47,14 +49,13 @@ public class ComputerAddServlet extends HttpServlet {
 		ComputerDTO computerDTO = new ComputerDTO();
 		try {
 			computerDTO.setName(request.getParameter("computerName"));
-
 			computerDTO.setIntroduced(request.getParameter("introduced"));
 			computerDTO.setDiscontinued(request.getParameter("discontinued"));
 			computerDTO.setCompany(getCompanyById(Integer.valueOf(request.getParameter("companyId"))));
 			computerService.create(ComputerMapperDTO.toComputer(computerDTO));
 			response.sendRedirect("dashboard");
 		} catch (ExceptionService | IOException e) {
-			System.out.println(e.getMessage());
+			log.error(e.getMessage());
 		}
 	}
 
@@ -62,7 +63,7 @@ public class ComputerAddServlet extends HttpServlet {
 		try {
 			return CompanyMapperDTO.toCompanyDTO(companyService.getCompanyById(id));
 		} catch (ExceptionService e) {
-			System.out.println(e.getMessage());
+			log.error(e.getMessage());
 			return null;
 		}
 	}

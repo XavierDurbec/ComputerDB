@@ -91,59 +91,90 @@
 
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
-		
+
 			<ul class="pagination">
 
-				<li><a href="#" aria-label="Previous"> <span
-						aria-hidden="true">&laquo;</span>
-				</a></li>
-
+				<c:if test="${pageNb > 1 }">
+					<li><a href="dashboard?page=${pageNb-1}" aria-label="Previous">
+							<span aria-hidden="true">&laquo;</span>
+					</a></li>
+				</c:if>
 				<c:choose>
 					<c:when test="${maxPage <= 27}">
 						<c:forEach begin="1" end="${maxPage}" step="1" var="i">
-							<li><a href="dashboard?page=${i}">${i}</a></li>
+							<c:choose>
+								<c:when test="${i == pageNb}">
+									<li><a href="dashboard?page=${i}">${i}</a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a href="dashboard?page=${i}">${i}</a></li>
+								</c:otherwise>
+							</c:choose>
 						</c:forEach>
-					</c:when> 
-					
+					</c:when>
+
 					<c:when test="${maxPage > 27 && pageNb <= 10}">
 						<c:forEach begin="1" end="15" step="1" var="i">
-							<li><a href="dashboard?page=${i}">${i}</a></li>
+							<c:choose>
+								<c:when test="${i == pageNb}">
+									<li><a href="dashboard?page=${i}"><b>${i}</b></a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a href="dashboard?page=${i}">${i}</a></li>
+								</c:otherwise>
+							</c:choose>
 						</c:forEach>
 						<li><a>...</a></li>
 						<c:forEach begin="${maxPage-5}" end="${maxPage}" step="1" var="i">
 							<li><a href="dashboard?page=${i}">${i}</a></li>
 						</c:forEach>
 					</c:when>
-					
-					<c:when test="${maxPage > 27 && pageNb > 10 && pageNb < maxPage - 10}">
+
+					<c:when
+						test="${maxPage > 27 && pageNb > 10 && pageNb < maxPage - 10}">
 						<c:forEach begin="1" end="5" step="1" var="i">
 							<li><a href="dashboard?page=${i}">${i}</a></li>
 						</c:forEach>
-						<li><a>...</a></li>						
+						<li><a>...</a></li>
 						<c:forEach begin="${pageNb-5}" end="${pageNb+5}" step="1" var="i">
-							<li><a href="dashboard?page=${i}">${i}</a></li>
+							<c:choose>
+								<c:when test="${i == pageNb}">
+									<li><a href="dashboard?page=${i}"><b>${i}</b></a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a href="dashboard?page=${i}">${i}</a></li>
+								</c:otherwise>
+							</c:choose>
 						</c:forEach>
-						<li><a>...</a></li>						
+						<li><a>...</a></li>
 						<c:forEach begin="${maxPage-5}" end="${maxPage}" step="1" var="i">
 							<li><a href="dashboard?page=${i}">${i}</a></li>
 						</c:forEach>
 					</c:when>
-					
+
 					<c:when test="${maxPage > 27 && pageNb >= maxPage - 10}">
 						<c:forEach begin="1" end="5" step="1" var="i">
 							<li><a href="dashboard?page=${i}">${i}</a></li>
 						</c:forEach>
 						<li><a>...</a></li>
 						<c:forEach begin="${maxPage-11}" end="${maxPage}" step="1" var="i">
-							<li><a href="dashboard?page=${i}">${i}</a></li>
+							<c:choose>
+								<c:when test="${i == pageNb}">
+									<li><a href="dashboard?page=${i}"><b>${i}</b></a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a href="dashboard?page=${i}">${i}</a></li>
+								</c:otherwise>
+							</c:choose>
 						</c:forEach>
 					</c:when>
-					
+
 				</c:choose>
-
-
-				<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-				</a></li>
+				<c:if test="${pageNb < maxPage }">
+					<li><a href="dashboard?page=${pageNb + 1}" aria-label="Next">
+							<span aria-hidden="true">&raquo;</span>
+					</a></li>
+				</c:if>
 			</ul>
 		</div>
 		<div class="btn-group btn-group-sm pull-right" role="group">

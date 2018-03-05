@@ -39,7 +39,7 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 		try {
 			return computerDAO.getAll();
 		} catch (ExceptionDAO e) {
-			System.out.println("Dao Exception : " + e.getMessage());
+			log.error("Dao Exception : " + e.getMessage());
 			throw new ExceptionService(ExceptionService.GET_ALL_ERROR);
 		}
 	}
@@ -84,19 +84,15 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 		try {
 			return computerDAO.getComputerNumber();
 		} catch (ExceptionDAO e) {
-			System.out.println(e.getMessage());
+			log.error(e.getMessage());
 			throw new ExceptionService(ExceptionService.COMPUTER_NUMBER_ERROR);
 		}
 	}
 
 
 	public Boolean computerDateValidator(Computer computer) {
-		if (computer.getIntroduced() != null && computer.getDiscontinued() != null 
-				&& computer.getIntroduced().before(computer.getDiscontinued())) {
-			return true;
-		} else {
-			return false;
-		}
+		return computer.getIntroduced() != null && computer.getDiscontinued() != null 
+				&& computer.getIntroduced().before(computer.getDiscontinued());
 	}
 
 }

@@ -31,8 +31,6 @@ public class ConnectionManager {
 		} catch (SQLException e) {
 			throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 			throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 		}
 	}
