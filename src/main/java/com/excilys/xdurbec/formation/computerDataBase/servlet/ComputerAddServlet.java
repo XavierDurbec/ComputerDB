@@ -40,17 +40,18 @@ public class ComputerAddServlet extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) {
 		ComputerDTO computerDTO = new ComputerDTO();
 		try {
+			System.out.println("computerDTO");
 			computerDTO.setName(request.getParameter("companyName"));
 			SimpleDateFormat simpleFormat = new SimpleDateFormat("dd-mm-yyyy");
 			simpleFormat.parse(request.getParameter("introduced"));
 			computerDTO.setIntroduced(simpleFormat.getTimeInstance().toString());
 			simpleFormat.parse(request.getParameter("discontinued"));
 			computerDTO.setDiscontinued(simpleFormat.getTimeInstance().toString());
-			computerDTO.setCompany(getCompanyById(Integer.valueOf(request.getParameter("id"))));
-			
+			computerDTO.setCompany(getCompanyById(Integer.valueOf(request.getParameter("companyId"))));
+			System.out.println("DOT : " + computerDTO.getName());
 			computerService.create(ComputerMapperDTO.toComputer(computerDTO));
-
-		} catch (ParseException | ExceptionService e) {
+			response.sendRedirect("dashboard");
+		} catch (ParseException | ExceptionService | IOException e) {
 			System.out.println(e.getMessage());
 		}
 	}

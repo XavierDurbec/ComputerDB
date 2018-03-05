@@ -33,7 +33,7 @@ public class DashboardServlet extends HttpServlet{
 			request.setAttribute("computerList", ComputerMapperDTO
 					.toComputerDTOList(computerService.getComputerPage(pageNb, nbComputerByPage).getComputerList()));
 			request.setAttribute("maxPage", getNbComputerPage());
-
+			request.setAttribute("pageNb",this.pageNb);
 			//request.setAttribute("computerList", computerService.getComputerPage(pageNb, nbComputerByPage).getComputerList());
 		} catch (ExceptionService e) {
 			e.printStackTrace();
