@@ -46,12 +46,16 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 
 
 	public void create(Computer entity) throws  ExceptionService {
-		
+
 		if (entity.getCompany() == null || companyService.companyExistenceVerification(entity.getCompany().getId())) {
-			try {
-				computerDAO.create(entity);
-			} catch (ExceptionDAO e) {
-				throw new ExceptionService(ExceptionService.CREATE_ERROR);
+			if (computerDateValidator(entity)) {
+				try {
+					computerDAO.create(entity);
+				} catch (ExceptionDAO e) {
+					throw new ExceptionService(ExceptionService.CREATE_ERROR);
+				}
+			} else {
+				throw new ExceptionService(ExceptionService.DATE_ERROR);
 			}
 		} else {
 			throw new ExceptionService(ExceptionService.DOES_EXIST_ERROR);
@@ -60,10 +64,14 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 
 
 	public void update(Computer entity) throws  ExceptionService {
-		try {
-			computerDAO.update(entity);
-		} catch (ExceptionDAO e) {
-			throw new ExceptionService(ExceptionService.UPDATE_ERROR);
+		if (computerDateValidator(entity)) {
+			try {
+				computerDAO.update(entity);
+			} catch (ExceptionDAO e) {
+				throw new ExceptionService(ExceptionService.UPDATE_ERROR);
+			}
+		} else {
+			throw new ExceptionService(ExceptionService.DATE_ERROR);
 		}
 	}
 
@@ -90,9 +98,9 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 	}
 
 
-	public Boolean computerDateValidator(Computer computer) {
-		return computer.getIntroduced() != null && computer.getDiscontinued() != null 
-				&& computer.getIntroduced().before(computer.getDiscontinued());
+	public static Boolean computerDateValidator(Computer computer) {
+		return computer.getIntroduced() != null || computer.getDiscontinued() != null 
+				|| computer.getIntroduced().before(computer.getDiscontinued());
 	}
 
 }

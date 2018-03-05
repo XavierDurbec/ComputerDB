@@ -104,7 +104,7 @@
 						<c:forEach begin="1" end="${maxPage}" step="1" var="i">
 							<c:choose>
 								<c:when test="${i == pageNb}">
-									<li><a href="dashboard?page=${i}">${i}</a></li>
+									<li><a href="dashboard?page=${i}"><b>${i}</b></a></li>
 								</c:when>
 								<c:otherwise>
 									<li><a href="dashboard?page=${i}">${i}</a></li>
@@ -176,13 +176,13 @@
 					</a></li>
 				</c:if>
 			</ul>
-		</div>
-		<div class="btn-group btn-group-sm pull-right" role="group">
-			<button type="button" class="btn btn-default">10</button>
-			<button type="button" class="btn btn-default">50</button>
-			<button type="button" class="btn btn-default">100</button>
-		</div>
 
+			<div class="btn-group btn-group-sm pull-right" role="group">
+				<a href="dashboard?nbComputerByPage=10"><button type="button" class="btn btn-default">10</button></a>
+				<a href="dashboard?nbComputerByPage=50"><button type="button" class="btn btn-default">50</button></a>
+				<a href="dashboard?nbComputerByPage=100"><button type="button" class="btn btn-default">100</button></a>
+			</div>
+		</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>

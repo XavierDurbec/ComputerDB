@@ -27,7 +27,11 @@ public class DashboardServlet extends HttpServlet{
 		try {
 			String pageString = request.getParameter("page");
 			if (pageString != null) {
-				pageNb = Integer.valueOf(request.getParameter("page"));
+				pageNb = Integer.valueOf(pageString);
+			}
+			String nbComputerByPageString = request.getParameter("nbComputerByPage");
+			if (nbComputerByPageString != null) {
+				nbComputerByPage = Integer.valueOf(nbComputerByPageString);
 			}
 			request.setAttribute("computerCount", computerService.getAll().size());
 			request.setAttribute("computerList", ComputerMapperDTO
