@@ -35,11 +35,11 @@ public class ComputerAddServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
 		try {
-			request.setAttribute("companyList", CompanyMapperDTO.toCompanyDTOList(companyService.getAll()));
+			request.setAttribute(ServletString.COMPANY_LIST, CompanyMapperDTO.toCompanyDTOList(companyService.getAll()));
 		} catch (ExceptionService e) {
 			log.error(e.getMessage());
 		}
-		this.getServletContext().getRequestDispatcher("/WEB-INF/views/addComputer.jsp").forward(request, response);
+		this.getServletContext().getRequestDispatcher(ServletString.CONTEXT_ADDCOMPUTER).forward(request, response);
 	}	
 
 
@@ -48,12 +48,12 @@ public class ComputerAddServlet extends HttpServlet {
 
 		ComputerDTO computerDTO = new ComputerDTO();
 		try {
-			computerDTO.setName(request.getParameter("computerName"));
-			computerDTO.setIntroduced(request.getParameter("introduced"));
-			computerDTO.setDiscontinued(request.getParameter("discontinued"));
-			computerDTO.setCompany(getCompanyById(Integer.valueOf(request.getParameter("companyId"))));
+			computerDTO.setName(request.getParameter(ServletString.COMPUTER_NAME));
+			computerDTO.setIntroduced(request.getParameter(ServletString.COMPUTER_INTRODUCED));
+			computerDTO.setDiscontinued(request.getParameter(ServletString.COMPUTER_DISCONTINUED));
+			computerDTO.setCompany(getCompanyById(Integer.valueOf(request.getParameter(ServletString.COMPUTER_COMPANY_ID))));
 			computerService.create(ComputerMapperDTO.toComputer(computerDTO));
-			response.sendRedirect("dashboard");
+			response.sendRedirect(ServletString.DASHBOARD);
 		} catch (ExceptionService | IOException e) {
 			log.error(e.getMessage());
 		}

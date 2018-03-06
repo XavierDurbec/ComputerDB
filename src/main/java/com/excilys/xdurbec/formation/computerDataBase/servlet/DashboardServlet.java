@@ -25,24 +25,24 @@ public class DashboardServlet extends HttpServlet{
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
 		try {
-			String pageString = request.getParameter("page");
+			String pageString = request.getParameter(ServletString.PAGE);
 			if (pageString != null) {
 				pageNb = Integer.valueOf(pageString);
 			}
-			String nbComputerByPageString = request.getParameter("nbComputerByPage");
+			String nbComputerByPageString = request.getParameter(ServletString.NB_COMPUTER_BY_PAGE);
 			if (nbComputerByPageString != null) {
 				nbComputerByPage = Integer.valueOf(nbComputerByPageString);
 			}
-			request.setAttribute("computerCount", computerService.getAll().size());
-			request.setAttribute("computerList", ComputerMapperDTO
+			request.setAttribute(ServletString.COMPUTER_COUNT, computerService.getAll().size());
+			request.setAttribute(ServletString.COMPUTER_LIST, ComputerMapperDTO
 					.toComputerDTOList(computerService.getComputerPage(pageNb, nbComputerByPage).getComputerList()));
-			request.setAttribute("maxPage", getNbComputerPage());
-			request.setAttribute("pageNb", this.pageNb);
+			request.setAttribute(ServletString.MAX_PAGE, getNbComputerPage());
+			request.setAttribute(ServletString.PAGE_NB, this.pageNb);
 		} catch (ExceptionService e) {
 			log.error(e.getMessage());
 		}
 
-		this.getServletContext().getRequestDispatcher("/WEB-INF/views/dashboard.jsp").forward(request, response);
+		this.getServletContext().getRequestDispatcher(ServletString.CONTEXT_DASHBOARD).forward(request, response);
 	}	
 
 	private int getNbComputerPage() {
