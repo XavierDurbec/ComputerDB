@@ -2,17 +2,26 @@ package com.excilys.xdurbec.formation.computerDataBase.servlet.dto;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.excilys.xdurbec.formation.computerDataBase.model.Computer;
 
 public class ComputerMapperDTO {
-	
+
 	public static Computer toComputer(ComputerDTO computerDTO) {
-		Computer computer = new Computer(computerDTO.getName(), 
-				Date.valueOf(computerDTO.getIntroduced()), 
-				Date.valueOf(computerDTO.getDiscontinued()), 
-				CompanyMapperDTO.toCompany((computerDTO.getCompany())));
+		Computer computer = new Computer();
+		computer.setName(computerDTO.getName()); 
+		if (computerDTO.getIntroduced() != "") {
+			computer.setIntroduced(Date.valueOf(computerDTO.getIntroduced())); 
+		} 
+		if (computerDTO.getDiscontinued() != "") {
+			computer.setDiscontinued(Date.valueOf(computerDTO.getDiscontinued())); 
+		}
+		if (computerDTO.getCompany() != null && computerDTO.getCompany().getName() != null) {
+			computer.setCompany(CompanyMapperDTO.toCompany((computerDTO.getCompany())));
+		}
 		computer.setId(computerDTO.getId());
 		return computer;
 
@@ -29,7 +38,9 @@ public class ComputerMapperDTO {
 		if (computer.getDiscontinued() != null) {
 			computerDTO.setDiscontinued(computer.getDiscontinued().toString());
 		}
-		computerDTO.setCompany(CompanyMapperDTO.toCompanyDTO(computer.getCompany()));
+		if (computer.getCompany() != null) {
+			computerDTO.setCompany(CompanyMapperDTO.toCompanyDTO(computer.getCompany()));
+		}
 		return computerDTO;
 	}
 
@@ -48,9 +59,5 @@ public class ComputerMapperDTO {
 			computerDTOList.add(toComputerDTO(computer));
 		}
 		return computerDTOList;
-	}
-
-	private static boolean computerParseValidator(ComputerDTO computerDTO) {
-		return false;
 	}
 }

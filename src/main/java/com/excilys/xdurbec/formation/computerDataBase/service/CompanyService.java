@@ -45,13 +45,17 @@ public class CompanyService extends EntityService implements EntityServiceCompor
 			return false;
 		}
 	}
-	
-	public Company getCompanyById(int id) throws ExceptionService {
-		try {
-			return companyDAO.getById(id);
-		} catch (ExceptionDAO e) {
-			log.error(e.getMessage());
-			throw new ExceptionService(ExceptionService.GET_COMPANY_BY_ID);
+
+	public  Company getCompanyById(int id) throws ExceptionService {
+		if (id == 0) {
+			return null;
+		} else {
+			try {
+				return companyDAO.getById(id);
+			} catch (ExceptionDAO e) {
+				log.error(e.getMessage());
+				throw new ExceptionService(ExceptionService.GET_COMPANY_BY_ID);
+			}
 		}
 	}
 }

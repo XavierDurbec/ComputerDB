@@ -28,17 +28,20 @@
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
 									type="text" class="form-control" id="computerName" name="computerName"
-									placeholder="Computer name">
+									placeholder="Computer name" pattern ="[A-Za-z1-9]{1,30}" >
+									<span class="erreur" color="#090">${erreurs['name']}</span>
 							</div>
 							<div class="form-group">
 								<label for="introduced">Introduced date</label> <input
 									type="date" class="form-control" id="introduced" name="introduced"
 									placeholder="Introduced date">
+									<span class="erreur">${erreurs['introduced']}</span>
 							</div>
 							<div class="form-group">
 								<label for="discontinued">Discontinued date</label> <input
 									type="date" class="form-control" id="discontinued" name="discontinued"
 									placeholder="Discontinued date">
+									<span class="erreur">${erreurs['discontinued']}</span>
 							</div>
 							<div class="form-group">
 								<label for="companyId">Company</label> <select
@@ -47,7 +50,8 @@
 									<c:forEach items="${companyList}" var="company">
 										<option value="${company.id}">${company.name}</option>
 									</c:forEach>
-								</select>
+					Company			</select>
+								<span class="erreur">${erreurs['company']}</span>
 							</div>
 						</fieldset>
 						<div class="actions pull-right">

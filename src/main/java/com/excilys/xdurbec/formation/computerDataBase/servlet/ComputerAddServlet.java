@@ -27,7 +27,7 @@ import com.excilys.xdurbec.formation.computerDataBase.servlet.dto.ComputerMapper
 @WebServlet("/addcomputer")
 public class ComputerAddServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	protected Logger log = LogManager.getLogger(this.getClass());
 
 	private ComputerService computerService = ComputerService.getComputerService();
@@ -60,12 +60,15 @@ public class ComputerAddServlet extends HttpServlet {
 	}
 
 	private CompanyDTO getCompanyById(int id) {
-		try {
-			return CompanyMapperDTO.toCompanyDTO(companyService.getCompanyById(id));
-		} catch (ExceptionService e) {
-			log.error(e.getMessage());
+		if (id != 0) {
+			try {
+				return CompanyMapperDTO.toCompanyDTO(companyService.getCompanyById(id));
+			} catch (ExceptionService e) {
+				log.error(e.getMessage());
+				return null;
+			}
+		} else {
 			return null;
 		}
 	}
-
 }
