@@ -25,7 +25,7 @@ public class EditComputerServlet extends HttpServlet{
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
 		String computerIdString = request.getParameter("id");
-		if (computerIdString != null) {
+		if (computerIdString != null && !computerIdString.equals("")) {
 			computerId = Integer.valueOf(computerIdString);
 		}
 		try {

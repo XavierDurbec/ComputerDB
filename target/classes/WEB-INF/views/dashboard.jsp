@@ -35,7 +35,7 @@
 				</div>
 				<div class="pull-right">
 					<a class="btn btn-success" id="addComputer" href="addcomputer">Add
-						Computer</a> <a class="btn btn-default" id="editComputer" href="editComputer?id=${computerId}"
+						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
 						onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
 			</div>
@@ -77,7 +77,7 @@
 					<c:forEach items="${computerList}" var="computer">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
-								class="cb" value="0"></td>
+								class="cb" value="${computer.id}"></td>
 							<td><a href="editComputer?id=${computer.id}" onclick="">${computer.name}</a></td>
 							<td>${computer.introduced}</td>
 							<td>${computer.discontinued}</td>

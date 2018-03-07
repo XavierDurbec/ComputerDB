@@ -1,6 +1,8 @@
 package com.excilys.xdurbec.formation.computerDataBase.servlet;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -48,6 +50,25 @@ public class DashboardServlet extends HttpServlet{
 		this.getServletContext().getRequestDispatcher(ServletString.CONTEXT_DASHBOARD).forward(request, response);
 	}	
 
+	public void doPost(HttpServletRequest request, HttpServletResponse response) {
+		String computerListToDelete = request.getParameter("selection");
+		if (!computerListToDelete.equals("")) {
+			for (String computerIdString : computerListToDelete.split(",")) {
+				try {
+					computerService.deleteById(Integer.valueOf(computerIdString));
+				} catch (NumberFormatException | ExceptionService e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		try {
+			response.sendRedirect(ServletString.DASHBOARD);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	private int getNbComputerPage() {
 		int nbPage;
 		try {
@@ -62,7 +83,5 @@ public class DashboardServlet extends HttpServlet{
 			return 0;
 		}
 	}
-
-
-
 }
+
