@@ -71,7 +71,7 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 				company.setName(rs.getString(ConstantStringDAO.NAME_OF_COMPANY));
 				company.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPANY));
 			}	
-			Computer computer = new Computer(rs.getString(ConstantStringDAO.ID_OF_COMPUTER), rs.getDate(ConstantStringDAO.INTRODUCED_OF_COMPUTER), rs.getDate(ConstantStringDAO.DISCONTINUED_OF_COMPUTER),company);
+			Computer computer = new Computer(rs.getString(ConstantStringDAO.NAME_OF_COMPUTER), rs.getDate(ConstantStringDAO.INTRODUCED_OF_COMPUTER), rs.getDate(ConstantStringDAO.DISCONTINUED_OF_COMPUTER),company);
 			computer.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPUTER));
 			return computer;
 		} catch (SQLException e) {

@@ -20,7 +20,7 @@ public class DashboardServlet extends HttpServlet{
 	private static ComputerService computerService = ComputerService.getComputerService();
 
 	private int nbComputerByPage = 20;
-	private int pageNb = 1;
+	private int pageNb = 1; 
 	protected Logger log = LogManager.getLogger(this.getClass());
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
@@ -37,6 +37,9 @@ public class DashboardServlet extends HttpServlet{
 			request.setAttribute(ServletString.COMPUTER_LIST, ComputerMapperDTO
 					.toComputerDTOList(computerService.getComputerPage(pageNb, nbComputerByPage).getComputerList()));
 			request.setAttribute(ServletString.MAX_PAGE, getNbComputerPage());
+			if (pageNb > getNbComputerPage()) {
+				pageNb = 1;
+			}
 			request.setAttribute(ServletString.PAGE_NB, this.pageNb);
 		} catch (ExceptionService e) {
 			log.error(e.getMessage());

@@ -35,7 +35,7 @@
 				</div>
 				<div class="pull-right">
 					<a class="btn btn-success" id="addComputer" href="addcomputer">Add
-						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
+						Computer</a> <a class="btn btn-default" id="editComputer" href="editComputer?id=${computerId}"
 						onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
 			</div>
@@ -78,7 +78,7 @@
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="0"></td>
-							<td><a href="editComputer" onclick="">${computer.name}</a></td>
+							<td><a href="editComputer?id=${computer.id}" onclick="">${computer.name}</a></td>
 							<td>${computer.introduced}</td>
 							<td>${computer.discontinued}</td>
 							<td>${computer.company.name}</td>

@@ -28,7 +28,7 @@
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
 									type="text" class="form-control" id="computerName" name="computerName"
-									placeholder="Computer name" pattern ="[A-Za-z1-9]{1,30}" >
+									placeholder="Computer name" pattern ="[A-Za-z1-9]{1,30}"> 
 									<span class="erreur" color="#090">${erreurs['name']}</span>
 							</div>
 							<div class="form-group">
