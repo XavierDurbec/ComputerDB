@@ -23,7 +23,7 @@
 	</header>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${computerCount}computersfound.</h1>
+			<h1 id="homeTitle">${computerCount} computers found.</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -78,10 +78,10 @@
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="${computer.id}"></td>
-							<td><a href="editComputer?id=${computer.id}" onclick="">${computer.name}</a></td>
-							<td>${computer.introduced}</td>
-							<td>${computer.discontinued}</td>
-							<td>${computer.company.name}</td>
+							<td><a href="editComputer?id=${computer.id}" onclick=""><c:out value="${computer.name}"/></a></td>
+							<td><c:out value="${computer.introduced}"/></td>
+							<td><c:out value="${computer.discontinued}"/></td>
+							<td><c:out value="${computer.company.name}"/></td>
 						</tr>
 					</c:forEach>
 				</tbody>

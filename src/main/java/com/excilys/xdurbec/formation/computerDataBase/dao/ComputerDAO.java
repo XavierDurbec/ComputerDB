@@ -157,7 +157,7 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 			try {
 				con.close();
 			} catch (SQLException e) {
-				showLogSQLException(e);
+				log.error(e.getMessage());
 				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 			}
 		}
@@ -198,13 +198,13 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 			stat.setInt(1, id);
 			stat.executeUpdate();
 		} catch (SQLException e) {
-			showLogSQLException(e);
+			log.error(e.getMessage());
 			throw new ExceptionDAO(ExceptionDAO.DELETE_ERROR);
 		} finally {
 			try {
 				con.close();
 			} catch (SQLException e) {
-				showLogSQLException(e);
+				log.error(e.getMessage());
 				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 			}
 		}

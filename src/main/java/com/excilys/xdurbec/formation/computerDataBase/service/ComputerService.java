@@ -99,7 +99,7 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 
 
 	public static Boolean computerDateValidator(Computer computer) {
-		return computer.getIntroduced() != null || computer.getDiscontinued() != null 
+		return computer.getIntroduced() == null || computer.getDiscontinued() == null 
 				|| computer.getIntroduced().before(computer.getDiscontinued());
 	}
 
