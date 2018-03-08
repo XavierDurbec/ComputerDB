@@ -10,7 +10,9 @@ import com.excilys.xdurbec.formation.computerDataBase.model.Computer;
 import java.sql.*;
 
 public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Computer>{
-
+	
+	private static ComputerDAO computerDAO;
+	
 	private static final String GET_BY_ID_REQUEST = "SELECT computer.id, computer.name, computer.introduced,"
 			+ " computer.discontinued, computer.company_id, company.id, company.name "
 			+ "FROM computer LEFT JOIN company "
@@ -41,10 +43,19 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 
 	private static final String DELETE_REQUEST = "DELETE FROM computer WHERE id =?;";
 	
-	private static final String NUMBER_REQUEST = "SELECT count(*) FROM computer;";
+	private static final String NUMBER_REQUEST = "SELECT count(*) FROM computer LEFT JOIN company ON computer.company_id = company.id"
+			+ " WHERE computer.name LIKE ? OR company.name LIKE ?;";
 
-	private static ComputerDAO computerDAO;
+	private static final String GET_PAGE_WITH_FILTRE_REQUEST = "SELECT computer.id, computer.name, computer.introduced, "
+			+ "computer.discontinued, computer.company_id, company.id, company.name "
+			+ "FROM computer LEFT JOIN company "
+			+ "ON computer.company_id = company.id "
+			+ "WHERE computer.name LIKE ? OR company.name LIKE ? "
+			+ "LIMIT ? "
+			+ "OFFSET ?;";
+	
 
+	
 	private ConnectionManager cm;
 
 	private ComputerDAO(ConnectionManager cm) {
@@ -75,50 +86,42 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 			computer.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPUTER));
 			return computer;
 		} catch (SQLException e) {
-			showLogSQLException(e);
+			log.error(e.getMessage());
 			throw new ExceptionDAO(ExceptionDAO.ID_COMPUTER_ERROR);
 		} finally {
 			try {
 				con.close();
 			} catch (SQLException e) {
-				showLogSQLException(e);
+				log.error(e.getMessage());
 				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 			}
 		}
 	}
-
-
 
 	@Override
 	public List<Computer> getAll() throws ExceptionDAO {
 		Connection con = cm.getConnection();
 		try (Statement stat = con.createStatement()) {
 			stat.executeQuery(GET_ALL_REQUEST); 
-
-			ResultSet rs = stat.getResultSet();
-
+			ResultSet res = stat.getResultSet();
 			List<Computer> listComputer = new ArrayList<Computer>();
-
-			while (rs.next()) {
+			while (res.next()) {
 				Company company = new Company();
 				Computer computer =  new Computer();
-				if (rs.getInt(ConstantStringDAO.ID_OF_COMPANY) != 0) {
-					company.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPANY));
-					company.setName(rs.getString(ConstantStringDAO.NAME_OF_COMPANY));
+				if (res.getInt(ConstantStringDAO.ID_OF_COMPANY) != 0) {
+					company.setId(res.getInt(ConstantStringDAO.ID_OF_COMPANY));
+					company.setName(res.getString(ConstantStringDAO.NAME_OF_COMPANY));
 				} else {
 					company.setId(0);
 					company.setName(null);
 				}
-
-				computer.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPUTER));
-				computer.setName(rs.getString(ConstantStringDAO.NAME_OF_COMPUTER));
-				computer.setIntroduced(rs.getDate(ConstantStringDAO.INTRODUCED_OF_COMPUTER));
-				computer.setDiscontinued(rs.getDate(ConstantStringDAO.DISCONTINUED_OF_COMPUTER));
+				computer.setId(res.getInt(ConstantStringDAO.ID_OF_COMPUTER));
+				computer.setName(res.getString(ConstantStringDAO.NAME_OF_COMPUTER));
+				computer.setIntroduced(res.getDate(ConstantStringDAO.INTRODUCED_OF_COMPUTER));
+				computer.setDiscontinued(res.getDate(ConstantStringDAO.DISCONTINUED_OF_COMPUTER));
 				computer.setCompany(company);
-
 				listComputer.add(computer);
 			}
-
 			return listComputer;
 		} catch (SQLException e) {
 			System.out.println("sqlException: " + e.getMessage());
@@ -128,7 +131,7 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 				con.close();
 			}
 			catch (SQLException e) {
-				showLogSQLException(e);
+				log.error(e.getMessage());
 				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 			}
 		}
@@ -140,7 +143,6 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 		try (PreparedStatement stat = con.prepareStatement(CREATE_REQUEST);) {
 		stat.setString(1, entity.getName());
 		stat.setDate(2, entity.getIntroduced());
-
 		stat.setDate(3, entity.getDiscontinued());
 
 		if (entity.getCompany() != null) {
@@ -151,7 +153,7 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 
 		stat.executeUpdate();
 		} catch (SQLException e) {
-			showLogSQLException(e);
+			log.error(e.getMessage());
 			throw new ExceptionDAO(ExceptionDAO.DELETE_ERROR);
 		} finally {
 			try {
@@ -179,13 +181,13 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 			stat.setInt(5, entity.getId());
 			stat.executeUpdate();
 		} catch (SQLException e) {
-			showLogSQLException(e);
+			log.error(e.getMessage());
 			throw new ExceptionDAO(ExceptionDAO.UPDATE_ERROR);
 		} finally {
 			try {
 				con.close();
 			} catch (SQLException e) {
-				showLogSQLException(e);
+				log.error(e.getMessage());
 				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 			}
 		}
@@ -210,72 +212,74 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 		}
 	}
 
-	@Override
-	public List<Computer> getAllPage(int pageNumber, int nbEntityPerPage) throws ExceptionDAO {
+	public List<Computer> getAllPage(int pageNumber, int nbEntityPerPage, String filter) throws ExceptionDAO {
 			Connection con = cm.getConnection();
 			List<Computer> computerList = new ArrayList<>();
 			
-			try (PreparedStatement stat = con.prepareStatement(GET_PAGE_REQUEST)) {
-				stat.setInt(1, nbEntityPerPage);
-				stat.setInt(2, (pageNumber - 1) * nbEntityPerPage);
+			try (PreparedStatement stat = con.prepareStatement(GET_PAGE_WITH_FILTRE_REQUEST)) {
+				stat.setString(1, "%" + filter + "%");
+				stat.setString(2, "%" + filter + "%");
+				stat.setInt(3, nbEntityPerPage);
+				stat.setInt(4, (pageNumber - 1) * nbEntityPerPage);
 				stat.executeQuery();
-				ResultSet rs = stat.getResultSet();
+				ResultSet res = stat.getResultSet();
 				 
-				while (rs.next()) {
+				while (res.next()) {
 					Company company = new Company();
 					Computer computer =  new Computer();
-					if (rs.getInt(ConstantStringDAO.ID_OF_COMPANY) != 0) {
-						company.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPANY));
-						company.setName(rs.getString(ConstantStringDAO.NAME_OF_COMPANY));
+					if (res.getInt(ConstantStringDAO.ID_OF_COMPANY) != 0) {
+						company.setId(res.getInt(ConstantStringDAO.ID_OF_COMPANY));
+						company.setName(res.getString(ConstantStringDAO.NAME_OF_COMPANY));
 					} else {
 						company.setId(0);
 						company.setName(null);
 					}
 
-					computer.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPUTER));
-					computer.setName(rs.getString(ConstantStringDAO.NAME_OF_COMPUTER));
-					computer.setIntroduced(rs.getDate(ConstantStringDAO.INTRODUCED_OF_COMPUTER));
-					computer.setDiscontinued(rs.getDate(ConstantStringDAO.DISCONTINUED_OF_COMPUTER));
+					computer.setId(res.getInt(ConstantStringDAO.ID_OF_COMPUTER));
+					computer.setName(res.getString(ConstantStringDAO.NAME_OF_COMPUTER));
+					computer.setIntroduced(res.getDate(ConstantStringDAO.INTRODUCED_OF_COMPUTER));
+					computer.setDiscontinued(res.getDate(ConstantStringDAO.DISCONTINUED_OF_COMPUTER));
 					computer.setCompany(company);
 
 					computerList.add(computer);
 				}
 				return computerList;
 			} catch (SQLException e) {
-				showLogSQLException(e);
+				log.error(e.getMessage());
 				throw new ExceptionDAO(ExceptionDAO.GET_ALL_ERROR);
 			} finally {
 				try {
 					con.close();
 				} catch (SQLException e) {
-					showLogSQLException(e);
+					log.error(e.getMessage());
 					throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 				}
 			}			
 	}
 	
-	
-	public int getComputerNumber() throws ExceptionDAO {
+	public int getComputerNumber(String filter) throws ExceptionDAO {
 		Connection con = cm.getConnection();
 		
-		try (Statement stat = con.createStatement()) {
-			stat.executeQuery(NUMBER_REQUEST);
+		try (PreparedStatement stat = con.prepareStatement(NUMBER_REQUEST)) {
+			stat.setString(1, "%" + filter + "%");
+			stat.setString(2, "%" + filter + "%");
+			stat.executeQuery();
 			ResultSet res = stat.getResultSet();
 			res.next();
 			return res.getInt("count(*)");
 			
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+			log.error(e.getMessage());
 			throw new ExceptionDAO(ExceptionDAO.COMPUTER_NUMBER_ERROR);
 			
 		} finally {
 			try {
 				con.close();
 			} catch (SQLException e) {
-				System.out.println("dao sql: " + e.getMessage());
-				showLogSQLException(e);
+				log.error(e.getMessage());
 				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 			}
 		}
 	}
+	
 }

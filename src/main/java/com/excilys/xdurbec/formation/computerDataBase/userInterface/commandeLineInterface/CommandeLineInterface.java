@@ -423,7 +423,7 @@ public class CommandeLineInterface {
 	public void getAllPageComputer() {
 		int currentPage = 1;
 		try {
-			ComputerPage computerPage = computerService.getComputerPage(currentPage, this.nbElementPerPage);
+			ComputerPage computerPage = computerService.getComputerPage(currentPage, this.nbElementPerPage, null);
 
 			while (computerPage.getComputerList().size() > 0) {
 				System.out.println("=================Page n°" + currentPage + "=================");

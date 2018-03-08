@@ -11,11 +11,13 @@ public class ComputerPage {
 
 	private int pageNumber;
 	private int nbComputerPerPage;
+	private String filter;
 	private List<Computer> computerList = new ArrayList<Computer>();
 	
-	public ComputerPage(int pageNumber, int nbComputerPerPage) throws ExceptionService {
+	public ComputerPage(int pageNumber, int nbComputerPerPage, String filter) throws ExceptionService {
 		this.pageNumber = pageNumber;
 		this.nbComputerPerPage = nbComputerPerPage;
+		this.filter = filter;
 		this.refresh();
 	}
 	
@@ -34,10 +36,18 @@ public class ComputerPage {
 	public List<Computer> getComputerList() {
 		return computerList;
 	}
+	
+	public String getFilter() {
+		return this.filter;
+	}
+	
+	public void setFilter(String filter) {
+		this.filter = filter;
+	}
 
 	public void refresh() throws ExceptionService {
 		try {
-			this.computerList = ComputerDAO.getComputerDAO().getAllPage(pageNumber, nbComputerPerPage);
+			this.computerList = ComputerDAO.getComputerDAO().getAllPage(pageNumber, nbComputerPerPage, filter);
 		} catch (ExceptionDAO e) {
 			throw new ExceptionService(ExceptionService.GET_ALL_ERROR_PAGE);
 		}

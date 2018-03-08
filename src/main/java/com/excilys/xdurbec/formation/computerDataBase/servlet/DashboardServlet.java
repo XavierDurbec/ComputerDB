@@ -23,7 +23,8 @@ public class DashboardServlet extends HttpServlet{
 
 	private int nbComputerByPage = 20;
 	private int pageNb = 1; 
-	protected Logger log = LogManager.getLogger(this.getClass());
+	private Logger log = LogManager.getLogger(this.getClass());
+	private String filter = ""; 
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
 		try {
@@ -35,11 +36,17 @@ public class DashboardServlet extends HttpServlet{
 			if (nbComputerByPageString != null) {
 				nbComputerByPage = Integer.valueOf(nbComputerByPageString);
 			}
-			request.setAttribute(ServletString.COMPUTER_COUNT, computerService.getAll().size());
+			String filterTmp = request.getParameter("search");
+			if (filterTmp != null) {
+				filter = filterTmp;
+			}
+			int nbComputerPage = getNbComputerPage(filter);
+			request.setAttribute("searchValue", filter);
+			request.setAttribute(ServletString.COMPUTER_COUNT, computerService.getComputerNumber(filter));
 			request.setAttribute(ServletString.COMPUTER_LIST, ComputerMapperDTO
-					.toComputerDTOList(computerService.getComputerPage(pageNb, nbComputerByPage).getComputerList()));
-			request.setAttribute(ServletString.MAX_PAGE, getNbComputerPage());
-			if (pageNb > getNbComputerPage()) {
+					.toComputerDTOList(computerService.getComputerPage(pageNb, nbComputerByPage, filter).getComputerList()));
+			request.setAttribute(ServletString.MAX_PAGE, nbComputerPage);
+			if (pageNb > nbComputerPage) {
 				pageNb = 1;
 			}
 			request.setAttribute(ServletString.PAGE_NB, this.pageNb);
@@ -69,12 +76,12 @@ public class DashboardServlet extends HttpServlet{
 
 	}
 
-	private int getNbComputerPage() {
+	private int getNbComputerPage(String filter) {
 		int nbPage;
 		try {
-			nbPage = computerService.getComputerNumber() / this.nbComputerByPage;
+			nbPage = computerService.getComputerNumber(filter) / this.nbComputerByPage;
 
-			if (computerService.getComputerNumber() % this.nbComputerByPage != 0) {
+			if (computerService.getComputerNumber(filter) % this.nbComputerByPage != 0) {
 				nbPage++;
 			}
 			return nbPage;  

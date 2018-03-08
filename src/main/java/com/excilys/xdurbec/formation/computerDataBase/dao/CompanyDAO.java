@@ -56,13 +56,13 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 			}
 			return companyList;
 		} catch (SQLException e) {
-			showLogSQLException(e);
+			log.error(e.getMessage());
 			throw new ExceptionDAO(ExceptionDAO.STATEMENT_ERROR);
 		} finally {
 			try {
 				con.close();
 			} catch (SQLException e) {
-				showLogSQLException(e);
+				log.error(e.getMessage());;
 				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 			}
 		}
@@ -78,20 +78,20 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 			rs.next();
 			return !(rs.getInt("count(*)") == 0);
 		} catch (SQLException e) {
-			showLogSQLException(e);
+			log.error(e.getMessage());
 			throw new ExceptionDAO(ExceptionDAO.STATEMENT_ERROR);
 		} finally {
 			try {
 				con.close();
 			} catch (SQLException e) {
-				showLogSQLException(e);
+				log.error(e.getMessage());
 				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 			}
 		}
 
 	}
 
-	@Override
+
 	public List<Company> getAllPage(int pageNumber, int nbCompanyPerPage) throws ExceptionDAO {
 		List<Company> companyList = new ArrayList();
 		Connection con = cm.getConnection();
@@ -107,13 +107,13 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 			}
 			return companyList;
 		} catch (SQLException e) {
-			showLogSQLException(e);
+			log.error(e.getMessage());
 			throw new ExceptionDAO(ExceptionDAO.STATEMENT_ERROR);
 		} finally {
 			try {
 				con.close();
 			} catch (SQLException e) {
-				showLogSQLException(e);
+				log.error(e.getMessage());
 				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 			}
 		}
