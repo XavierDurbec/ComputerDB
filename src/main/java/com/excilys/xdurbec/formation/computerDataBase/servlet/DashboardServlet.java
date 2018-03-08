@@ -28,27 +28,28 @@ public class DashboardServlet extends HttpServlet{
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
 		try {
-			String pageString = request.getParameter(ServletString.PAGE);
-			if (pageString != null) {
-				pageNb = Integer.valueOf(pageString);
-			}
 			String nbComputerByPageString = request.getParameter(ServletString.NB_COMPUTER_BY_PAGE);
 			if (nbComputerByPageString != null) {
 				nbComputerByPage = Integer.valueOf(nbComputerByPageString);
+			}
+			String pageString = request.getParameter(ServletString.PAGE);
+			if (pageString != null) {
+				pageNb = Integer.valueOf(pageString);
 			}
 			String filterTmp = request.getParameter("search");
 			if (filterTmp != null) {
 				filter = filterTmp;
 			}
 			int nbComputerPage = getNbComputerPage(filter);
+			if (pageNb > nbComputerPage) {
+				pageNb = nbComputerPage;
+			}
 			request.setAttribute("searchValue", filter);
 			request.setAttribute(ServletString.COMPUTER_COUNT, computerService.getComputerNumber(filter));
 			request.setAttribute(ServletString.COMPUTER_LIST, ComputerMapperDTO
 					.toComputerDTOList(computerService.getComputerPage(pageNb, nbComputerByPage, filter).getComputerList()));
 			request.setAttribute(ServletString.MAX_PAGE, nbComputerPage);
-			if (pageNb > nbComputerPage) {
-				pageNb = 1;
-			}
+
 			request.setAttribute(ServletString.PAGE_NB, this.pageNb);
 		} catch (ExceptionService e) {
 			log.error(e.getMessage());
