@@ -3,6 +3,7 @@ package com.excilys.xdurbec.formation.computerDataBase.service;
 import java.util.List;
 
 import com.excilys.xdurbec.formation.computerDataBase.dao.CompanyDAO;
+import com.excilys.xdurbec.formation.computerDataBase.dao.ComputerAttributes;
 import com.excilys.xdurbec.formation.computerDataBase.dao.ComputerDAO;
 import com.excilys.xdurbec.formation.computerDataBase.dao.ExceptionDAO;
 import com.excilys.xdurbec.formation.computerDataBase.model.Computer;
@@ -84,8 +85,8 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 		}
 	}
 
-	public ComputerPage getComputerPage(int pageNumber, int nbComputerByPage, String filter) throws ExceptionService {
-		return new ComputerPage(pageNumber, nbComputerByPage, filter);
+	public ComputerPage getComputerPage(int pageNumber, int nbComputerByPage, String filter, ComputerAttributes orderBy, Boolean ascendingOrder) throws ExceptionService {
+		return new ComputerPage(pageNumber, nbComputerByPage, filter, orderBy, ascendingOrder);
 	}
 
 	public int getComputerNumber(String filter) throws ExceptionService {

@@ -17,18 +17,18 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="dashboard?search="> Application -
+			<a class="navbar-brand" href="dashboard?search=&orderType=id"> Application -
 				Computer Database </a>
 		</div>
 	</header>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${computerCount} computers found.</h1>
+			<h1 id="homeTitle"><c:out value ="${computerCount} computers found."/></h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="dashboard" method="GET" class="form-inline">
 						<input type="search" id="searchbox" name="search"
-							class="form-control" placeholder="Search name" value="${searchValue}" /> <input
+							class="form-control" placeholder="Search name" value="<c:out value ='${searchValue}'/>" /> <input
 							type="submit" id="searchsubmit" value="Filter by name"
 							class="btn btn-primary" />
 					</form>
@@ -62,12 +62,10 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name</th>
-						<th>Introduced date</th>
-						<!-- Table header for Discontinued Date -->
-						<th>Discontinued date</th>
-						<!-- Table header for Company -->
-						<th>Company</th>
+						<th><a href="dashboard?orderType=name">Computer name</a></th>
+						<th><a href="dashboard?orderType=introduced">Introduced date</a></th>
+						<th><a href="dashboard?orderType=discontinued">Discontinued date</a></th>
+						<th><a href="dashboard?orderType=company">Company</a></th>
 
 					</tr>
 				</thead>

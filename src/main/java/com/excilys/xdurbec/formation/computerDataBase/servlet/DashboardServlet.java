@@ -1,8 +1,6 @@
 package com.excilys.xdurbec.formation.computerDataBase.servlet;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.excilys.xdurbec.formation.computerDataBase.dao.ComputerAttributes;
 import com.excilys.xdurbec.formation.computerDataBase.service.ComputerService;
 import com.excilys.xdurbec.formation.computerDataBase.service.ExceptionService;
 import com.excilys.xdurbec.formation.computerDataBase.servlet.dto.ComputerMapperDTO;
@@ -25,6 +24,8 @@ public class DashboardServlet extends HttpServlet{
 	private int pageNb = 1; 
 	private Logger log = LogManager.getLogger(this.getClass());
 	private String filter = ""; 
+	private ComputerAttributes orderBy =  ComputerAttributes.ID;
+	private Boolean ascendingOrder = true;
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
 		try {
@@ -43,20 +44,24 @@ public class DashboardServlet extends HttpServlet{
 			int nbComputerPage = getNbComputerPage(filter);
 			if (pageNb > nbComputerPage) {
 				pageNb = nbComputerPage;
+			}			
+			String orderByString = request.getParameter("orderType");
+			if (orderByString != null) {
+				this.orderBySet(orderByString);
 			}
+			request.setAttribute(ServletString.COMPUTER_LIST, ComputerMapperDTO
+					.toComputerDTOList(computerService.getComputerPage(pageNb, nbComputerByPage, filter, orderBy, ascendingOrder).getComputerList()));
 			request.setAttribute("searchValue", filter);
 			request.setAttribute(ServletString.COMPUTER_COUNT, computerService.getComputerNumber(filter));
-			request.setAttribute(ServletString.COMPUTER_LIST, ComputerMapperDTO
-					.toComputerDTOList(computerService.getComputerPage(pageNb, nbComputerByPage, filter).getComputerList()));
 			request.setAttribute(ServletString.MAX_PAGE, nbComputerPage);
-
 			request.setAttribute(ServletString.PAGE_NB, this.pageNb);
 		} catch (ExceptionService e) {
 			log.error(e.getMessage());
 		}
-
 		this.getServletContext().getRequestDispatcher(ServletString.CONTEXT_DASHBOARD).forward(request, response);
+		System.out.println(this);
 	}	
+
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) {
 		String computerListToDelete = request.getParameter("selection");
@@ -91,5 +96,40 @@ public class DashboardServlet extends HttpServlet{
 			return 0;
 		}
 	}
+
+	private void orderBySet(String orderByString) {
+		ComputerAttributes orderByTmp;
+		switch (orderByString) {
+		case "name":
+			orderByTmp = ComputerAttributes.NAME;
+			break;
+		case "introduced":
+			orderByTmp = ComputerAttributes.INTRODUCED;
+			break;
+		case "discontinued":
+			orderByTmp = ComputerAttributes.DISCONTINUED;
+			break;
+		case "company":
+			orderByTmp = ComputerAttributes.COMPANY_NAME;
+			break;
+		default :
+			orderByTmp = ComputerAttributes.ID;
+		}
+
+		if (orderByTmp == this.orderBy) {
+			this.ascendingOrder = !this.ascendingOrder;
+		} else {
+			this.orderBy = orderByTmp;
+			this.ascendingOrder = true;
+		}
+	}
+
+
+	@Override
+	public String toString() {
+		return "DashboardServlet [nbComputerByPage=" + nbComputerByPage + ", pageNb=" + pageNb + ", filter=" + filter + ", orderBy=" + orderBy + ", ascendingOrder=" + ascendingOrder + "]";
+	}
+
+
 }
 

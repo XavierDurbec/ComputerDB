@@ -36,7 +36,7 @@ public class CommandeLineInterface {
 	}
 
 	public static CommandeLineInterface getCommandLineInterface() {
-		if(commandLineInterface == null) {
+		if (commandLineInterface == null) {
 			return new CommandeLineInterface();
 		} else {
 			return commandLineInterface;
@@ -423,7 +423,7 @@ public class CommandeLineInterface {
 	public void getAllPageComputer() {
 		int currentPage = 1;
 		try {
-			ComputerPage computerPage = computerService.getComputerPage(currentPage, this.nbElementPerPage, null);
+			ComputerPage computerPage = computerService.getComputerPage(currentPage, this.nbElementPerPage, null, null, null);
 
 			while (computerPage.getComputerList().size() > 0) {
 				System.out.println("=================Page n°" + currentPage + "=================");

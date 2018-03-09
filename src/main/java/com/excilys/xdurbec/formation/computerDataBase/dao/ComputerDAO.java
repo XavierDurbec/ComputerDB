@@ -51,6 +51,7 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 			+ "FROM computer LEFT JOIN company "
 			+ "ON computer.company_id = company.id "
 			+ "WHERE computer.name LIKE ? OR company.name LIKE ? "
+			+ "ORDER BY %s %s "
 			+ "LIMIT ? "
 			+ "OFFSET ?;";
 	
@@ -212,15 +213,20 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 		}
 	}
 
-	public List<Computer> getAllPage(int pageNumber, int nbEntityPerPage, String filter) throws ExceptionDAO {
+	public List<Computer> getAllPage(int pageNumber, int nbEntityPerPage, String filter, ComputerAttributes orderBy, Boolean ascendingOrder) throws ExceptionDAO {
 			Connection con = cm.getConnection();
 			List<Computer> computerList = new ArrayList<>();
-			
-			try (PreparedStatement stat = con.prepareStatement(GET_PAGE_WITH_FILTRE_REQUEST)) {
+			String direction = ascendingOrder ? "ASC" : "DESC";
+			try (PreparedStatement stat = con.prepareStatement(String.format(GET_PAGE_WITH_FILTRE_REQUEST, orderBy.sqlName, direction))) {
 				stat.setString(1, "%" + filter + "%");
 				stat.setString(2, "%" + filter + "%");
 				stat.setInt(3, nbEntityPerPage);
-				stat.setInt(4, (pageNumber - 1) * nbEntityPerPage);
+				int firstPage = (pageNumber - 1) * nbEntityPerPage;
+				if (firstPage < 0) {
+					firstPage = 0;
+				}
+				stat.setInt(4, firstPage);
+				System.out.println(stat.toString());
 				stat.executeQuery();
 				ResultSet res = stat.getResultSet();
 				 
