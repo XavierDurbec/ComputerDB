@@ -55,6 +55,8 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 			+ "LIMIT ? "
 			+ "OFFSET ?;";
 	
+	private static final String DELETE_BY_COMPANY = "DELETE FROM computer WHERE company.id = ?;";
+	
 
 	
 	private ConnectionManager cm;
@@ -285,6 +287,16 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 				log.error(e.getMessage());
 				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 			}
+		}
+	}
+	
+	public void deleteByCompany(int companyId, Connection con) throws SQLException {
+		try (PreparedStatement stat = con.prepareStatement(DELETE_BY_COMPANY)) {
+			stat.setInt(1, companyId);
+			stat.executeQuery();
+		} catch (SQLException e) {
+			log.error(e.getMessage());
+			throw e;
 		}
 	}
 	

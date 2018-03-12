@@ -22,6 +22,7 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 	private static final String GET_ALL_PAGE = "SELECT id, name FROM company LIMIT ? OFFSET ?;";
 	private static final String DOES_COMPANY_EXIST = "SELECT count(*) FROM company WHERE id = ?;";
 	private static final String GET_BY_ID = "SELECT id, name FROM company WHERE id = ?;";
+	private static final String DELETE_BY_ID = "DELETE FROM company WHERE id = ?;";
 
 	private static CompanyDAO companyDAO;
 
@@ -62,7 +63,7 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 			try {
 				con.close();
 			} catch (SQLException e) {
-				log.error(e.getMessage());;
+				log.error(e.getMessage());
 				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 			}
 		}
@@ -71,7 +72,7 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 
 	public Boolean doesExist(int id) throws  ExceptionDAO {
 		Connection con = cm.getConnection();
-		try (PreparedStatement stat = con.prepareStatement(DOES_COMPANY_EXIST)){
+		try (PreparedStatement stat = con.prepareStatement(DOES_COMPANY_EXIST)) {
 			stat.setInt(1, id);
 			stat.executeQuery(); 
 			ResultSet rs = stat.getResultSet();
@@ -118,7 +119,7 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 			}
 		}
 	}
-	
+
 	public Company getById(int id) throws ExceptionDAO {
 		Connection con = cm.getConnection();
 		try (PreparedStatement stat = con.prepareStatement(GET_BY_ID)) {
@@ -139,7 +140,31 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 				log.error(e.getMessage());
 				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 			}
-			
+
+		}
+	}
+
+	public void deleteById(int id) throws ExceptionDAO {
+		Connection con = cm.getConnection();
+		try (PreparedStatement stat = con.prepareStatement(DELETE_BY_ID)) {
+			con.setAutoCommit(false);
+			ComputerDAO.getComputerDAO().deleteByCompany(id, con);
+			stat.setInt(1, id);
+			stat.executeQuery();
+		} catch (SQLException e) {
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				log.error(e.getMessage());
+			}
+			log.error(e.getMessage());
+		} finally {
+			try {
+				con.close();
+			} catch (SQLException e) {
+				log.error(e.getMessage());
+				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
+			}
 		}
 	}
 

@@ -17,7 +17,7 @@ public class ExceptionService extends Exception {
 	public static final String COMPUTER_NUMBER_ERROR = "Computer number error";
 	public static final String GET_COMPANY_BY_ID = "Get company id error";
 	public static final String DATE_ERROR = "Date of computer are not legal.";
-	
+	public static final String DELETE_COMPANY_ERROR = "Delete company by id error.";
 
 
 	ExceptionService(String msg) {
