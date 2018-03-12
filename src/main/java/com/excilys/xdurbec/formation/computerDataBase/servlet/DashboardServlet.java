@@ -59,7 +59,6 @@ public class DashboardServlet extends HttpServlet{
 			log.error(e.getMessage());
 		}
 		this.getServletContext().getRequestDispatcher(ServletString.CONTEXT_DASHBOARD).forward(request, response);
-		System.out.println(this);
 	}	
 
 
@@ -124,11 +123,6 @@ public class DashboardServlet extends HttpServlet{
 		}
 	}
 
-
-	@Override
-	public String toString() {
-		return "DashboardServlet [nbComputerByPage=" + nbComputerByPage + ", pageNb=" + pageNb + ", filter=" + filter + ", orderBy=" + orderBy + ", ascendingOrder=" + ascendingOrder + "]";
-	}
 
 
 }

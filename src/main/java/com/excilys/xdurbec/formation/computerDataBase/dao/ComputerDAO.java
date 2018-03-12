@@ -127,7 +127,7 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 			}
 			return listComputer;
 		} catch (SQLException e) {
-			System.out.println("sqlException: " + e.getMessage());
+			log.error(e.getMessage());
 			throw new ExceptionDAO(ExceptionDAO.GET_ALL_ERROR);
 		} finally {
 			try {
@@ -228,7 +228,6 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 					firstPage = 0;
 				}
 				stat.setInt(4, firstPage);
-				System.out.println(stat.toString());
 				stat.executeQuery();
 				ResultSet res = stat.getResultSet();
 				 

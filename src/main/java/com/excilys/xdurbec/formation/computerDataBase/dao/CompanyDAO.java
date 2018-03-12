@@ -140,7 +140,6 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 				log.error(e.getMessage());
 				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 			}
-
 		}
 	}
 
