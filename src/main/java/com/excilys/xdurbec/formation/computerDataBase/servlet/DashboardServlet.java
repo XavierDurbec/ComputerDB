@@ -37,7 +37,7 @@ public class DashboardServlet extends HttpServlet{
 			if (pageString != null) {
 				pageNb = Integer.valueOf(pageString);
 			}
-			String filterTmp = request.getParameter("search");
+			String filterTmp = request.getParameter(ServletString.NAME_SEARCHED);
 			if (filterTmp != null) {
 				filter = filterTmp;
 			}
@@ -45,16 +45,16 @@ public class DashboardServlet extends HttpServlet{
 			if (pageNb > nbComputerPage) {
 				pageNb = nbComputerPage;
 			}			
-			String orderByString = request.getParameter("orderType");
+			String orderByString = request.getParameter(ServletString.ORDER_TYPE);
 			if (orderByString != null) {
 				this.orderBySet(orderByString);
 			}
-			request.setAttribute(ServletString.COMPUTER_LIST, ComputerMapperDTO
+			request.setAttribute(ServletString.JSP_COMPUTER_LIST, ComputerMapperDTO
 					.toComputerDTOList(computerService.getComputerPage(pageNb, nbComputerByPage, filter, orderBy, ascendingOrder).getComputerList()));
-			request.setAttribute("searchValue", filter);
-			request.setAttribute(ServletString.COMPUTER_COUNT, computerService.getComputerNumber(filter));
-			request.setAttribute(ServletString.MAX_PAGE, nbComputerPage);
-			request.setAttribute(ServletString.PAGE_NB, this.pageNb);
+			request.setAttribute(ServletString.JSP_SEARCH_VALUE, filter);
+			request.setAttribute(ServletString.JSP_COMPUTER_COUNT, computerService.getComputerNumber(filter));
+			request.setAttribute(ServletString.JSP_MAX_PAGE, nbComputerPage);
+			request.setAttribute(ServletString.JSP_PAGE_NB, this.pageNb);
 		} catch (ExceptionService e) {
 			log.error(e.getMessage());
 		}
@@ -64,8 +64,8 @@ public class DashboardServlet extends HttpServlet{
 
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) {
-		String computerListToDelete = request.getParameter("selection");
-		if (!computerListToDelete.equals("")) {
+		String computerListToDelete = request.getParameter(ServletString.COMPUTER_SELECTED);
+		if (!computerListToDelete.equals(ServletString.VOID_STRING)) {
 			for (String computerIdString : computerListToDelete.split(",")) {
 				try {
 					computerService.deleteById(Integer.valueOf(computerIdString));

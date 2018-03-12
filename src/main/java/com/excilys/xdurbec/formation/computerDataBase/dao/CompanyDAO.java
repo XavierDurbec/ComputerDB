@@ -151,6 +151,7 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 			ComputerDAO.getComputerDAO().deleteByCompany(id, con);
 			stat.setInt(1, id);
 			stat.executeQuery();
+			con.commit();
 		} catch (SQLException e) {
 			try {
 				con.rollback();
