@@ -59,7 +59,7 @@ public class CompanyService extends EntityService implements EntityServiceCompor
 		}
 	}
 	
-	public void deleteCompanyById(int id) {
+	public void deleteCompanyById(int id) throws ExceptionService {
 		try {
 			companyDAO.deleteById(id);
 		} catch (ExceptionDAO e) {
