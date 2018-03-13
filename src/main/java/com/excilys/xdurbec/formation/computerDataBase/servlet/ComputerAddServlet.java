@@ -3,7 +3,9 @@ package com.excilys.xdurbec.formation.computerDataBase.servlet;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -45,16 +47,22 @@ public class ComputerAddServlet extends HttpServlet {
 
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) {
-
-		ComputerDTO computerDTO = new ComputerDTO();
 		try {
-			computerDTO.setName(request.getParameter(ServletString.COMPUTER_NAME));
-			computerDTO.setIntroduced(request.getParameter(ServletString.COMPUTER_INTRODUCED));
-			computerDTO.setDiscontinued(request.getParameter(ServletString.COMPUTER_DISCONTINUED));
-			computerDTO.setCompany(getCompanyById(Integer.valueOf(request.getParameter(ServletString.COMPUTER_COMPANY_ID))));
-			computerService.create(ComputerMapperDTO.toComputer(computerDTO));
-			response.sendRedirect(ServletString.DASHBOARD);
-		} catch (ExceptionService | IOException e) {
+			Map<String, String> errors = ComputerValidator.validator(request);
+			if (errors.isEmpty()) {
+				ComputerDTO computerDTO = new ComputerDTO();
+				computerDTO.setName(request.getParameter(ServletString.COMPUTER_NAME));
+				computerDTO.setIntroduced(request.getParameter(ServletString.COMPUTER_INTRODUCED));
+				computerDTO.setDiscontinued(request.getParameter(ServletString.COMPUTER_DISCONTINUED));
+				computerDTO.setCompany(getCompanyById(Integer.valueOf(request.getParameter(ServletString.COMPUTER_COMPANY_ID))));
+				computerService.create(ComputerMapperDTO.toComputer(computerDTO));
+				response.sendRedirect(ServletString.DASHBOARD);
+
+			} else {
+				request.setAttribute(ServletString.ERRORS, errors);
+				doGet(request, response);
+			}
+		} catch (ExceptionService | IOException | ServletException e) {
 			log.error(e.getMessage());
 		}
 	}

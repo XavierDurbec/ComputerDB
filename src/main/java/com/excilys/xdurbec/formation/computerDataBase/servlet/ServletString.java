@@ -20,4 +20,7 @@ public class ServletString {
 	public static final String NAME_SEARCHED = "search";
 	public static final String ORDER_TYPE = "orderType";
 	public static final String JSP_SEARCH_VALUE = "searchValue";
+	public static final String DATE_POSITION_ERROR = "Introduced date have to be before discontinued! (Break spacetime is only allowed for time lord. Seriously man, don't do that...)";
+	public static final String NAME_SIZE_ERROR = "Name too long.";
+	public static final String ERRORS = "erreurs";
 }
