@@ -1,4 +1,4 @@
-package com.excilys.xdurbec.formation.computerDataBase.service;
+package com.excilys.xdurbec.formation.computerDataBase.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,14 +6,14 @@ import java.util.List;
 import com.excilys.xdurbec.formation.computerDataBase.dao.ComputerAttributes;
 import com.excilys.xdurbec.formation.computerDataBase.dao.ComputerDAO;
 import com.excilys.xdurbec.formation.computerDataBase.dao.ExceptionDAO;
-import com.excilys.xdurbec.formation.computerDataBase.model.Computer;
+import com.excilys.xdurbec.formation.computerDataBase.service.ExceptionService;
 
 public class ComputerPage {
 
 	private int pageNumber;
 	private int nbComputerPerPage;
 	private String filter;
-	private List<Computer> computerList = new ArrayList<Computer>();
+	private List<Computer> computerList = new ArrayList<>();
 	private Boolean ascendingOrder;
 	private ComputerAttributes orderBy;
 	
@@ -23,10 +23,7 @@ public class ComputerPage {
 		this.filter = filter;
 		this.orderBy = ordresBy;
 		this.ascendingOrder = ascendingOrder;
-		this.refresh();
 	}
-	
-
 	
 	public int getPageNumber() {
 		return pageNumber;
@@ -52,7 +49,6 @@ public class ComputerPage {
 		this.filter = filter;
 	}
 	
-	
 
 	public Boolean getAscendingOrder() {
 		return ascendingOrder;
@@ -70,11 +66,9 @@ public class ComputerPage {
 		this.orderBy = orderBy;
 	}
 
-	public void refresh() throws ExceptionService {
-		try {
-			this.computerList = ComputerDAO.getComputerDAO().getAllPage(pageNumber, nbComputerPerPage, filter, orderBy, ascendingOrder);
-		} catch (ExceptionDAO e) {
-			throw new ExceptionService(ExceptionService.GET_ALL_ERROR_PAGE);
-		}
+	public void setComputerList(List<Computer> computerList) {
+		this.computerList = computerList;
 	}
+
+	
 }	

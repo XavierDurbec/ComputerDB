@@ -143,7 +143,7 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 		}
 	}
 
-	public void deleteById(int id) throws ExceptionDAO {
+	/*public void deleteById(int id) throws ExceptionDAO {
 		Connection con = cm.getConnection();
 		try (PreparedStatement stat = con.prepareStatement(DELETE_BY_ID)) {
 			con.setAutoCommit(false);
@@ -166,6 +166,6 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
 			}
 		}
-	}
+	}*/
 
 }

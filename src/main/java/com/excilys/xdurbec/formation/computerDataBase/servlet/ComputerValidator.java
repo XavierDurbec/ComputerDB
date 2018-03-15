@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 public class ComputerValidator {
 	
 	private static boolean dateLogicValidation(String introduced, String discontinued) {
-		System.out.println("intro : " + introduced);
-		System.out.println("dis : " + discontinued);
 			return introduced == null  || discontinued == null 
 					|| introduced.equals("")  || discontinued.equals("") 
 					|| Date.valueOf(discontinued).after(Date.valueOf(introduced));
@@ -27,7 +25,6 @@ public class ComputerValidator {
 		Map<String, String> errors = new HashMap<String, String>();
 		
 		if (!dateLogicValidation(request.getParameter(ServletString.COMPUTER_INTRODUCED), request.getParameter(ServletString.COMPUTER_DISCONTINUED))) {
-			System.out.println("Bien dans l'erreur");
 			errors.put(ServletString.COMPUTER_INTRODUCED, ServletString.DATE_POSITION_ERROR);
 		}
 		if (!validName(request.getParameter(ServletString.COMPUTER_NAME))) {

@@ -17,7 +17,7 @@ import com.excilys.xdurbec.formation.computerDataBase.servlet.dto.ComputerMapper
 
 
 @WebServlet("/editComputer")
-public class EditComputerServlet extends HttpServlet{
+public class EditComputerServlet extends HttpServlet {
 	private ComputerService computerService = ComputerService.getComputerService();
 	private CompanyService companyService = CompanyService.getCompanyService();
 	private int computerId;

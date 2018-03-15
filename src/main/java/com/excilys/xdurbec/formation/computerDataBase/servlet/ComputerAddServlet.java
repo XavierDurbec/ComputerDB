@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.xdurbec.formation.computerDataBase.service.CompanyService;
 import com.excilys.xdurbec.formation.computerDataBase.service.ComputerService;
@@ -32,7 +33,8 @@ public class ComputerAddServlet extends HttpServlet {
 
 	protected Logger log = LogManager.getLogger(this.getClass());
 
-	private ComputerService computerService = ComputerService.getComputerService();
+	@Autowired
+	private ComputerService computerService;
 	private CompanyService companyService = CompanyService.getCompanyService();
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {

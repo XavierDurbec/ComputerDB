@@ -2,6 +2,8 @@ package com.excilys.xdurbec.formation.computerDataBase.servlet;
 
 import java.io.IOException;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,15 +12,27 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.excilys.xdurbec.formation.computerDataBase.dao.ComputerAttributes;
+import com.excilys.xdurbec.formation.computerDataBase.model.ComputerPage;
 import com.excilys.xdurbec.formation.computerDataBase.service.ComputerService;
 import com.excilys.xdurbec.formation.computerDataBase.service.ExceptionService;
 import com.excilys.xdurbec.formation.computerDataBase.servlet.dto.ComputerMapperDTO;
+import com.excilys.xdurbec.formation.computerDataBase.springConfig.ApplicationConfig;
 
 @WebServlet("/dashboard")
-public class DashboardServlet extends HttpServlet{
-	private static ComputerService computerService = ComputerService.getComputerService();
+@Scope("session")
+public class DashboardServlet extends HttpServlet {
+
+	@Autowired
+	private ComputerService computerService;
 
 	private int nbComputerByPage = 20;
 	private int pageNb = 1; 
@@ -26,6 +40,17 @@ public class DashboardServlet extends HttpServlet{
 	private String filter = ""; 
 	private ComputerAttributes orderBy =  ComputerAttributes.ID;
 	private Boolean ascendingOrder = true;
+
+	
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		ServletContext servletContext = config.getServletContext();
+		WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+	    AutowireCapableBeanFactory autowireCapableBeanFactory = webApplicationContext.getAutowireCapableBeanFactory();
+	    autowireCapableBeanFactory.autowireBean(this);
+	}
+
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
 		try {
@@ -49,8 +74,10 @@ public class DashboardServlet extends HttpServlet{
 			if (orderByString != null) {
 				this.orderBySet(orderByString);
 			}
+			ComputerPage computerPage = computerService.getComputerPage(pageNb, nbComputerByPage, filter, orderBy, ascendingOrder);
+			
 			request.setAttribute(ServletString.JSP_COMPUTER_LIST, ComputerMapperDTO
-					.toComputerDTOList(computerService.getComputerPage(pageNb, nbComputerByPage, filter, orderBy, ascendingOrder).getComputerList()));
+					.toComputerDTOList(computerService.refresh(computerPage).getComputerList()));
 			request.setAttribute(ServletString.JSP_SEARCH_VALUE, filter);
 			request.setAttribute(ServletString.JSP_COMPUTER_COUNT, computerService.getComputerNumber(filter));
 			request.setAttribute(ServletString.JSP_MAX_PAGE, nbComputerPage);
@@ -59,6 +86,7 @@ public class DashboardServlet extends HttpServlet{
 			log.error(e.getMessage());
 		}
 		this.getServletContext().getRequestDispatcher(ServletString.CONTEXT_DASHBOARD).forward(request, response);
+		
 	}	
 
 
@@ -85,7 +113,6 @@ public class DashboardServlet extends HttpServlet{
 		int nbPage;
 		try {
 			nbPage = computerService.getComputerNumber(filter) / this.nbComputerByPage;
-
 			if (computerService.getComputerNumber(filter) % this.nbComputerByPage != 0) {
 				nbPage++;
 			}
@@ -122,8 +149,6 @@ public class DashboardServlet extends HttpServlet{
 			this.ascendingOrder = true;
 		}
 	}
-
-
 
 }
 
