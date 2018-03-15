@@ -34,12 +34,8 @@ public class DashboardServlet extends HttpServlet {
 	@Autowired
 	private ComputerService computerService;
 
-	private int nbComputerByPage = 20;
-	private int pageNb = 1; 
-	private Logger log = LogManager.getLogger(this.getClass());
-	private String filter = ""; 
-	private ComputerAttributes orderBy =  ComputerAttributes.ID;
-	private Boolean ascendingOrder = true;
+	private  Logger log = LogManager.getLogger(this.getClass());
+	
 
 	
 	@Override
@@ -53,9 +49,16 @@ public class DashboardServlet extends HttpServlet {
 
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
+		 int nbComputerByPage = 20;
+		 int pageNb = 1; 
+		 String filter = ""; 
+		 ComputerAttributes orderBy =  ComputerAttributes.ID;
+
+		 boolean ascendingOrder = true;
 		try {
+			String ascendingOrderString = request.getParameter("orderDirection");		
 			String nbComputerByPageString = request.getParameter(ServletString.NB_COMPUTER_BY_PAGE);
-			if (nbComputerByPageString != null) {
+			if (nbComputerByPageString != null && !nbComputerByPageString.equals("")) {
 				nbComputerByPage = Integer.valueOf(nbComputerByPageString);
 			}
 			String pageString = request.getParameter(ServletString.PAGE);
@@ -66,29 +69,35 @@ public class DashboardServlet extends HttpServlet {
 			if (filterTmp != null) {
 				filter = filterTmp;
 			}
-			int nbComputerPage = getNbComputerPage(filter);
+			int nbComputerPage = getNbComputerPage(filter, nbComputerByPage);
 			if (pageNb > nbComputerPage) {
 				pageNb = nbComputerPage;
 			}			
 			String orderByString = request.getParameter(ServletString.ORDER_TYPE);
 			if (orderByString != null) {
-				this.orderBySet(orderByString);
+				orderBy = this.orderBySet(orderByString);
+			}
+			String oldOrderByString = request.getParameter(ServletString.OLD_ORDER_TYPE);
+			if (oldOrderByString != null) {
+				ascendingOrder = this.orderDirectionSet(orderBy, this.orderBySet(oldOrderByString), ascendingOrderString);
 			}
 			ComputerPage computerPage = computerService.getComputerPage(pageNb, nbComputerByPage, filter, orderBy, ascendingOrder);
-			
+
+			ascendingOrderString = ascendingOrder ? "ASC" : "DESC";
+			request.setAttribute("orderDirection", ascendingOrderString);
+			request.setAttribute(ServletString.JSP_ORDER_VALUE, orderBy.sqlName);
 			request.setAttribute(ServletString.JSP_COMPUTER_LIST, ComputerMapperDTO
 					.toComputerDTOList(computerService.refresh(computerPage).getComputerList()));
 			request.setAttribute(ServletString.JSP_SEARCH_VALUE, filter);
 			request.setAttribute(ServletString.JSP_COMPUTER_COUNT, computerService.getComputerNumber(filter));
 			request.setAttribute(ServletString.JSP_MAX_PAGE, nbComputerPage);
-			request.setAttribute(ServletString.JSP_PAGE_NB, this.pageNb);
+			request.setAttribute(ServletString.JSP_PAGE_NB, pageNb);
 		} catch (ExceptionService e) {
 			log.error(e.getMessage());
 		}
 		this.getServletContext().getRequestDispatcher(ServletString.CONTEXT_DASHBOARD).forward(request, response);
 		
 	}	
-
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) {
 		String computerListToDelete = request.getParameter(ServletString.COMPUTER_SELECTED);
@@ -109,11 +118,11 @@ public class DashboardServlet extends HttpServlet {
 
 	}
 
-	private int getNbComputerPage(String filter) {
+	private int getNbComputerPage(String filter, int nbComputerByPage) {
 		int nbPage;
 		try {
-			nbPage = computerService.getComputerNumber(filter) / this.nbComputerByPage;
-			if (computerService.getComputerNumber(filter) % this.nbComputerByPage != 0) {
+			nbPage = computerService.getComputerNumber(filter) / nbComputerByPage;
+			if (computerService.getComputerNumber(filter) % nbComputerByPage != 0) {
 				nbPage++;
 			}
 			return nbPage;  
@@ -123,7 +132,7 @@ public class DashboardServlet extends HttpServlet {
 		}
 	}
 
-	private void orderBySet(String orderByString) {
+	private ComputerAttributes orderBySet(String orderByString) {
 		ComputerAttributes orderByTmp;
 		switch (orderByString) {
 		case "name":
@@ -141,13 +150,13 @@ public class DashboardServlet extends HttpServlet {
 		default :
 			orderByTmp = ComputerAttributes.ID;
 		}
-
-		if (orderByTmp == this.orderBy) {
-			this.ascendingOrder = !this.ascendingOrder;
-		} else {
-			this.orderBy = orderByTmp;
-			this.ascendingOrder = true;
-		}
+		return orderByTmp;
+	}
+	
+	private boolean orderDirectionSet(ComputerAttributes orderBy, ComputerAttributes oldOrderBy, String ascendingString) {
+		boolean orderDirection = ascendingString != null ? ascendingString.equals("DESC") ? false : true : true;
+		orderDirection = orderBy.equals(oldOrderBy) ? !orderDirection : orderDirection;
+		return orderDirection;
 	}
 
 }

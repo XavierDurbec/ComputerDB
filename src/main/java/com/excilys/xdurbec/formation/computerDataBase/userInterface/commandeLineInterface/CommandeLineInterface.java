@@ -101,7 +101,16 @@ public class CommandeLineInterface {
 	public void getComputer()  {
 		System.out.println("Give the computer id:");
 		this.readLine();
-		try {
+		try { 
+		    @Bean
+		    public DataSource dataSource() {
+		        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+		        dataSource.setDriverClassName(env.getRequiredProperty("jdbc.driverClassName"));
+		        dataSource.setUrl(env.getRequiredProperty("jdbc.url"));
+		        dataSource.setUsername(env.getRequiredProperty("jdbc.user"));
+		        dataSource.setPassword(env.getRequiredProperty("jdbc.pass"));
+		        return dataSource;
+		    }
 			int id = Integer.parseInt(line);
 			System.out.println(computerService.getById(id));
 		} catch (ExceptionService e) {

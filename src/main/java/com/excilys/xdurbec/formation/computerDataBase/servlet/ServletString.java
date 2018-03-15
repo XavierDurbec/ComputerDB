@@ -23,4 +23,6 @@ public class ServletString {
 	public static final String DATE_POSITION_ERROR = "Introduced date have to be before discontinued! (Break spacetime is only allowed for time lord. Seriously man, don't do that...)";
 	public static final String NAME_SIZE_ERROR = "Name too long.";
 	public static final String ERRORS = "erreurs";
+	public static final String JSP_ORDER_VALUE = "orderValue";
+	public static final String OLD_ORDER_TYPE = "oldOrderType";
 }

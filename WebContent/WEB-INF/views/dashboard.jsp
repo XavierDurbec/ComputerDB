@@ -1,8 +1,8 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-
 <!DOCTYPE html>
+
 
 <html>
 <head>
@@ -17,7 +17,7 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="dashboard?search=&orderType=id"> Application -
+			<a class="navbar-brand" href="dashboard"> Application -
 				Computer Database </a>
 		</div>
 	</header>
@@ -62,10 +62,10 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th><a href="dashboard?orderType=name">Computer name</a></th>
-						<th><a href="dashboard?orderType=introduced">Introduced date</a></th>
-						<th><a href="dashboard?orderType=discontinued">Discontinued date</a></th>
-						<th><a href="dashboard?orderType=company">Company</a></th>
+						<th><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=&page${pageNb}&search=${searchValue}&orderType=name">Computer name</a></th>
+						<th><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=&page${pageNb}&search=${searchValue}&orderType=introduced">Introduced date</a></th>
+						<th><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=&page${pageNb}&search=${searchValue}&orderType=discontinued">Discontinued date</a></th>
+						<th><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=&page${pageNb}&search=${searchValue}&orderType=company">Company</a></th>
 
 					</tr>
 				</thead>
@@ -76,7 +76,7 @@
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="${computer.id}"></td>
-							<td><a href="editComputer?id=${computer.id}" onclick=""><c:out value="${computer.name}"/></a></td>
+							<td><a href="editComputer?orderType=${orderValue}&nbComputerByPage=&page=${pageNb}&search=${searchValue}&orderType=&id=${computer.id}" onclick=""><c:out value="${computer.name}"/></a></td>
 							<td><c:out value="${computer.introduced}"/></td>
 							<td><c:out value="${computer.discontinued}"/></td>
 							<td><c:out value="${computer.company.name}"/></td>
@@ -93,7 +93,7 @@
 			<ul class="pagination">
 
 				<c:if test="${pageNb > 1 }">
-					<li><a href="dashboard?page=${pageNb-1}" aria-label="Previous">
+					<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=&search=${searchValue}&orderType=&page=${pageNb-1}" aria-label="Previous">
 							<span aria-hidden="true">&laquo;</span>
 					</a></li>
 				</c:if>
@@ -102,10 +102,10 @@
 						<c:forEach begin="1" end="${maxPage}" step="1" var="i">
 							<c:choose>
 								<c:when test="${i == pageNb}">
-									<li><a href="dashboard?page=${i}"><b>${i}</b></a></li>
+									<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=&search=${searchValue}&orderType=&page=${i}"><b>${i}</b></a></li>
 								</c:when>
 								<c:otherwise>
-									<li><a href="dashboard?page=${i}">${i}</a></li>
+									<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=&search=${searchValue}&orderType=&page=${i}">${i}</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
@@ -115,53 +115,53 @@
 						<c:forEach begin="1" end="15" step="1" var="i">
 							<c:choose>
 								<c:when test="${i == pageNb}">
-									<li><a href="dashboard?page=${i}"><b>${i}</b></a></li>
+									<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=&search=${searchValue}&orderType=&page=${i}"><b>${i}</b></a></li>
 								</c:when>
 								<c:otherwise>
-									<li><a href="dashboard?page=${i}">${i}</a></li>
+									<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=&search=${searchValue}&orderType=&page=${i}">${i}</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 						<li><a>...</a></li>
 						<c:forEach begin="${maxPage-5}" end="${maxPage}" step="1" var="i">
-							<li><a href="dashboard?page=${i}">${i}</a></li>
+							<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=&search=${searchValue}&orderType=&page=${i}">${i}</a></li>
 						</c:forEach>
 					</c:when>
 
 					<c:when
 						test="${maxPage > 27 && pageNb > 10 && pageNb < maxPage - 10}">
 						<c:forEach begin="1" end="5" step="1" var="i">
-							<li><a href="dashboard?page=${i}">${i}</a></li>
+							<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=&search=${searchValue}&orderType=&page=${i}">${i}</a></li>
 						</c:forEach>
 						<li><a>...</a></li>
 						<c:forEach begin="${pageNb-5}" end="${pageNb+5}" step="1" var="i">
 							<c:choose>
 								<c:when test="${i == pageNb}">
-									<li><a href="dashboard?page=${i}"><b>${i}</b></a></li>
+									<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=&search=${searchValue}&orderType=&page={i}"><b>${i}</b></a></li>
 								</c:when>
 								<c:otherwise>
-									<li><a href="dashboard?page=${i}">${i}</a></li>
+									<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=&search=${searchValue}&orderType=&page=${i}">${i}</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 						<li><a>...</a></li>
 						<c:forEach begin="${maxPage-5}" end="${maxPage}" step="1" var="i">
-							<li><a href="dashboard?page=${i}">${i}</a></li>
+							<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=&search=${searchValue}&orderType=&page={i}">${i}</a></li>
 						</c:forEach>
 					</c:when>
 
 					<c:when test="${maxPage > 27 && pageNb >= maxPage - 10}">
 						<c:forEach begin="1" end="5" step="1" var="i">
-							<li><a href="dashboard?page=${i}">${i}</a></li>
+							<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=&search=${searchValue}&orderType=&page=${i}">${i}</a></li>
 						</c:forEach>
 						<li><a>...</a></li>
 						<c:forEach begin="${maxPage-11}" end="${maxPage}" step="1" var="i">
 							<c:choose>
 								<c:when test="${i == pageNb}">
-									<li><a href="dashboard?page=${i}"><b>${i}</b></a></li>
+									<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=&search=${searchValue}&orderType=&page=${i}"><b>${i}</b></a></li>
 								</c:when>
 								<c:otherwise>
-									<li><a href="dashboard?page=${i}">${i}</a></li>
+									<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=&search=${searchValue}&orderType=&page=${i}">${i}</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
@@ -176,9 +176,9 @@
 			</ul>
 
 			<div class="btn-group btn-group-sm pull-right" role="group">
-				<a href="dashboard?nbComputerByPage=10"><button type="button" class="btn btn-default">10</button></a>
-				<a href="dashboard?nbComputerByPage=50"><button type="button" class="btn btn-default">50</button></a>
-				<a href="dashboard?nbComputerByPage=100"><button type="button" class="btn btn-default">100</button></a>
+				<a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=10&search=${searchValue}&orderType=&page=${pageNb}"><button type="button" class="btn btn-default">10</button></a>
+				<a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=50&search=${searchValue}&orderType=&page=${pageNb}"><button type="button" class="btn btn-default">50</button></a>
+				<a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=100&search=${searchValue}&orderType=&page=${pageNb}"><button type="button" class="btn btn-default">100</button></a>
 			</div>
 		</div>
 	</footer>
