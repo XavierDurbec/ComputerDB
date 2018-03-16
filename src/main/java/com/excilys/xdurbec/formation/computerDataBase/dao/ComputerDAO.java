@@ -104,6 +104,7 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 				new RowMapper<Computer>() {
 					public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
 						Computer computer = new  Computer();
+						computer.setId(Integer.valueOf(rs.getInt(ConstantStringDAO.ID_OF_COMPUTER)));
 						computer.setName(rs.getString(ConstantStringDAO.NAME_OF_COMPUTER));
 						computer.setIntroduced(rs.getDate(ConstantStringDAO.INTRODUCED_OF_COMPUTER));
 						computer.setDiscontinued(rs.getDate(ConstantStringDAO.DISCONTINUED_OF_COMPUTER));
@@ -158,6 +159,7 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 				new RowMapper<Computer>() {
 					public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
 						Computer computer = new  Computer();
+						computer.setId(Integer.valueOf(rs.getInt(ConstantStringDAO.ID_OF_COMPUTER)));
 						computer.setName(rs.getString(ConstantStringDAO.NAME_OF_COMPUTER));
 						computer.setIntroduced(rs.getDate(ConstantStringDAO.INTRODUCED_OF_COMPUTER));
 						computer.setDiscontinued(rs.getDate(ConstantStringDAO.DISCONTINUED_OF_COMPUTER));

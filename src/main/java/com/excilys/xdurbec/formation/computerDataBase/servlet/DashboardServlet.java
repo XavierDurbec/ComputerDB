@@ -85,15 +85,17 @@ public class DashboardServlet extends HttpServlet {
 
 			ascendingOrderString = ascendingOrder ? "ASC" : "DESC";
 			request.setAttribute("orderDirection", ascendingOrderString);
+			request.setAttribute("computerByPage", nbComputerByPage);
 			request.setAttribute(ServletString.JSP_ORDER_VALUE, orderBy.sqlName);
-			request.setAttribute(ServletString.JSP_COMPUTER_LIST, ComputerMapperDTO
-					.toComputerDTOList(computerService.refresh(computerPage).getComputerList()));
+			
+			System.out.println(computerService.refresh(computerPage).getComputerList());
+			request.setAttribute(ServletString.JSP_COMPUTER_LIST, ComputerMapperDTO.toComputerDTOList(computerService.refresh(computerPage).getComputerList()));
 			request.setAttribute(ServletString.JSP_SEARCH_VALUE, filter);
 			request.setAttribute(ServletString.JSP_COMPUTER_COUNT, computerService.getComputerNumber(filter));
 			request.setAttribute(ServletString.JSP_MAX_PAGE, nbComputerPage);
 			request.setAttribute(ServletString.JSP_PAGE_NB, pageNb);
 		} catch (ExceptionService e) {
-			log.error(e.getMessage());
+			log.error(e);
 		}
 		this.getServletContext().getRequestDispatcher(ServletString.CONTEXT_DASHBOARD).forward(request, response);
 		
@@ -101,19 +103,20 @@ public class DashboardServlet extends HttpServlet {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) {
 		String computerListToDelete = request.getParameter(ServletString.COMPUTER_SELECTED);
+		System.out.println(computerListToDelete);
 		if (!computerListToDelete.equals(ServletString.VOID_STRING)) {
 			for (String computerIdString : computerListToDelete.split(",")) {
 				try {
 					computerService.deleteById(Integer.valueOf(computerIdString));
 				} catch (NumberFormatException | ExceptionService e) {
-					e.printStackTrace();
+					log.error(e);
 				}
 			}
 		}
 		try {
 			response.sendRedirect(ServletString.DASHBOARD);
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error(e);
 		}
 
 	}
@@ -127,7 +130,7 @@ public class DashboardServlet extends HttpServlet {
 			}
 			return nbPage;  
 		} catch (ExceptionService e) {
-			log.error(e.getMessage());
+			log.error(e);
 			return 0;
 		}
 	}
