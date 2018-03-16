@@ -30,10 +30,11 @@ public class CommandeLineInterface {
 	private ComputerService computerService;
 	private String line;
 
-	private CommandeLineInterface() {
+	@Autowired
+	private CommandeLineInterface(ComputerService computerService, CompanyService companyService) {
 		this.reader = new BufferedReader(new InputStreamReader(System.in));
-		this.companyService = CompanyService.getCompanyService();
-		this.computerService = ComputerService.getComputerService();
+		this.companyService = companyService;
+		this.computerService = computerService; 
 	}
 
 	public static CommandeLineInterface getCommandLineInterface() {

@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +18,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.excilys.xdurbec.formation.computerDataBase.service.CompanyService;
 import com.excilys.xdurbec.formation.computerDataBase.service.ComputerService;
@@ -35,8 +40,19 @@ public class ComputerAddServlet extends HttpServlet {
 
 	@Autowired
 	private ComputerService computerService;
-	private CompanyService companyService = CompanyService.getCompanyService();
+	@Autowired
+	private CompanyService companyService;
 
+	
+	@Override
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		ServletContext servletContext = config.getServletContext();
+		WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+	    AutowireCapableBeanFactory autowireCapableBeanFactory = webApplicationContext.getAutowireCapableBeanFactory();
+	    autowireCapableBeanFactory.autowireBean(this);
+	}
+	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
 		try {
 			request.setAttribute(ServletString.COMPANY_LIST, CompanyMapperDTO.toCompanyDTOList(companyService.getAll()));

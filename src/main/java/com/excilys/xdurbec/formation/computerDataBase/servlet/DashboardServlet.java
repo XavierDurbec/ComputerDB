@@ -87,8 +87,6 @@ public class DashboardServlet extends HttpServlet {
 			request.setAttribute("orderDirection", ascendingOrderString);
 			request.setAttribute("computerByPage", nbComputerByPage);
 			request.setAttribute(ServletString.JSP_ORDER_VALUE, orderBy.sqlName);
-			
-			System.out.println(computerService.refresh(computerPage).getComputerList());
 			request.setAttribute(ServletString.JSP_COMPUTER_LIST, ComputerMapperDTO.toComputerDTOList(computerService.refresh(computerPage).getComputerList()));
 			request.setAttribute(ServletString.JSP_SEARCH_VALUE, filter);
 			request.setAttribute(ServletString.JSP_COMPUTER_COUNT, computerService.getComputerNumber(filter));
@@ -103,7 +101,6 @@ public class DashboardServlet extends HttpServlet {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) {
 		String computerListToDelete = request.getParameter(ServletString.COMPUTER_SELECTED);
-		System.out.println(computerListToDelete);
 		if (!computerListToDelete.equals(ServletString.VOID_STRING)) {
 			for (String computerIdString : computerListToDelete.split(",")) {
 				try {

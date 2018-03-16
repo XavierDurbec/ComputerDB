@@ -22,10 +22,10 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 	private CompanyService companyService;
 	
 	@Autowired
-	public ComputerService(ComputerDAO computerDAO) {
+	public ComputerService(ComputerDAO computerDAO, CompanyDAO companyDAO, CompanyService companyService) {
 		this.computerDAO = computerDAO;
-		this.companyDAO = CompanyDAO.getCompanyDAO();
-		this.companyService = CompanyService.getCompanyService();
+		this.companyDAO = companyDAO;
+		this.companyService = companyService;
 	}
 
 	public Computer getById(int id) throws ExceptionService {

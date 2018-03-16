@@ -1,6 +1,7 @@
 package com.excilys.xdurbec.formation.computerDataBase.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,7 +9,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
+
 import  com.excilys.xdurbec.formation.computerDataBase.model.Company;
+import com.excilys.xdurbec.formation.computerDataBase.model.Computer;
 import  com.excilys.xdurbec.formation.computerDataBase.model.ConstantString;
 
 /**
@@ -16,130 +24,84 @@ import  com.excilys.xdurbec.formation.computerDataBase.model.ConstantString;
  * @author excilys
  *
  */
+@Repository
 public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Company> {
 
-	private static final String GET_ALL = "SELECT id, name FROM company;";
-	private static final String GET_ALL_PAGE = "SELECT id, name FROM company LIMIT ? OFFSET ?;";
+	private static final String GET_ALL = "SELECT company.id, company.name FROM company;";
+	private static final String GET_ALL_PAGE = "SELECT company.id, company.name FROM company LIMIT ? OFFSET ?;";
 	private static final String DOES_COMPANY_EXIST = "SELECT count(*) FROM company WHERE id = ?;";
-	private static final String GET_BY_ID = "SELECT id, name FROM company WHERE id = ?;";
+	private static final String GET_BY_ID = "SELECT company.id, company.name FROM company WHERE id = ?;";
 	private static final String DELETE_BY_ID = "DELETE FROM company WHERE id = ?;";
 
-	private static CompanyDAO companyDAO;
 
-	private  ConnectionManager cm;
 
-	private CompanyDAO(ConnectionManager cm) {
-		this.cm = cm;
+	private JdbcTemplate jdbcTemplate;
+
+	@Autowired
+	private CompanyDAO(JdbcTemplate jdbcTemplate) {
+		this.jdbcTemplate = jdbcTemplate;
 	}
-
-	public static CompanyDAO getCompanyDAO() {
-		if (companyDAO == null) {
-			companyDAO = new CompanyDAO(ConnectionManager.getCM());
-		}
-		return companyDAO;
-
-	}
+	
 
 
 	@Override
 	public List<Company>  getAll()  throws  ExceptionDAO {
-		List<Company> companyList = new ArrayList<Company>();
-		Connection con = cm.getConnection();
-
-		try (Statement stat = con.createStatement()) {
-			stat.executeQuery(GET_ALL); 
-			ResultSet rs = stat.getResultSet();
-
-			while (rs.next()) {
-				Company c = new Company(rs.getString(ConstantString.NAME));
-				c.setId(rs.getInt(ConstantString.ID));
-				companyList.add(c);
-			}
-			return companyList;
-		} catch (SQLException e) {
-			log.error(e.getMessage());
-			throw new ExceptionDAO(ExceptionDAO.STATEMENT_ERROR);
-		} finally {
-			try {
-				con.close();
-			} catch (SQLException e) {
-				log.error(e.getMessage());
-				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
-			}
+		try {
+		return this.jdbcTemplate.query(GET_ALL,
+				new RowMapper<Company>() {
+					public Company mapRow(ResultSet rs, int rowNum) throws SQLException {
+						Company company = new Company();
+						company.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPANY));
+						company.setName(rs.getString(ConstantStringDAO.NAME_OF_COMPANY));
+						return company;
+					}
+				});
+		} catch (DataAccessException e) {
+			log.error(e);
+			throw new ExceptionDAO(ExceptionDAO.GET_ALL_ERROR);
 		}
 	}
 
 
 	public Boolean doesExist(int id) throws  ExceptionDAO {
-		Connection con = cm.getConnection();
-		try (PreparedStatement stat = con.prepareStatement(DOES_COMPANY_EXIST)) {
-			stat.setInt(1, id);
-			stat.executeQuery(); 
-			ResultSet rs = stat.getResultSet();
-			rs.next();
-			return !(rs.getInt("count(*)") == 0);
-		} catch (SQLException e) {
-			log.error(e.getMessage());
-			throw new ExceptionDAO(ExceptionDAO.STATEMENT_ERROR);
-		} finally {
-			try {
-				con.close();
-			} catch (SQLException e) {
-				log.error(e.getMessage());
-				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
-			}
-		}
-
+		return 0 < this.jdbcTemplate.queryForObject(DOES_COMPANY_EXIST, Integer.class);
 	}
 
 
 	public List<Company> getAllPage(int pageNumber, int nbCompanyPerPage) throws ExceptionDAO {
-		List<Company> companyList = new ArrayList();
-		Connection con = cm.getConnection();
-		try (PreparedStatement stat = con.prepareStatement(GET_ALL_PAGE)) {
-			stat.setInt(1, nbCompanyPerPage);
-			stat.setInt(2, (pageNumber - 1) * nbCompanyPerPage);
-			stat.executeQuery();
-			ResultSet rs = stat.getResultSet();
-			while (rs.next()) {
-				Company company = new Company(rs.getString(2));
-				company.setId(rs.getInt(1));
-				companyList.add(company);
+		int pageNumberTmp = pageNumber > 0 ? pageNumber : 0;
+		try {
+			return this.jdbcTemplate.query(GET_ALL_PAGE,
+					new Object[]{nbCompanyPerPage, (pageNumberTmp - 1) * nbCompanyPerPage},
+					new RowMapper<Company>() {
+						public Company mapRow(ResultSet rs, int rowNum) throws SQLException {
+							Company company = new Company();
+							company.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPANY));
+							company.setName(rs.getString(ConstantStringDAO.NAME_OF_COMPANY));
+							return company;
+						}
+					});
+			} catch (DataAccessException e) {
+				log.error(e);
+				throw new ExceptionDAO(ExceptionDAO.GET_ALL_ERROR);
 			}
-			return companyList;
-		} catch (SQLException e) {
-			log.error(e.getMessage());
-			throw new ExceptionDAO(ExceptionDAO.STATEMENT_ERROR);
-		} finally {
-			try {
-				con.close();
-			} catch (SQLException e) {
-				log.error(e.getMessage());
-				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
-			}
-		}
 	}
 
 	public Company getById(int id) throws ExceptionDAO {
-		Connection con = cm.getConnection();
-		try (PreparedStatement stat = con.prepareStatement(GET_BY_ID)) {
-			stat.setInt(1, id);
-			stat.executeQuery();
-			ResultSet res = stat.getResultSet();
-			res.next();
-			Company company = new Company(res.getString(2));
-			company.setId(res.getInt(1));
-			return company;
-		} catch (SQLException e) {
+		try {
+			return this.jdbcTemplate.queryForObject(GET_BY_ID,
+					new Object[]{id},
+					new RowMapper<Company>() {
+						public Company mapRow(ResultSet rs, int rowNum) throws SQLException {
+							Company company = new Company();
+							company.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPANY));
+							company.setName(rs.getString(ConstantStringDAO.NAME_OF_COMPANY));
+							return company;
+						}
+			});
+		} catch (DataAccessException e) {
 			log.error(e.getMessage());
-			throw new ExceptionDAO(ExceptionDAO.GET_BY_ID_COMPANY);
-		} finally {
-			try {
-				con.close();
-			} catch (SQLException e) {
-				log.error(e.getMessage());
-				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
-			}
+			throw new ExceptionDAO(ExceptionDAO.ID_COMPUTER_ERROR);
 		}
 	}
 
