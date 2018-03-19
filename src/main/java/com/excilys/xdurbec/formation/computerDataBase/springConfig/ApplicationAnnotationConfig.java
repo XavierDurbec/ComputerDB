@@ -20,4 +20,6 @@ public class ApplicationAnnotationConfig extends AbstractAnnotationConfigDispatc
     protected String[] getServletMappings() {
         return new String[] {"/"};
     }
+   
 }
+

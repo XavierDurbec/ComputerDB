@@ -3,11 +3,13 @@ package com.excilys.xdurbec.formation.computerDataBase.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.excilys.xdurbec.formation.computerDataBase.dao.CompanyDAO;
 import com.excilys.xdurbec.formation.computerDataBase.dao.ExceptionDAO;
 import com.excilys.xdurbec.formation.computerDataBase.model.Company;
 
+@Service
 public class CompanyService extends EntityService implements EntityServiceComportment<Company> {
 
 	private CompanyDAO companyDAO;

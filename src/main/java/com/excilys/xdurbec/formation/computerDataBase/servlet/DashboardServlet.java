@@ -31,6 +31,11 @@ import com.excilys.xdurbec.formation.computerDataBase.springConfig.ApplicationCo
 @Scope("session")
 public class DashboardServlet extends HttpServlet {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Autowired
 	private ComputerService computerService;
 

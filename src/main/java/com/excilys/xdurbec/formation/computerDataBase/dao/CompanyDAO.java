@@ -105,29 +105,5 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 		}
 	}
 
-	/*public void deleteById(int id) throws ExceptionDAO {
-		Connection con = cm.getConnection();
-		try (PreparedStatement stat = con.prepareStatement(DELETE_BY_ID)) {
-			con.setAutoCommit(false);
-			ComputerDAO.getComputerDAO().deleteByCompany(id, con);
-			stat.setInt(1, id);
-			stat.executeQuery();
-			con.commit();
-		} catch (SQLException e) {
-			try {
-				con.rollback();
-			} catch (SQLException e1) {
-				log.error(e.getMessage());
-			}
-			log.error(e.getMessage());
-		} finally {
-			try {
-				con.close();
-			} catch (SQLException e) {
-				log.error(e.getMessage());
-				throw new ExceptionDAO(ExceptionDAO.CONNECTION_ERROR);
-			}
-		}
-	}*/
 
 }
