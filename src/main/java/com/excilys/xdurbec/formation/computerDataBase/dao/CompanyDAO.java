@@ -64,7 +64,7 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 
 
 	public Boolean doesExist(int id) throws  ExceptionDAO {
-		return 0 < this.jdbcTemplate.queryForObject(DOES_COMPANY_EXIST, Integer.class);
+		return 0 < this.jdbcTemplate.queryForObject(DOES_COMPANY_EXIST, Integer.class, id);
 	}
 
 

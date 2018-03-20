@@ -145,7 +145,7 @@
 						</c:forEach>
 						<li><a>...</a></li>
 						<c:forEach begin="${maxPage-5}" end="${maxPage}" step="1" var="i">
-							<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page={i}">${i}</a></li>
+							<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}">${i}</a></li>
 						</c:forEach>
 					</c:when>
 

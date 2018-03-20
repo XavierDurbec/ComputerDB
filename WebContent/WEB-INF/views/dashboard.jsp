@@ -62,6 +62,7 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
+	                    <th><a href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&orderType=name">Name</a></th>
 						<th><a href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&orderType=introduced">Introduced date</a></th>
 						<th><a href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&orderType=discontinued">Discontinued date</a></th>
 						<th><a href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&orderType=company">Company</a></th>

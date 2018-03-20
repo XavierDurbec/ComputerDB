@@ -82,9 +82,10 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 					new RowMapper<Computer>() {
 				public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
 					Computer computer = new  Computer();
+					computer.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPUTER));
 					computer.setName(rs.getString(ConstantStringDAO.NAME_OF_COMPUTER));
-					computer.setIntroduced(Date.valueOf(rs.getString(ConstantStringDAO.INTRODUCED_OF_COMPUTER)));
-					computer.setDiscontinued(Date.valueOf(rs.getString(ConstantStringDAO.DISCONTINUED_OF_COMPUTER)));
+					computer.setIntroduced(rs.getDate(ConstantStringDAO.INTRODUCED_OF_COMPUTER));
+					computer.setDiscontinued(rs.getDate(ConstantStringDAO.DISCONTINUED_OF_COMPUTER));
 					Company company = new Company();
 					company.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPANY));
 					company.setName(rs.getString(ConstantStringDAO.NAME_OF_COMPANY));
@@ -120,8 +121,9 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 
 	public void create(Computer entity) throws ExceptionDAO {
 		try {
+			System.out.println("entity : " + entity);
 			Integer companyId = entity.getCompany() != null ? entity.getCompany().getId() : null;
-			this.jdbcTemplate.update(CREATE_REQUEST, entity.getName(), entity.getIntroduced(), companyId);	
+			this.jdbcTemplate.update(CREATE_REQUEST, entity.getName(), entity.getIntroduced(), entity.getDiscontinued(), companyId);	
 		} catch (DataAccessException e) {
 			log.error(e);
 			throw new ExceptionDAO(ExceptionDAO.CREATE_ERROR);
@@ -129,11 +131,10 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 	}
 
 
-
 	public void update(Computer entity) throws ExceptionDAO {
 		try {
 			Integer companyId = entity.getCompany() != null ? entity.getCompany().getId() : null;
-			this.jdbcTemplate.update(UPDATE_REQUEST, entity.getName(), entity.getIntroduced(), companyId);	
+			this.jdbcTemplate.update(UPDATE_REQUEST, entity.getName(), entity.getIntroduced(), entity.getDiscontinued(), companyId, entity.getId());	
 		} catch (DataAccessException e) {
 			log.error(e.getMessage());
 			throw new ExceptionDAO(ExceptionDAO.CREATE_ERROR);

@@ -5,14 +5,13 @@
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerDataBase/model/ComputerPage.java
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerDataBase/springConfig/ApplicationAnnotationConfig.java
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerDataBase/servlet/DashboardController.java
-/home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerDataBase/servlet/ComputerAddServlet.java
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerDataBase/service/CompanyService.java
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerDataBase/service/ExceptionService.java
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerDataBase/servlet/dto/ComputerDTO.java
+/home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerDataBase/servlet/ComputerAddController.java
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerDataBase/model/Computer.java
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerDataBase/dao/CompanyDAO.java
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerDataBase/dao/ConstantStringDAO.java
-/home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerDataBase/servlet/EditComputerServlet.java
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerDataBase/dao/ConnectionManager.java
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerDataBase/springConfig/ApplicationConfig.java
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerDataBase/dao/ComputerAttributes.java
@@ -25,6 +24,7 @@
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerDataBase/servlet/dto/CompanyDTO.java
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerDataBase/userInterface/commandeLineInterface/CommandeLineInterface.java
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerDataBase/service/ComputerService.java
+/home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerDataBase/servlet/EditeComputerController.java
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerDataBase/dao/EntityDAO.java
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerDataBase/dao/ComputerDAO.java
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerDataBase/servlet/ComputerValidator.java
