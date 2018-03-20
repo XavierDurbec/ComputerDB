@@ -40,7 +40,7 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 		try {
 			return computerDAO.getAll();
 		} catch (ExceptionDAO e) {
-			log.error("Dao Exception : " + e.getMessage());
+			log.error(e);
 			throw new ExceptionService(ExceptionService.GET_ALL_ERROR);
 		}
 	}
@@ -96,7 +96,7 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 			}
 			return computerDAO.getComputerNumber(filter);
 		} catch (ExceptionDAO e) {
-			log.error(e.getMessage());
+			log.error(e);
 			throw new ExceptionService(ExceptionService.COMPUTER_NUMBER_ERROR);
 		}
 	}

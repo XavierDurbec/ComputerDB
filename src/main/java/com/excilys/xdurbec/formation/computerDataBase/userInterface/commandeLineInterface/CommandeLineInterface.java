@@ -4,23 +4,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Date;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.excilys.xdurbec.formation.computerDataBase.model.Company;
-import com.excilys.xdurbec.formation.computerDataBase.model.Computer;
-import com.excilys.xdurbec.formation.computerDataBase.model.ComputerPage;
-import com.excilys.xdurbec.formation.computerDataBase.service.CompanyPage;
-import com.excilys.xdurbec.formation.computerDataBase.service.CompanyService;
-import com.excilys.xdurbec.formation.computerDataBase.service.ComputerService;
-import com.excilys.xdurbec.formation.computerDataBase.service.ExceptionService;
 
-public class CommandeLineInterface {
+
+public class CommandeLineInterface {/*
 	private static CommandeLineInterface commandLineInterface;
 
 	private int nbElementPerPage = 20; 
@@ -98,20 +89,10 @@ public class CommandeLineInterface {
 
 	}
 
-
 	public void getComputer()  {
 		System.out.println("Give the computer id:");
 		this.readLine();
 		try { 
-		    @Bean
-		    public DataSource dataSource() {
-		        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-		        dataSource.setDriverClassName(env.getRequiredProperty("jdbc.driverClassName"));
-		        dataSource.setUrl(env.getRequiredProperty("jdbc.url"));
-		        dataSource.setUsername(env.getRequiredProperty("jdbc.user"));
-		        dataSource.setPassword(env.getRequiredProperty("jdbc.pass"));
-		        return dataSource;
-		    }
 			int id = Integer.parseInt(line);
 			System.out.println(computerService.getById(id));
 		} catch (ExceptionService e) {
@@ -397,6 +378,7 @@ public class CommandeLineInterface {
 		}
 	}
 
+	/*
 	public void getAllPageCompany() {
 		int currentPage = 1;
 		try {
@@ -430,6 +412,7 @@ public class CommandeLineInterface {
 		}
 		System.out.println("return on main menu.");
 	}
+	/
 
 	public void getAllPageComputer() {
 		int currentPage = 1;
@@ -464,5 +447,5 @@ public class CommandeLineInterface {
 			System.out.println(e.getMessage());
 		}
 	}
-
+*/
 }

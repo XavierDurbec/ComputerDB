@@ -2,7 +2,7 @@ package com.excilys.xdurbec.formation.computerDataBase.userInterface.commandeLin
 
 public class CLITest {
 	public static void main(String ... strings ) {
-			CommandeLineInterface.getCommandLineInterface().launch();
+		//	CommandeLineInterface.getCommandLineInterface().launch();
 
 	}
 }

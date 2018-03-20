@@ -93,7 +93,7 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 				}
 			});
 		} catch (DataAccessException e) {
-			log.error(e.getMessage());
+			log.error(e);
 			throw new ExceptionDAO(ExceptionDAO.ID_COMPUTER_ERROR);
 		}
 	}
@@ -123,7 +123,7 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 			Integer companyId = entity.getCompany() != null ? entity.getCompany().getId() : null;
 			this.jdbcTemplate.update(CREATE_REQUEST, entity.getName(), entity.getIntroduced(), companyId);	
 		} catch (DataAccessException e) {
-			log.error(e.getMessage());
+			log.error(e);
 			throw new ExceptionDAO(ExceptionDAO.CREATE_ERROR);
 		}
 	}
@@ -145,7 +145,7 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 		try {
 			this.jdbcTemplate.update(DELETE_REQUEST, Long.valueOf(id));
 		} catch (DataAccessException e) {
-			log.error(e.getMessage());
+			log.error(e);
 			throw new ExceptionDAO(ExceptionDAO.DELETE_ERROR);
 		}
 	}
@@ -181,7 +181,7 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 		try {
 			this.jdbcTemplate.update(DELETE_BY_COMPANY, Long.valueOf(companyId));
 		} catch (DataAccessException e) {
-			log.error(e.getMessage());
+			log.error(e);
 			throw new ExceptionDAO(ExceptionDAO.DELETE_ERROR);
 		}
 	}
