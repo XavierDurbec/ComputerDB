@@ -1,14 +1,8 @@
 package com.excilys.xdurbec.formation.computerDataBase.dao;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,8 +10,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import  com.excilys.xdurbec.formation.computerDataBase.model.Company;
-import com.excilys.xdurbec.formation.computerDataBase.model.Computer;
-import  com.excilys.xdurbec.formation.computerDataBase.model.ConstantString;
 
 /**
  * Crude gestion of Company.
@@ -105,5 +97,6 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 		}
 	}
 
+	
 
 }

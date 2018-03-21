@@ -9,6 +9,8 @@ import com.excilys.xdurbec.formation.computerDataBase.model.Company;
 
 public class CompanyMapperDTO {
 	
+	private CompanyMapperDTO() {};
+	
 	public static Company toCompany(CompanyDTO companyDTO) {
 		Company company = new Company(companyDTO.getName());
 		company.setId(companyDTO.getId());
