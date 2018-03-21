@@ -1,4 +1,4 @@
-package com.excilys.xdurbec.formation.computerDataBase.servlet;
+package com.excilys.xdurbec.formation.computerdatabase.servlet;
 
 public class ServletString {
 	public static final String COMPUTER_NAME = "computerName";	

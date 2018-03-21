@@ -1,4 +1,4 @@
-package com.excilys.xdurbec.formation.computerDataBase.springConfig;
+package com.excilys.xdurbec.formation.computerdatabase.springconfig;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;

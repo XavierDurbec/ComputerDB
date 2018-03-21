@@ -1,4 +1,4 @@
-package com.excilys.xdurbec.formation.computerDataBase.servlet;
+package com.excilys.xdurbec.formation.computerdatabase.servlet;
 
 import java.util.Map;
 
@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.excilys.xdurbec.formation.computerDataBase.dao.ComputerAttributes;
-import com.excilys.xdurbec.formation.computerDataBase.model.ComputerPage;
-import com.excilys.xdurbec.formation.computerDataBase.service.CompanyService;
-import com.excilys.xdurbec.formation.computerDataBase.service.ComputerService;
-import com.excilys.xdurbec.formation.computerDataBase.service.ExceptionService;
-import com.excilys.xdurbec.formation.computerDataBase.servlet.dto.CompanyDTO;
-import com.excilys.xdurbec.formation.computerDataBase.servlet.dto.CompanyMapperDTO;
-import com.excilys.xdurbec.formation.computerDataBase.servlet.dto.ComputerDTO;
-import com.excilys.xdurbec.formation.computerDataBase.servlet.dto.ComputerMapperDTO;
+import com.excilys.xdurbec.formation.computerdatabase.dao.ComputerAttributes;
+import com.excilys.xdurbec.formation.computerdatabase.model.ComputerPage;
+import com.excilys.xdurbec.formation.computerdatabase.service.CompanyService;
+import com.excilys.xdurbec.formation.computerdatabase.service.ComputerService;
+import com.excilys.xdurbec.formation.computerdatabase.service.ExceptionService;
+import com.excilys.xdurbec.formation.computerdatabase.servlet.dto.CompanyDTO;
+import com.excilys.xdurbec.formation.computerdatabase.servlet.dto.CompanyMapperDTO;
+import com.excilys.xdurbec.formation.computerdatabase.servlet.dto.ComputerDTO;
+import com.excilys.xdurbec.formation.computerdatabase.servlet.dto.ComputerMapperDTO;
 
 @Controller
 public class ComputerController {
@@ -34,10 +34,10 @@ public class ComputerController {
 	}
 	@GetMapping("dashboard")
 	public String getDashboardPage(ModelMap model, @RequestParam Map<String, String> params) {
-		int nbComputerByPage  = Integer.valueOf(params.getOrDefault(ServletString.NB_COMPUTER_BY_PAGE, "20"));
+		int nbComputerByPage  = Integer.parseInt(params.getOrDefault(ServletString.NB_COMPUTER_BY_PAGE, "20"));
 		String filter = params.getOrDefault(ServletString.NAME_SEARCHED, "");
 		int nbComputerPage = getNbComputerPage(filter, nbComputerByPage);
-		int pageNb = Integer.valueOf(params.getOrDefault(ServletString.PAGE, "1"));
+		int pageNb = Integer.parseInt(params.getOrDefault(ServletString.PAGE, "1"));
 		pageNb = pageNb < nbComputerPage ? pageNb : nbComputerPage;
 		ComputerAttributes orderBy = orderBySet(params.getOrDefault(ServletString.ORDER_TYPE, ""));
 		String oldOrderByString = params.getOrDefault(ServletString.OLD_ORDER_TYPE, "");
@@ -119,7 +119,7 @@ public class ComputerController {
 	
 	@GetMapping("editComputer")
 	public String getEditedComputerPage(ModelMap model, @RequestParam Map<String, String> params) {
-		int computerId = Integer.valueOf(params.get("id"));
+		int computerId = Integer.parseInt(params.get("id"));
 
 		try {
 			model.addAttribute("computer", ComputerMapperDTO.toComputerDTO(computerService.getById(computerId)));
@@ -133,7 +133,6 @@ public class ComputerController {
 	@PostMapping("editComputer")
 	public String editComputer(ModelMap model, @RequestParam Map<String, String> params) {
 		ComputerDTO computerDTO = new ComputerDTO();
-		System.out.println("Id: " + params.get("id"));
 		computerDTO.setId(Integer.parseInt(params.get("id")));
 		computerDTO.setName(params.get("computerName"));
 		computerDTO.setIntroduced(params.get("introduced"));

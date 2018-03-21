@@ -1,4 +1,4 @@
-package com.excilys.xdurbec.formation.computerDataBase.springConfig;
+package com.excilys.xdurbec.formation.computerdatabase.springconfig;
 
 import javax.sql.DataSource;
 
@@ -13,7 +13,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 
 @Configuration
-@ComponentScan(basePackages = "com.excilys.xdurbec.formation.computerDataBase")
+@ComponentScan(basePackages = "com.excilys.xdurbec.formation.computerdatabase")
 @PropertySource(value = { "classpath:config.properties" })
 public class ApplicationConfig {
     @Autowired

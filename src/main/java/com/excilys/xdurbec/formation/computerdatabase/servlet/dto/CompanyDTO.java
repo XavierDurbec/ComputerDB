@@ -1,4 +1,4 @@
-package com.excilys.xdurbec.formation.computerDataBase.servlet.dto;
+package com.excilys.xdurbec.formation.computerdatabase.servlet.dto;
 
 public class CompanyDTO {
 	private String name;

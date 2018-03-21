@@ -1,16 +1,14 @@
-package com.excilys.xdurbec.formation.computerDataBase.service;
+package com.excilys.xdurbec.formation.computerdatabase.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.excilys.xdurbec.formation.computerDataBase.dao.CompanyDAO;
-import com.excilys.xdurbec.formation.computerDataBase.dao.ComputerAttributes;
-import com.excilys.xdurbec.formation.computerDataBase.dao.ComputerDAO;
-import com.excilys.xdurbec.formation.computerDataBase.dao.ExceptionDAO;
-import com.excilys.xdurbec.formation.computerDataBase.model.Computer;
-import com.excilys.xdurbec.formation.computerDataBase.model.ComputerPage;
+import com.excilys.xdurbec.formation.computerdatabase.dao.ComputerAttributes;
+import com.excilys.xdurbec.formation.computerdatabase.dao.ComputerDAO;
+import com.excilys.xdurbec.formation.computerdatabase.dao.ExceptionDAO;
+import com.excilys.xdurbec.formation.computerdatabase.model.Computer;
+import com.excilys.xdurbec.formation.computerdatabase.model.ComputerPage;
 
 
 @Service
@@ -88,15 +86,10 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 	}
 
 	public int getComputerNumber(String filter) throws ExceptionService {
-		try {
-			if (filter == null) {
-				filter = "";
-			}
-			return computerDAO.getComputerNumber(filter);
-		} catch (ExceptionDAO e) {
-			log.error(e);
-			throw new ExceptionService(ExceptionService.COMPUTER_NUMBER_ERROR);
+		if (filter == null) {
+			filter = "";
 		}
+		return computerDAO.getComputerNumber(filter);
 	}
 
 
@@ -107,13 +100,9 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 
 	
 	public ComputerPage refresh(ComputerPage computerPage) throws ExceptionService {
-		try {
-			ComputerPage newComputerPage = new ComputerPage(computerPage.getPageNumber(), computerPage.getNbComputerPerPage(), computerPage.getFilter(), computerPage.getOrderBy(), computerPage.getAscendingOrder());
-			newComputerPage.setComputerList(computerDAO.getAllPage(newComputerPage.getPageNumber(), newComputerPage.getNbComputerPerPage(), 
-					newComputerPage.getFilter(), newComputerPage.getOrderBy(), newComputerPage.getAscendingOrder()));
-			return newComputerPage;
-		} catch (ExceptionDAO e) {
-			throw new ExceptionService(ExceptionService.GET_ALL_ERROR_PAGE);
-		}
+		ComputerPage newComputerPage = new ComputerPage(computerPage.getPageNumber(), computerPage.getNbComputerPerPage(), computerPage.getFilter(), computerPage.getOrderBy(), computerPage.getAscendingOrder());
+		newComputerPage.setComputerList(computerDAO.getAllPage(newComputerPage.getPageNumber(), newComputerPage.getNbComputerPerPage(), 
+				newComputerPage.getFilter(), newComputerPage.getOrderBy(), newComputerPage.getAscendingOrder()));
+		return newComputerPage;
 	}
 }

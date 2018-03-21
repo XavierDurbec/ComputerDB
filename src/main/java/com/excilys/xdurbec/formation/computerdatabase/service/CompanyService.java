@@ -1,13 +1,11 @@
-package com.excilys.xdurbec.formation.computerDataBase.service;
+package com.excilys.xdurbec.formation.computerdatabase.service;
 
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.excilys.xdurbec.formation.computerDataBase.dao.CompanyDAO;
-import com.excilys.xdurbec.formation.computerDataBase.dao.ExceptionDAO;
-import com.excilys.xdurbec.formation.computerDataBase.model.Company;
+import com.excilys.xdurbec.formation.computerdatabase.dao.CompanyDAO;
+import com.excilys.xdurbec.formation.computerdatabase.dao.ExceptionDAO;
+import com.excilys.xdurbec.formation.computerdatabase.model.Company;
 
 @Service
 public class CompanyService extends EntityService implements EntityServiceComportment<Company> {
@@ -29,12 +27,7 @@ public class CompanyService extends EntityService implements EntityServiceCompor
 	}
 
 	public Boolean companyExistenceVerification(int id) {
-		try {
-			return companyDAO.doesExist(id);
-		} catch (ExceptionDAO e) {
-			log.error(ExceptionService.STATEMENT_ERROR);		
-			return false;
-		}
+		return companyDAO.doesExist(id);
 	}
 
 	public  Company getCompanyById(int id) throws ExceptionService {
@@ -49,14 +42,4 @@ public class CompanyService extends EntityService implements EntityServiceCompor
 			}
 		}
 	}
-	/*
-	public void deleteCompanyById(int id) throws ExceptionService {
-		try {
-			companyDAO.deleteById(id);
-		} catch (ExceptionDAO e) {
-			log.error(e.getMessage());
-			throw new ExceptionService(ExceptionService.DELETE_COMPANY_ERROR);
-		}
-	}
-	*/
 }

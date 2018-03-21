@@ -1,4 +1,4 @@
-package com.excilys.xdurbec.formation.computerDataBase.model;
+package com.excilys.xdurbec.formation.computerdatabase.model;
 
 public class ConstantString {
 	public static final String ID = "id";

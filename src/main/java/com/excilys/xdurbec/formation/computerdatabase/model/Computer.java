@@ -1,4 +1,4 @@
-package com.excilys.xdurbec.formation.computerDataBase.model;
+package com.excilys.xdurbec.formation.computerdatabase.model;
 
 import java.sql.Date;
 
@@ -77,10 +77,7 @@ public class Computer {
 			return false;
 		}
 		Computer other = (Computer) obj;
-		if (id != other.id) {
-			return false;
-		}
-		return true;
+		return id != other.id;
 	}
 	@Override
 	public String toString() {

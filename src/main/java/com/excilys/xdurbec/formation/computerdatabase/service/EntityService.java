@@ -1,4 +1,4 @@
-package com.excilys.xdurbec.formation.computerDataBase.service;
+package com.excilys.xdurbec.formation.computerdatabase.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

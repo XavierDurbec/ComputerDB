@@ -1,16 +1,14 @@
-package com.excilys.xdurbec.formation.computerDataBase.servlet.dto;
+package com.excilys.xdurbec.formation.computerdatabase.servlet.dto;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.excilys.xdurbec.formation.computerDataBase.model.Computer;
+import com.excilys.xdurbec.formation.computerdatabase.model.Computer;
 
 public class ComputerMapperDTO {
 	
-	private ComputerMapperDTO() { };
+	private ComputerMapperDTO() { }
 
 	public static Computer toComputer(ComputerDTO computerDTO) {
 		Computer computer = new Computer();
@@ -47,7 +45,7 @@ public class ComputerMapperDTO {
 	}
 
 	public static List<Computer> toComputerList(List<ComputerDTO> computerDTOList) {
-		List<Computer> computerList = new ArrayList<Computer>();
+		List<Computer> computerList = new ArrayList<>();
 		for (ComputerDTO computerDTO:computerDTOList) {
 			computerList.add(toComputer(computerDTO));
 		}
@@ -55,7 +53,7 @@ public class ComputerMapperDTO {
 	}
 
 	public static List<ComputerDTO> toComputerDTOList(List<Computer> computerList) {
-		List<ComputerDTO> computerDTOList = new ArrayList<ComputerDTO>();
+		List<ComputerDTO> computerDTOList = new ArrayList<>();
 
 		for (Computer computer : computerList) {
 			computerDTOList.add(toComputerDTO(computer));

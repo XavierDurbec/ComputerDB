@@ -1,15 +1,15 @@
-package com.excilys.xdurbec.formation.computerDataBase.servlet.dto;
+package com.excilys.xdurbec.formation.computerdatabase.servlet.dto;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.xdurbec.formation.computerDataBase.model.Company;
+import com.excilys.xdurbec.formation.computerdatabase.model.Company;
 
 
 
 public class CompanyMapperDTO {
 	
-	private CompanyMapperDTO() { };
+	private CompanyMapperDTO() { }
 		
 	public static Company toCompany(CompanyDTO companyDTO) {
 		Company company = new Company(companyDTO.getName());
@@ -25,7 +25,7 @@ public class CompanyMapperDTO {
 	}
 
 	public static List<Company> toCompanyList(List<CompanyDTO> companyDTOList) {
-		List<Company> companyList = new ArrayList<Company>();
+		List<Company> companyList = new ArrayList<>();
 		for (CompanyDTO companyDTO:companyDTOList) {
 			companyList.add(toCompany(companyDTO));
 		}
@@ -33,7 +33,7 @@ public class CompanyMapperDTO {
 	}
 
 	public static List<CompanyDTO> toCompanyDTOList(List<Company> companyList) {
-		List<CompanyDTO> companyDTOList = new ArrayList<CompanyDTO>();
+		List<CompanyDTO> companyDTOList = new ArrayList<>();
 
 		for (Company company : companyList) {
 			companyDTOList.add(toCompanyDTO(company));
