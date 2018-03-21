@@ -11,14 +11,13 @@ import com.excilys.xdurbec.formation.computerDataBase.model.Company;
 
 @Service
 public class CompanyService extends EntityService implements EntityServiceComportment<Company> {
-
-	private CompanyDAO companyDAO;
-
-	@Autowired
+	
 	public CompanyService(CompanyDAO companyDAO) {
 		this.companyDAO = companyDAO;
+		
 	}
 
+	private CompanyDAO companyDAO;
 
 	@Override
 	public List<Company> getAll() throws ExceptionService {

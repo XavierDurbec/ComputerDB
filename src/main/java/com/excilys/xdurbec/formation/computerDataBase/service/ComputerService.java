@@ -18,10 +18,8 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 	
 
 	private ComputerDAO computerDAO;
-
 	private CompanyService companyService;
 	
-	@Autowired
 	public ComputerService(ComputerDAO computerDAO, CompanyService companyService) {
 		this.computerDAO = computerDAO;
 		this.companyService = companyService;

@@ -1,12 +1,9 @@
 package com.excilys.xdurbec.formation.computerDataBase.servlet;
 
-
-
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,20 +12,28 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.xdurbec.formation.computerDataBase.dao.ComputerAttributes;
 import com.excilys.xdurbec.formation.computerDataBase.model.ComputerPage;
+import com.excilys.xdurbec.formation.computerDataBase.service.CompanyService;
 import com.excilys.xdurbec.formation.computerDataBase.service.ComputerService;
 import com.excilys.xdurbec.formation.computerDataBase.service.ExceptionService;
+import com.excilys.xdurbec.formation.computerDataBase.servlet.dto.CompanyDTO;
+import com.excilys.xdurbec.formation.computerDataBase.servlet.dto.CompanyMapperDTO;
+import com.excilys.xdurbec.formation.computerDataBase.servlet.dto.ComputerDTO;
 import com.excilys.xdurbec.formation.computerDataBase.servlet.dto.ComputerMapperDTO;
 
 @Controller
-public class DashboardController {
-	@Autowired
-	private ComputerService computerService;
+public class ComputerController {
 
 	private  Logger log = LogManager.getLogger(this.getClass());
 
+	private ComputerService computerService;
+	private CompanyService companyService;
+
+	public ComputerController(CompanyService companyService, ComputerService computerService) {
+		this.companyService = companyService;
+		this.computerService = computerService;
+	}
 	@GetMapping("dashboard")
 	public String getDashboardPage(ModelMap model, @RequestParam Map<String, String> params) {
-
 		int nbComputerByPage  = Integer.valueOf(params.getOrDefault(ServletString.NB_COMPUTER_BY_PAGE, "20"));
 		String filter = params.getOrDefault(ServletString.NAME_SEARCHED, "");
 		int nbComputerPage = getNbComputerPage(filter, nbComputerByPage);
@@ -53,7 +58,6 @@ public class DashboardController {
 		} catch (ExceptionService e) {
 			log.error(e);
 		}
-
 		return "dashboard";
 	}
 
@@ -70,9 +74,8 @@ public class DashboardController {
 			}
 		}
 		return "dashboard";
-}
-	
-	
+	}
+
 	private int getNbComputerPage(String filter, int nbComputerByPage) {
 		int nbPage;
 		try {
@@ -107,10 +110,93 @@ public class DashboardController {
 		}
 		return orderByTmp;
 	}
-	
+
 	private boolean orderDirectionSet(ComputerAttributes orderBy, ComputerAttributes oldOrderBy, String ascendingString) {
 		boolean orderDirection = ascendingString != null ? ascendingString.equals("DESC") ? false : true : true;
 		orderDirection = orderBy.equals(oldOrderBy) ? !orderDirection : orderDirection;
 		return orderDirection;
+	}
+	
+	@GetMapping("editComputer")
+	public String getEditedComputerPage(ModelMap model, @RequestParam Map<String, String> params) {
+		int computerId = Integer.valueOf(params.get("id"));
+
+		try {
+			model.addAttribute("computer", ComputerMapperDTO.toComputerDTO(computerService.getById(computerId)));
+			model.addAttribute("companyList", CompanyMapperDTO.toCompanyDTOList(companyService.getAll()));
+		} catch (ExceptionService e) {
+			log.error(e);
+		}
+		return "editComputer";
+	}
+	
+	@PostMapping("editComputer")
+	public String editComputer(ModelMap model, @RequestParam Map<String, String> params) {
+		ComputerDTO computerDTO = new ComputerDTO();
+		System.out.println("Id: " + params.get("id"));
+		computerDTO.setId(Integer.parseInt(params.get("id")));
+		computerDTO.setName(params.get("computerName"));
+		computerDTO.setIntroduced(params.get("introduced"));
+		computerDTO.setDiscontinued(params.get("discontinued"));
+		String computerCompanyIdString = params.get("companyId");
+		try {
+			if (!"0".equals(computerCompanyIdString)) {
+				computerDTO.setCompany(CompanyMapperDTO.toCompanyDTO(companyService.getCompanyById(Integer.valueOf(computerCompanyIdString))));
+			}
+			computerService.update(ComputerMapperDTO.toComputer(computerDTO));
+		} catch (NumberFormatException | ExceptionService e) {
+			log.error(e);
+			return "editComputer";
+		}
+
+		return "redirect:dashboard";
+	}
+	
+	@GetMapping("addcomputer")
+	public String getAddComputerPage(ModelMap model, @RequestParam Map<String, String> params) {
+
+		try {
+			model.addAttribute(ServletString.COMPANY_LIST, CompanyMapperDTO.toCompanyDTOList(companyService.getAll()));
+		} catch (ExceptionService e) {
+			log.error(e);
+		}
+
+		return "addComputer";
+	}
+
+	@PostMapping("addcomputer")
+	public String addComputer(ModelMap model, @RequestParam Map<String, String> params) {
+		try {
+			Map<String, String> errors = ComputerValidator.validator(params);
+			if (errors.isEmpty()) {
+				ComputerDTO computerDTO = new ComputerDTO();
+				computerDTO.setName(params.get(ServletString.COMPUTER_NAME));
+				computerDTO.setIntroduced(params.get(ServletString.COMPUTER_INTRODUCED));
+				computerDTO.setDiscontinued(params.get(ServletString.COMPUTER_DISCONTINUED));
+				computerDTO.setCompany(getCompanyById(Integer.valueOf(params.getOrDefault(ServletString.COMPUTER_COMPANY_ID, "0"))));
+				computerService.create(ComputerMapperDTO.toComputer(computerDTO));
+				return "redirect:dashboard";
+
+			} else {
+				model.addAttribute(ServletString.ERRORS, errors);
+				return "addComputer";
+			}
+		} catch (ExceptionService e) {
+			log.error(e.getMessage());
+			return "addComputer";
+		}
+	}
+
+	private CompanyDTO getCompanyById(int id) {
+		if (id != 0) {
+			try {
+				return CompanyMapperDTO.toCompanyDTO(companyService.getCompanyById(id));
+			} catch (ExceptionService e) {
+				log.error(e.getMessage());
+				return null;
+			}
+		} else {
+			return null;
+		}
 	}
 }

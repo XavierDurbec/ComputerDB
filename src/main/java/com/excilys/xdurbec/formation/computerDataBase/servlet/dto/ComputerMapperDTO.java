@@ -10,7 +10,7 @@ import com.excilys.xdurbec.formation.computerDataBase.model.Computer;
 
 public class ComputerMapperDTO {
 	
-	private ComputerMapperDTO() {};
+	private ComputerMapperDTO() { };
 
 	public static Computer toComputer(ComputerDTO computerDTO) {
 		Computer computer = new Computer();
