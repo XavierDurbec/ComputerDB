@@ -6,9 +6,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
 
 import com.excilys.xdurbec.formation.computerdatabase.dao.ComputerAttributes;
 import com.excilys.xdurbec.formation.computerdatabase.model.ComputerPage;
@@ -20,6 +25,7 @@ import com.excilys.xdurbec.formation.computerdatabase.servlet.dto.CompanyMapperD
 import com.excilys.xdurbec.formation.computerdatabase.servlet.dto.ComputerDTO;
 import com.excilys.xdurbec.formation.computerdatabase.servlet.dto.ComputerMapperDTO;
 
+
 @Controller
 public class ComputerController {
 
@@ -27,11 +33,21 @@ public class ComputerController {
 
 	private ComputerService computerService;
 	private CompanyService companyService;
+	private ComputerValidator computerValidator;
 
-	public ComputerController(CompanyService companyService, ComputerService computerService) {
+	public ComputerController(CompanyService companyService, ComputerService computerService, ComputerValidator computerValidator) {
 		this.companyService = companyService;
 		this.computerService = computerService;
+		this.computerValidator = computerValidator;
 	}
+
+
+
+	@InitBinder
+	private void initBinder(WebDataBinder binder) {
+		binder.setValidator(computerValidator);
+	}
+
 	@GetMapping("dashboard")
 	public String getDashboardPage(ModelMap model, @RequestParam Map<String, String> params) {
 		int nbComputerByPage  = Integer.parseInt(params.getOrDefault(ServletString.NB_COMPUTER_BY_PAGE, "20"));
@@ -40,13 +56,14 @@ public class ComputerController {
 		int pageNb = Integer.parseInt(params.getOrDefault(ServletString.PAGE, "1"));
 		pageNb = pageNb < nbComputerPage ? pageNb : nbComputerPage;
 		ComputerAttributes orderBy = orderBySet(params.getOrDefault(ServletString.ORDER_TYPE, ""));
-		String oldOrderByString = params.getOrDefault(ServletString.OLD_ORDER_TYPE, "");
+		String oldOrderByString = params.getOrDefault("orderDirection", "");
 		String ascendingOrderString = params.getOrDefault("orderDirection", "ASC");
 		boolean ascendingOrder = orderDirectionSet(orderBy, orderBySet(oldOrderByString), ascendingOrderString);
 
 		try {
 			ComputerPage computerPage = computerService.getComputerPage(pageNb, nbComputerByPage, filter, orderBy, ascendingOrder);
 			ascendingOrderString = ascendingOrder ? "ASC" : "DESC";
+
 			model.addAttribute("orderDirection", ascendingOrderString);
 			model.addAttribute("computerByPage", nbComputerByPage);
 			model.addAttribute(ServletString.JSP_ORDER_VALUE, orderBy.sqlName);
@@ -60,6 +77,7 @@ public class ComputerController {
 		}
 		return "dashboard";
 	}
+
 
 	@PostMapping("dashboard")
 	public String deleteComputer(ModelMap model, @RequestParam Map<String, String> params) {
@@ -116,7 +134,7 @@ public class ComputerController {
 		orderDirection = orderBy.equals(oldOrderBy) ? !orderDirection : orderDirection;
 		return orderDirection;
 	}
-	
+
 	@GetMapping("editComputer")
 	public String getEditedComputerPage(ModelMap model, @RequestParam Map<String, String> params) {
 		int computerId = Integer.parseInt(params.get("id"));
@@ -129,7 +147,7 @@ public class ComputerController {
 		}
 		return "editComputer";
 	}
-	
+
 	@PostMapping("editComputer")
 	public String editComputer(ModelMap model, @RequestParam Map<String, String> params) {
 		ComputerDTO computerDTO = new ComputerDTO();
@@ -150,34 +168,28 @@ public class ComputerController {
 
 		return "redirect:dashboard";
 	}
-	
+
 	@GetMapping("addcomputer")
 	public String getAddComputerPage(ModelMap model, @RequestParam Map<String, String> params) {
 
 		try {
 			model.addAttribute(ServletString.COMPANY_LIST, CompanyMapperDTO.toCompanyDTOList(companyService.getAll()));
+			model.addAttribute("ComputerDTO", new ComputerDTO());
 		} catch (ExceptionService e) {
 			log.error(e);
 		}
-
 		return "addComputer";
 	}
 
 	@PostMapping("addcomputer")
-	public String addComputer(ModelMap model, @RequestParam Map<String, String> params) {
+	public String addComputer(@ModelAttribute("ComputerDTO") @Validated(ComputerDTO.class) ComputerDTO computerDTO, BindingResult bindingResult, ModelMap model, @RequestParam Map<String, String> params) {
 		try {
-			Map<String, String> errors = ComputerValidator.validator(params);
-			if (errors.isEmpty()) {
-				ComputerDTO computerDTO = new ComputerDTO();
-				computerDTO.setName(params.get(ServletString.COMPUTER_NAME));
-				computerDTO.setIntroduced(params.get(ServletString.COMPUTER_INTRODUCED));
-				computerDTO.setDiscontinued(params.get(ServletString.COMPUTER_DISCONTINUED));
-				computerDTO.setCompany(getCompanyById(Integer.valueOf(params.getOrDefault(ServletString.COMPUTER_COMPANY_ID, "0"))));
+			if (!bindingResult.hasErrors()) {
+				//computerDTO.setCompany(getCompanyById(Integer.parseInt(params.getOrDefault("company", "0"))));
 				computerService.create(ComputerMapperDTO.toComputer(computerDTO));
 				return "redirect:dashboard";
-
 			} else {
-				model.addAttribute(ServletString.ERRORS, errors);
+				model.addAttribute(ServletString.COMPANY_LIST, CompanyMapperDTO.toCompanyDTOList(companyService.getAll()));
 				return "addComputer";
 			}
 		} catch (ExceptionService e) {

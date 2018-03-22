@@ -1,34 +1,53 @@
 package com.excilys.xdurbec.formation.computerdatabase.servlet;
 
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.Map;
 
-public class ComputerValidator {
+import org.springframework.stereotype.Component;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
+import org.springframework.validation.Validator;
+import com.excilys.xdurbec.formation.computerdatabase.servlet.dto.ComputerDTO;
+
+@Component
+public class ComputerValidator implements Validator {
 	
 	private ComputerValidator() { }
 	
-	private static boolean dateLogicValidation(String introduced, String discontinued) {
-			return introduced == null  || discontinued == null 
-					|| introduced.equals("")  || discontinued.equals("") 
-					|| Date.valueOf(discontinued).after(Date.valueOf(introduced));
+	private static boolean dateLogicValidation(ComputerDTO computerDTO) {
+			return computerDTO.getIntroduced() == null  || computerDTO.getDiscontinued() == null 
+					|| computerDTO.getIntroduced().equals("")  || computerDTO.getDiscontinued().equals("") 
+					|| Date.valueOf(computerDTO.getDiscontinued()).after(Date.valueOf(computerDTO.getIntroduced()));
 	}
 	
 	
 
-	private static boolean validName(String name)  {
-		return name.length() < 30;
+	private static boolean tooLargeName(ComputerDTO computerDTO)  {
+		return computerDTO.getName().length() > 30;
 }
-	
-	public static Map<String, String> validator(Map<String, String> params) {
-		Map<String, String> errors = new HashMap<>();
-		
-		if (!dateLogicValidation(params.get(ServletString.COMPUTER_INTRODUCED), params.get(ServletString.COMPUTER_DISCONTINUED))) {
-			errors.put(ServletString.COMPUTER_INTRODUCED, ServletString.DATE_POSITION_ERROR);
-		}
-		if (!validName(params.get(ServletString.COMPUTER_NAME))) {
-			errors.put(ServletString.COMPUTER_NAME, ServletString.NAME_SIZE_ERROR);
-		}
-		return errors;
+
+	private static boolean tooShortName(ComputerDTO computerDTO)  {
+		return computerDTO.getName().length() < 3;
+}
+	@Override
+	public boolean supports(Class<?> paramClass) {
+		return ComputerDTO.class.equals(paramClass);
 	}
+
+	@Override
+	public void validate(Object object, Errors errors) {
+		ValidationUtils.rejectIfEmpty(errors, "name", "name.required");
+		ComputerDTO computerDTO = (ComputerDTO) object;
+		if (!dateLogicValidation(computerDTO)) {
+			errors.rejectValue("introduced", "logicalError");
+		}
+		if (tooLargeName(computerDTO)) {
+			errors.rejectValue("name", "too.short");
+		}
+		if (tooShortName(computerDTO)) {
+			errors.rejectValue("name", "too.long");
+		}
+		
+	}
+	
+	
 }
