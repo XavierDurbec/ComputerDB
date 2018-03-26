@@ -17,20 +17,29 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="dashboard"> Application -
-				Computer Database </a>
+			<a class="navbar-brand" href="dashboard"> Application - Computer
+				Database </a>
+		</div>
+		<div class="btn-group btn-group-sm pull-right" role="group">
+			<a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${pageNb}&lang=fr">
+			<button type="button" class="btn btn-default">FR</button></a> 
+					<a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${pageNb}&lang=en"><button
+					type="button" class="btn btn-default">EN</button></a> 
 		</div>
 	</header>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle"><c:out value ="${computerCount} computers found."/></h1>
+			<h1 id="homeTitle">
+				<c:out value="${computerCount} computers found." />
+			</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
-					<form id="searchForm" action="dashboard" method="GET" class="form-inline">
+					<form id="searchForm" action="dashboard" method="GET"
+						class="form-inline">
 						<input type="search" id="searchbox" name="search"
-							class="form-control" placeholder="Search name" value="<c:out value ='${searchValue}'/>" /> <input
-							type="submit" id="searchsubmit" value="Filter by name"
-							class="btn btn-primary" />
+							class="form-control" placeholder="Search name"
+							value="<c:out value ='${searchValue}'/>" /> <input type="submit"
+							id="searchsubmit" value="Filter by name" class="btn btn-primary" />
 					</form>
 				</div>
 				<div class="pull-right">
@@ -62,10 +71,16 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-	                    <th><a href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&orderType=name">Name</a></th>
-						<th><a href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&orderType=introduced">Introduced date</a></th>
-						<th><a href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&orderType=discontinued">Discontinued date</a></th>
-						<th><a href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&orderType=company">Company</a></th>
+						<th><a
+							href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&orderType=name">Name</a></th>
+						<th><a
+							href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&orderType=introduced">Introduced
+								date</a></th>
+						<th><a
+							href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&orderType=discontinued">Discontinued
+								date</a></th>
+						<th><a
+							href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&orderType=company">Company</a></th>
 
 					</tr>
 				</thead>
@@ -76,10 +91,12 @@
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="${computer.id}"></td>
-							<td><a href="editComputer?orderType=${orderValue}&nbComputerByPage=${computerByPage}&page=${pageNb}&search=${searchValue}&id=${computer.id}" onclick=""><c:out value="${computer.name}"/></a></td>
-							<td><c:out value="${computer.introduced}"/></td>
-							<td><c:out value="${computer.discontinued}"/></td>
-							<td><c:out value="${computer.company.name}"/></td>
+							<td><a
+								href="editComputer?orderType=${orderValue}&nbComputerByPage=${computerByPage}&page=${pageNb}&search=${searchValue}&id=${computer.id}"
+								onclick=""><c:out value="${computer.name}" /></a></td>
+							<td><c:out value="${computer.introduced}" /></td>
+							<td><c:out value="${computer.discontinued}" /></td>
+							<td><c:out value="${computer.company.name}" /></td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -93,8 +110,9 @@
 			<ul class="pagination">
 
 				<c:if test="${pageNb > 1 }">
-					<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${pageNb-1}" aria-label="Previous">
-							<span aria-hidden="true">&laquo;</span>
+					<li><a
+						href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${pageNb-1}"
+						aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 					</a></li>
 				</c:if>
 				<c:choose>
@@ -102,10 +120,12 @@
 						<c:forEach begin="1" end="${maxPage}" step="1" var="i">
 							<c:choose>
 								<c:when test="${i == pageNb}">
-									<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}"><b>${i}</b></a></li>
+									<li><a
+										href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}"><b>${i}</b></a></li>
 								</c:when>
 								<c:otherwise>
-									<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}">${i}</a></li>
+									<li><a
+										href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}">${i}</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
@@ -115,53 +135,63 @@
 						<c:forEach begin="1" end="15" step="1" var="i">
 							<c:choose>
 								<c:when test="${i == pageNb}">
-									<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}"><b>${i}</b></a></li>
+									<li><a
+										href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}"><b>${i}</b></a></li>
 								</c:when>
 								<c:otherwise>
-									<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}">${i}</a></li>
+									<li><a
+										href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}">${i}</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 						<li><a>...</a></li>
 						<c:forEach begin="${maxPage-5}" end="${maxPage}" step="1" var="i">
-							<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}">${i}</a></li>
+							<li><a
+								href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}">${i}</a></li>
 						</c:forEach>
 					</c:when>
 
 					<c:when
 						test="${maxPage > 27 && pageNb > 10 && pageNb < maxPage - 10}">
 						<c:forEach begin="1" end="5" step="1" var="i">
-							<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}">${i}</a></li>
+							<li><a
+								href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}">${i}</a></li>
 						</c:forEach>
 						<li><a>...</a></li>
 						<c:forEach begin="${pageNb-5}" end="${pageNb+5}" step="1" var="i">
 							<c:choose>
 								<c:when test="${i == pageNb}">
-									<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}"><b>${i}</b></a></li>
+									<li><a
+										href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}"><b>${i}</b></a></li>
 								</c:when>
 								<c:otherwise>
-									<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}">${i}</a></li>
+									<li><a
+										href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}">${i}</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 						<li><a>...</a></li>
 						<c:forEach begin="${maxPage-5}" end="${maxPage}" step="1" var="i">
-							<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}">${i}</a></li>
+							<li><a
+								href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}">${i}</a></li>
 						</c:forEach>
 					</c:when>
 
 					<c:when test="${maxPage > 27 && pageNb >= maxPage - 10}">
 						<c:forEach begin="1" end="5" step="1" var="i">
-							<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}">${i}</a></li>
+							<li><a
+								href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}">${i}</a></li>
 						</c:forEach>
 						<li><a>...</a></li>
 						<c:forEach begin="${maxPage-11}" end="${maxPage}" step="1" var="i">
 							<c:choose>
 								<c:when test="${i == pageNb}">
-									<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}"><b>${i}</b></a></li>
+									<li><a
+										href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}"><b>${i}</b></a></li>
 								</c:when>
 								<c:otherwise>
-									<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}">${i}</a></li>
+									<li><a
+										href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}">${i}</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
@@ -169,16 +199,21 @@
 
 				</c:choose>
 				<c:if test="${pageNb < maxPage }">
-					<li><a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${pageNb + 1}" aria-label="Next">
-							<span aria-hidden="true">&raquo;</span>
+					<li><a
+						href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${pageNb + 1}"
+						aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 					</a></li>
 				</c:if>
 			</ul>
 
 			<div class="btn-group btn-group-sm pull-right" role="group">
-				<a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=10&search=${searchValue}&page=${pageNb}"><button type="button" class="btn btn-default">10</button></a>
-				<a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=50&search=${searchValue}&page=${pageNb}"><button type="button" class="btn btn-default">50</button></a>
-				<a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=100&search=${searchValue}&page=${pageNb}"><button type="button" class="btn btn-default">100</button></a>
+				<a
+					href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=10&search=${searchValue}&page=${pageNb}"><button
+						type="button" class="btn btn-default">10</button></a> <a
+					href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=50&search=${searchValue}&page=${pageNb}"><button
+						type="button" class="btn btn-default">50</button></a> <a
+					href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=100&search=${searchValue}&page=${pageNb}"><button
+						type="button" class="btn btn-default">100</button></a>
 			</div>
 		</div>
 	</footer>

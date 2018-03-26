@@ -59,9 +59,6 @@ public class ComputerController {
 		String oldOrderByString = params.getOrDefault("orderDirection", "");
 		String ascendingOrderString = params.getOrDefault("orderDirection", "ASC");
 		boolean ascendingOrder = orderDirectionSet(orderBy, orderBySet(oldOrderByString), ascendingOrderString);
-
-		
-		
 		try {
 			ComputerPage computerPage = computerService.getComputerPage(pageNb, nbComputerByPage, filter, orderBy, ascendingOrder);
 			ascendingOrderString = ascendingOrder ? "ASC" : "DESC";
