@@ -60,10 +60,11 @@ public class ComputerController {
 		String ascendingOrderString = params.getOrDefault("orderDirection", "ASC");
 		boolean ascendingOrder = orderDirectionSet(orderBy, orderBySet(oldOrderByString), ascendingOrderString);
 
+		
+		
 		try {
 			ComputerPage computerPage = computerService.getComputerPage(pageNb, nbComputerByPage, filter, orderBy, ascendingOrder);
 			ascendingOrderString = ascendingOrder ? "ASC" : "DESC";
-
 			model.addAttribute("orderDirection", ascendingOrderString);
 			model.addAttribute("computerByPage", nbComputerByPage);
 			model.addAttribute(ServletString.JSP_ORDER_VALUE, orderBy.sqlName);
@@ -185,7 +186,9 @@ public class ComputerController {
 	public String addComputer(@ModelAttribute("ComputerDTO") @Validated(ComputerDTO.class) ComputerDTO computerDTO, BindingResult bindingResult, ModelMap model, @RequestParam Map<String, String> params) {
 		try {
 			if (!bindingResult.hasErrors()) {
-				//computerDTO.setCompany(getCompanyById(Integer.parseInt(params.getOrDefault("company", "0"))));
+//				computerDTO.setCompany(getCompanyById(Integer.parseInt(params.getOrDefault("company", "0"))));
+				System.out.println(computerDTO);
+				System.out.println(ComputerMapperDTO.toComputer(computerDTO));
 				computerService.create(ComputerMapperDTO.toComputer(computerDTO));
 				return "redirect:dashboard";
 			} else {

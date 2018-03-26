@@ -38,6 +38,13 @@ public class ComputerDTO {
 			public void setCompany(CompanyDTO company) {
 				this.company = company;
 			}
+			@Override
+			public String toString() {
+				return "ComputerDTO [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued="
+						+ discontinued + ", company=" + company + "]";
+			}
+			
+			
 			
 			
 }

@@ -14,6 +14,8 @@ public class CompanyMapperDTO {
 	public static Company toCompany(CompanyDTO companyDTO) {
 		Company company = new Company(companyDTO.getName());
 		company.setId(companyDTO.getId());
+		System.out.println(companyDTO);
+		System.out.println("companyMapper " + company);
 		return company;
 	}
 

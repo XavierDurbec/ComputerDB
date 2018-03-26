@@ -46,10 +46,10 @@
 							</div>
 							<div class="form-group">
 								<label for="companyId">Company</label> 
-								<form:select class="form-control" id="companyId" name="companyId" path="company">
+								<form:select class="form-control" id="companyId" name="companyId" path="company.id">
 									<option value="0">--</option>
 									<c:forEach items="${companyList}" var="company">
-										<option value="${company}">${company.name}</option>
+										<option value="${company.id}">${company.name}</option>
 									</c:forEach>
 							</form:select>
 							<form:errors path="company"></form:errors>

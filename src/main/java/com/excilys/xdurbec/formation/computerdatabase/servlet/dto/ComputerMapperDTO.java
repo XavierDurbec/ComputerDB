@@ -19,7 +19,8 @@ public class ComputerMapperDTO {
 		if (computerDTO.getDiscontinued() != "") {
 			computer.setDiscontinued(Date.valueOf(computerDTO.getDiscontinued())); 
 		}
-		if (computerDTO.getCompany() != null && computerDTO.getCompany().getName() != null) {
+		System.out.println("ComputerMapper : " + computerDTO.getCompany());
+		if (computerDTO.getCompany() != null) {
 			computer.setCompany(CompanyMapperDTO.toCompany((computerDTO.getCompany())));
 		}
 		computer.setId(computerDTO.getId());

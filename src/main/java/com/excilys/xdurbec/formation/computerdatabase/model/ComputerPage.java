@@ -67,5 +67,13 @@ public class ComputerPage {
 		this.computerList = computerList;
 	}
 
+	@Override
+	public String toString() {
+		return "ComputerPage [pageNumber=" + pageNumber + ", nbComputerPerPage=" + nbComputerPerPage + ", filter="
+				+ filter + ", computerList=" + computerList + ", ascendingOrder=" + ascendingOrder + ", orderBy="
+				+ orderBy + "]";
+	}
+
+	
 	
 }	
