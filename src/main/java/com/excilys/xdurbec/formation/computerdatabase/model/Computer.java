@@ -2,18 +2,31 @@ package com.excilys.xdurbec.formation.computerdatabase.model;
 
 import java.sql.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
 
 /**
  * 
  * @author excilys
  *
  */
-public class Computer {
 
+@Entity
+public class Computer {
+	
+	@Id
+	@GeneratedValue (strategy = GenerationType.AUTO)
 	private int id;
+	
 	private String name;
 	private Date introduced;
 	private Date discontinued;
+	
+	@ManyToOne
 	private Company company;
 
 	public Computer() {

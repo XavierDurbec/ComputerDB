@@ -7,6 +7,8 @@
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerdatabase/service/ComputerService.java
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerdatabase/dao/EntityDAO.java
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerdatabase/dao/CompanyDAO.java
+/home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerdatabase/servlet/form/AddForm.java
+/home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerdatabase/springconfig/HibernateConf.java
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerdatabase/model/ComputerPage.java
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerdatabase/service/CompanyService.java
 /home/excilys/Desktop/ComputerProject/ComputerDB/src/main/java/com/excilys/xdurbec/formation/computerdatabase/service/EntityServiceComportment.java

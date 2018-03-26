@@ -1,13 +1,23 @@
 package com.excilys.xdurbec.formation.computerdatabase.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 /**
  * 
  * @author excilys
  *
  */
-public class Company {
 
+@Entity
+public class Company {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
+	
 	private String name;
 
 	public Company() { }

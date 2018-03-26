@@ -16,6 +16,7 @@ import com.excilys.xdurbec.formation.computerdatabase.model.Company;
  * @author excilys
  *
  */
+
 @Repository
 public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Company> {
 
@@ -36,6 +37,8 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 	
 
 
+	
+	
 	@Override
 	public List<Company>  getAll()  throws  ExceptionDAO {
 		try {
