@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
@@ -125,6 +126,9 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 	@Transactional
 	public void create(Computer computer) throws ExceptionDAO {
 		try {
+			if (computer.getCompany() != null && computer.getCompany().getId() == 0) {
+				computer.setCompany(null);
+			}
 			em.persist(computer);
 		} catch (DataAccessException e) {
 			log.error(e);
@@ -150,9 +154,13 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 
 	}
 
+	@Transactional
 	public void deleteById(int id) throws ExceptionDAO {
 		try {
-			this.jdbcTemplate.update(DELETE_REQUEST, Long.valueOf(id));
+			CriteriaDelete<Computer> delete = cb.createCriteriaDelete(Computer.class);
+			Root<Computer> model = delete.from(Computer.class);
+			delete.where(cb.equal(model.get("id"), id));
+			em.createQuery(delete).executeUpdate();
 		} catch (DataAccessException e) {
 			log.error(e);
 			throw new ExceptionDAO(ExceptionDAO.DELETE_ERROR);
