@@ -183,9 +183,6 @@ public class ComputerController {
 	public String addComputer(@ModelAttribute("ComputerDTO") @Validated(ComputerDTO.class) ComputerDTO computerDTO, BindingResult bindingResult, ModelMap model, @RequestParam Map<String, String> params) {
 		try {
 			if (!bindingResult.hasErrors()) {
-//				computerDTO.setCompany(getCompanyById(Integer.parseInt(params.getOrDefault("company", "0"))));
-				System.out.println(computerDTO);
-				System.out.println(ComputerMapperDTO.toComputer(computerDTO));
 				computerService.create(ComputerMapperDTO.toComputer(computerDTO));
 				return "redirect:dashboard";
 			} else {

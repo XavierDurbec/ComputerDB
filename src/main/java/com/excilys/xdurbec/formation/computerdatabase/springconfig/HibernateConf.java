@@ -1,56 +1,77 @@
 package com.excilys.xdurbec.formation.computerdatabase.springconfig;
 
-import java.util.Properties;
 
+
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
-import org.springframework.orm.hibernate5.HibernateTransactionManager;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
-import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+
 @Configuration
-@EnableTransactionManagement
+@EnableTransactionManagement(proxyTargetClass = true)
+@ComponentScan(basePackages = "com.excilys.xdurbec.formation.computerdatabase")
+@PropertySource("classpath:config.properties")
 public class HibernateConf {
 	
 	@Autowired
 	private Environment env;
- 
-    @Bean
-    public DataSource dataSource() {
-        BasicDataSource dataSource = new BasicDataSource();
+	
+	@Bean
+	public DriverManagerDataSource dataSource() {
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
 		dataSource.setDriverClassName(env.getRequiredProperty("jdbc.driverClassName"));
 		dataSource.setUrl(env.getRequiredProperty("jdbc.url"));
 		dataSource.setUsername(env.getRequiredProperty("jdbc.user"));
 		dataSource.setPassword(env.getRequiredProperty("jdbc.pass"));
-        return dataSource;
+		return dataSource;
+	}	
+	
+
+	@Bean
+	public JdbcTemplate jdbcTemplate(DataSource dataSource) {
+		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+		jdbcTemplate.setResultsMapCaseInsensitive(true);
+		return jdbcTemplate;
+	}
+  
+
+	@Bean
+	public MessageSource messageSource() {
+		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+		messageSource.setBasename("/WEB-INF/classes/messages");
+		return messageSource;
+	}
+
+
+    @Bean
+    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
+        return new JpaTransactionManager(emf);
     }
+
     
-
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource, JpaVendorAdapter jpaVendorAdapter) {
-        LocalContainerEntityManagerFactoryBean lef = new LocalContainerEntityManagerFactoryBean();
-        lef.setDataSource(dataSource);
-        lef.setJpaVendorAdapter(jpaVendorAdapter);
-        lef.setPackagesToScan("com.excilys.xdurbec.formation.computerdatabase.model");
-        return lef;
-    }
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DriverManagerDataSource dataSource) {
+        LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
+        emf.setDataSource(dataSource);
+        emf.setPackagesToScan("com.excilys.xdurbec.formation.computerdatabase.model");
+        emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
-    @Bean
-    public JpaVendorAdapter jpaVendorAdapter() {
-        HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
-        hibernateJpaVendorAdapter.setShowSql(false);
-        hibernateJpaVendorAdapter.setGenerateDdl(true);
-        hibernateJpaVendorAdapter.setDatabase(Database.MYSQL);
-        return hibernateJpaVendorAdapter;
-    }
+        return emf;
+}
+	
 }

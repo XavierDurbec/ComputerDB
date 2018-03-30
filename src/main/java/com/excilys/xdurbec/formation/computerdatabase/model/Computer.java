@@ -6,7 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import org.springframework.transaction.annotation.Transactional;
 
 
 /**
@@ -16,6 +20,7 @@ import javax.persistence.ManyToOne;
  */
 
 @Entity
+@Table(name = "computer")
 public class Computer {
 	
 	@Id
@@ -27,6 +32,7 @@ public class Computer {
 	private Date discontinued;
 	
 	@ManyToOne
+	@JoinColumn(name = "company_id")
 	private Company company;
 
 	public Computer() {

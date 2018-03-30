@@ -30,7 +30,7 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 	private ComputerDAO computerDAO;
 	private JdbcTemplate jdbcTemplate;
 
-	private CompanyDAO(JdbcTemplate jdbcTemplate, ComputerDAO computerDAO) {
+	public CompanyDAO(JdbcTemplate jdbcTemplate, ComputerDAO computerDAO) {
 		this.computerDAO = computerDAO;
 		this.jdbcTemplate = jdbcTemplate;
 	}
