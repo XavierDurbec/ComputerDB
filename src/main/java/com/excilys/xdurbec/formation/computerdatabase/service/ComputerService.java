@@ -3,6 +3,7 @@ package com.excilys.xdurbec.formation.computerdatabase.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.xdurbec.formation.computerdatabase.dao.ComputerAttributes;
 import com.excilys.xdurbec.formation.computerdatabase.dao.ComputerDAO;
@@ -41,7 +42,7 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 		}
 	}
 
-
+	@Transactional
 	public void create(Computer entity) throws  ExceptionService {
 		if (entity.getCompany() == null || entity.getCompany().getId() == 0 || companyService.companyExistenceVerification(entity.getCompany().getId())) {
 			if (computerDateValidator(entity)) {
@@ -59,6 +60,7 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 	}
 
 
+	@Transactional
 	public void update(Computer entity) throws  ExceptionService {
 		if (computerDateValidator(entity)) {
 			try {
@@ -71,7 +73,7 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 		}
 	}
 
-
+	@Transactional
 	public void deleteById(int id) throws  ExceptionService {
 		try {
 			computerDAO.deleteById(id);
