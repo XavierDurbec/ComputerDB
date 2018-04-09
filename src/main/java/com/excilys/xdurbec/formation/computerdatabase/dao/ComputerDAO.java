@@ -14,9 +14,7 @@ import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.xdurbec.formation.computerdatabase.model.Computer;
 
@@ -28,11 +26,6 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 	@PersistenceContext
 	private EntityManager em;
 	private CriteriaBuilder cb;
-
-
-	public ComputerDAO() {
-	}
-
 
 	@PostConstruct
 	public void init() {
@@ -82,11 +75,11 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 		try {
 			CriteriaUpdate<Computer> update = cb.createCriteriaUpdate(Computer.class);
 			Root<Computer> model = update.from(Computer.class);
-			update.set("name", computer.getName());
-			update.set("introduced", computer.getIntroduced());
-			update.set("discontinued", computer.getDiscontinued());
-			update.set("company", computer.getCompany());
-			update.where(cb.equal(model.get("id"), computer.getId()));
+			update.set(ComputerAttributes.NAME.sqlName, computer.getName());
+			update.set(ComputerAttributes.INTRODUCED.sqlName, computer.getIntroduced());
+			update.set(ComputerAttributes.DISCONTINUED.sqlName, computer.getDiscontinued());
+			update.set(ComputerAttributes.COMPANY_NAME.sqlName, computer.getCompany());
+			update.where(cb.equal(model.get(ComputerAttributes.ID.sqlName), computer.getId()));
 			em.createQuery(update).executeUpdate();
 		} catch (DataAccessException e) {
 			log.error(e.getMessage());
@@ -100,7 +93,7 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 		try {
 			CriteriaDelete<Computer> delete = cb.createCriteriaDelete(Computer.class);
 			Root<Computer> model = delete.from(Computer.class);
-			delete.where(cb.equal(model.get("id"), id));
+			delete.where(cb.equal(model.get(ComputerAttributes.ID.sqlName), id));
 			em.createQuery(delete).executeUpdate();
 		} catch (DataAccessException e) {
 			log.error(e);
@@ -112,14 +105,14 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 		CriteriaQuery<Computer> criteriaQuery = cb.createQuery(Computer.class);
 		Root<Computer> model = criteriaQuery.from(Computer.class);
 		if (ascendingOrder) {
-			if (orderBy.sqlName.equals("company")) {
-				criteriaQuery.orderBy(cb.asc(model.get(orderBy.sqlName).get("name")));
+			if (orderBy.equals(ComputerAttributes.COMPANY_NAME)) {
+				criteriaQuery.orderBy(cb.asc(model.get(orderBy.sqlName).get(ConstantStringDAO.NAME_OF_COMPANY)));
 			} else {
 				criteriaQuery.orderBy(cb.asc(model.get(orderBy.sqlName)));
 			}
 		} else {				
-			if (orderBy.sqlName.equals("company")) {
-				criteriaQuery.orderBy(cb.desc(model.get(orderBy.sqlName).get("name")));
+			if (orderBy.equals(ComputerAttributes.COMPANY_NAME)) {
+				criteriaQuery.orderBy(cb.desc(model.get(orderBy.sqlName).get(ConstantStringDAO.NAME_OF_COMPANY)));
 			} else {
 				criteriaQuery.orderBy(cb.desc(model.get(orderBy.sqlName)));
 			}
@@ -149,7 +142,7 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 		try {
 			CriteriaDelete<Computer> delete = cb.createCriteriaDelete(Computer.class);
 			Root<Computer> model = delete.from(Computer.class);
-			delete.where(cb.equal(model.get(ComputerAttributes.COMPANY_NAME.sqlName).get("id"), companyId));
+			delete.where(cb.equal(model.get(ComputerAttributes.COMPANY_NAME.sqlName).get(ConstantStringDAO.COMPANY_ID), companyId));
 			em.createQuery(delete).executeUpdate();
 		} catch (DataAccessException e) {
 			log.error(e);
