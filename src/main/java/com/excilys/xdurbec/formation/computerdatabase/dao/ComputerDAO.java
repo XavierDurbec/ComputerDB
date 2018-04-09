@@ -3,6 +3,7 @@ package com.excilys.xdurbec.formation.computerdatabase.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -154,7 +155,6 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 
 	}
 
-	@Transactional
 	public void deleteById(int id) throws ExceptionDAO {
 		try {
 			CriteriaDelete<Computer> delete = cb.createCriteriaDelete(Computer.class);
@@ -168,29 +168,39 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 	}
 
 	public List<Computer> getAllPage(int pageNumber, int nbEntityPerPage, String filter, ComputerAttributes orderBy, Boolean ascendingOrder) {
-		String orderByDirection = ascendingOrder ? "ASC" : "DESC";
+		CriteriaQuery<Computer> criteriaQuery = cb.createQuery(Computer.class);
+		Root<Computer> model = criteriaQuery.from(Computer.class);
+		if (ascendingOrder) {
+			if (orderBy.sqlName.equals("company")) {
+				criteriaQuery.orderBy(cb.asc(model.get(orderBy.sqlName).get("name")));
+			} else {
+				criteriaQuery.orderBy(cb.asc(model.get(orderBy.sqlName)));
+			}
+		} else {				
+			if (orderBy.sqlName.equals("company")) {
+				criteriaQuery.orderBy(cb.desc(model.get(orderBy.sqlName).get("name")));
+			} else {
+				criteriaQuery.orderBy(cb.desc(model.get(orderBy.sqlName)));
+			}
+		}
+		criteriaQuery.where(cb.like(model.get(ComputerAttributes.NAME.sqlName), "%" + filter + "%"));
+		TypedQuery<Computer> query = em.createQuery(criteriaQuery);
 		int firstPage = (pageNumber - 1) * nbEntityPerPage;
 		firstPage = firstPage < 0 ? 0 : firstPage;
-		return this.jdbcTemplate.query(String.format(GET_PAGE_WITH_FILTRE_REQUEST, orderBy.sqlName, orderByDirection), 
-				new Object[]{"%" + filter + "%", "%" + filter + "%", nbEntityPerPage, firstPage},
-				new RowMapper<Computer>() {
-			public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
-				Computer computer = new  Computer();
-				computer.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPUTER));
-				computer.setName(rs.getString(ConstantStringDAO.NAME_OF_COMPUTER));
-				computer.setIntroduced(rs.getDate(ConstantStringDAO.INTRODUCED_OF_COMPUTER));
-				computer.setDiscontinued(rs.getDate(ConstantStringDAO.DISCONTINUED_OF_COMPUTER));
-				Company company = new Company();
-				company.setId(rs.getInt(ConstantStringDAO.ID_OF_COMPANY));
-				company.setName(rs.getString(ConstantStringDAO.NAME_OF_COMPANY));
-				computer.setCompany(company);
-				return computer;
-			}
-		});
+		query.setFirstResult(firstPage);
+		query.setMaxResults(nbEntityPerPage);
+		return query.getResultList();
+
 	}
 
 	public int getComputerNumber(String filter) {
-		return this.jdbcTemplate.queryForObject(NUMBER_REQUEST, Integer.class, "%" + filter + "%", "%" + filter + "%");
+		CriteriaQuery<Long> criteriaQuery = cb.createQuery(Long.class);
+		Root<Computer> model = criteriaQuery.from(Computer.class);
+		criteriaQuery.select(cb.count(model));
+		criteriaQuery.where(cb.like(model.get(ComputerAttributes.NAME.sqlName), "%" + filter + "%"));
+		TypedQuery<Long> query2 = em.createQuery(criteriaQuery);
+		return query2.getSingleResult().intValue();
+		
 	}
 
 	@Transactional
