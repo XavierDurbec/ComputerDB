@@ -25,12 +25,6 @@ import com.excilys.xdurbec.formation.computerdatabase.model.Company;
 @Repository
 public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Company> {
 
-	private static final String GET_ALL = "SELECT company.id, company.name FROM company;";
-	private static final String GET_ALL_PAGE = "SELECT company.id, company.name FROM company LIMIT ? OFFSET ?;";
-	private static final String DOES_COMPANY_EXIST = "SELECT count(*) FROM company WHERE id = ?;";
-	private static final String GET_BY_ID = "SELECT company.id, company.name FROM company WHERE id = ?;";
-	private static final String DELETE_BY_ID = "DELETE FROM company WHERE id = ?;";
-
 	@PersistenceContext
 	private EntityManager em;
 	private CriteriaBuilder cb;
@@ -61,7 +55,7 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 		CriteriaQuery<Long> criteriaQuery = cb.createQuery(Long.class);
 		Root<Company> model = criteriaQuery.from(Company.class);
 		criteriaQuery.select(cb.count(model));
-		criteriaQuery.where(cb.like(model.get("id"), String.valueOf(id)));
+		criteriaQuery.where(cb.equal(model.get("id"), id));
 		TypedQuery<Long> query = em.createQuery(criteriaQuery);
 		return 0 < query.getSingleResult().intValue();
 	}
@@ -69,7 +63,6 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 
 	public Company getById(int id) throws ExceptionDAO {
 		try {
-
 			CriteriaQuery<Company> criteriaQuery = cb.createQuery(Company.class);
 			Root<Company> model = criteriaQuery.from(Company.class);
 			criteriaQuery.where(cb.equal(model.get("id"), id));

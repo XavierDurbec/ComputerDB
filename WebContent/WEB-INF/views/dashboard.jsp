@@ -72,15 +72,15 @@
 							</a>
 						</span></th>
 						<th><a
-							href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&orderType=name">Name</a></th>
+							href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&oldOrderBy=${oldOrderBy}&orderType=name">Name</a></th>
 						<th><a
-							href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&orderType=introduced">Introduced
+							href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&oldOrderBy=${oldOrderBy}&orderType=introduced">Introduced
 								date</a></th>
 						<th><a
-							href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&orderType=discontinued">Discontinued
+							href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&oldOrderBy=${oldOrderBy}&orderType=discontinued">Discontinued
 								date</a></th>
 						<th><a
-							href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&orderType=company">Company</a></th>
+							href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&oldOrderBy=${oldOrderBy}&orderType=company">Company</a></th>
 
 					</tr>
 				</thead>

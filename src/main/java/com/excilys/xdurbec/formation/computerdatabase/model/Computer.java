@@ -10,14 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.springframework.transaction.annotation.Transactional;
-
-
-/**
- * 
- * @author excilys
- *
- */
 
 @Entity
 @Table(name = "computer")

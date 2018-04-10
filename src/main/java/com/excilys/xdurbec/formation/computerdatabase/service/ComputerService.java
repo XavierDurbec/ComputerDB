@@ -14,11 +14,11 @@ import com.excilys.xdurbec.formation.computerdatabase.model.ComputerPage;
 
 @Service
 public class ComputerService extends EntityService implements EntityServiceComportment<Computer> {
-	
+
 
 	private ComputerDAO computerDAO;
 	private CompanyService companyService;
-	
+
 	public ComputerService(ComputerDAO computerDAO, CompanyService companyService) {
 		this.computerDAO = computerDAO;
 		this.companyService = companyService;
@@ -45,14 +45,10 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 	@Transactional
 	public void create(Computer entity) throws  ExceptionService {
 		if (entity.getCompany() == null || entity.getCompany().getId() == 0 || companyService.companyExistenceVerification(entity.getCompany().getId())) {
-			if (computerDateValidator(entity)) {
-				try {
-					computerDAO.create(entity);
-				} catch (ExceptionDAO e) {
-					throw new ExceptionService(ExceptionService.CREATE_ERROR);
-				}
-			} else {
-				throw new ExceptionService(ExceptionService.DATE_ERROR);
+			try {
+				computerDAO.create(entity);
+			} catch (ExceptionDAO e) {
+				throw new ExceptionService(ExceptionService.CREATE_ERROR);
 			}
 		} else {
 			throw new ExceptionService(ExceptionService.DOES_EXIST_ERROR);
@@ -62,14 +58,14 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 
 	@Transactional
 	public void update(Computer entity) throws  ExceptionService {
-		if (computerDateValidator(entity)) {
+		if (entity.getCompany() == null || entity.getCompany().getId() == 0 || companyService.companyExistenceVerification(entity.getCompany().getId())) {
 			try {
 				computerDAO.update(entity);
 			} catch (ExceptionDAO e) {
 				throw new ExceptionService(ExceptionService.UPDATE_ERROR);
 			}
 		} else {
-			throw new ExceptionService(ExceptionService.DATE_ERROR);
+			throw new ExceptionService(ExceptionService.DOES_EXIST_ERROR);
 		}
 	}
 
@@ -99,7 +95,7 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 				|| computer.getIntroduced().before(computer.getDiscontinued());
 	}
 
-	
+
 	public ComputerPage refresh(ComputerPage computerPage) throws ExceptionService {
 		ComputerPage newComputerPage = new ComputerPage(computerPage.getPageNumber(), computerPage.getNbComputerPerPage(), computerPage.getFilter(), computerPage.getOrderBy(), computerPage.getAscendingOrder());
 		newComputerPage.setComputerList(computerDAO.getAllPage(newComputerPage.getPageNumber(), newComputerPage.getNbComputerPerPage(), 

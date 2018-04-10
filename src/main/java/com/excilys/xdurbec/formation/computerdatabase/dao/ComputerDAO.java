@@ -72,7 +72,11 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 	}
 
 	public void update(Computer computer) throws ExceptionDAO {
-		try {
+		try {			
+			if (computer.getCompany() != null && computer.getCompany().getId() == 0) {
+				computer.setCompany(null);
+			}
+			System.out.println("Computer :" + computer);
 			CriteriaUpdate<Computer> update = cb.createCriteriaUpdate(Computer.class);
 			Root<Computer> model = update.from(Computer.class);
 			update.set(ComputerAttributes.NAME.sqlName, computer.getName());
@@ -134,7 +138,7 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 		criteriaQuery.where(cb.like(model.get(ComputerAttributes.NAME.sqlName), "%" + filter + "%"));
 		TypedQuery<Long> query2 = em.createQuery(criteriaQuery);
 		return query2.getSingleResult().intValue();
-		
+
 	}
 
 

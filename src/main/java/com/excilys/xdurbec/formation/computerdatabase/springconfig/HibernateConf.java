@@ -3,7 +3,6 @@ package com.excilys.xdurbec.formation.computerdatabase.springconfig;
 
 
 import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -13,7 +12,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -40,15 +38,6 @@ public class HibernateConf {
 		dataSource.setPassword(env.getRequiredProperty("jdbc.pass"));
 		return dataSource;
 	}	
-	
-
-	@Bean
-	public JdbcTemplate jdbcTemplate(DataSource dataSource) {
-		JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
-		jdbcTemplate.setResultsMapCaseInsensitive(true);
-		return jdbcTemplate;
-	}
-  
 
 	@Bean
 	public MessageSource messageSource() {

@@ -24,13 +24,13 @@
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
 					<h1>Add Computer</h1>
-					<form:form action="addcomputer" modelAttribute="ComputerDTO" name="addForm" id="addForm" method="POST">
+					<form:form action="addcomputer" modelAttribute="ComputerDTO" method="POST">
 						<fieldset>
 							<div class="form-group">
 								<label for="computerName">Computer name</label> 
 								<form:input type="text" class="form-control" id="computerName" name="computerName"
 									placeholder="Computer name" pattern ="[A-Za-z1-9]{1,30}" path="name"/> 
-							     <form:errors path="name"></form:errors>
+                                 <form:errors path="name"></form:errors>
 							</div>
 							<div class="form-group">
 								<label for="introduced">Introduced date</label> 

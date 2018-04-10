@@ -56,12 +56,14 @@ public class ComputerController {
 		int pageNb = Integer.parseInt(params.getOrDefault(ServletString.PAGE, "1"));
 		pageNb = pageNb < nbComputerPage ? pageNb : nbComputerPage;
 		ComputerAttributes orderBy = orderBySet(params.getOrDefault(ServletString.ORDER_TYPE, ""));
-		String oldOrderByString = params.getOrDefault("orderDirection", "");
+		String oldOrderByString = params.getOrDefault("oldOrderBy", "");
 		String ascendingOrderString = params.getOrDefault("orderDirection", "ASC");
+				
 		boolean ascendingOrder = orderDirectionSet(orderBy, orderBySet(oldOrderByString), ascendingOrderString);
 		try {
 			ComputerPage computerPage = computerService.getComputerPage(pageNb, nbComputerByPage, filter, orderBy, ascendingOrder);
 			ascendingOrderString = ascendingOrder ? "ASC" : "DESC";
+			model.addAttribute("oldOrderBy", orderBy.sqlName);
 			model.addAttribute("orderDirection", ascendingOrderString);
 			model.addAttribute("computerByPage", nbComputerByPage);
 			model.addAttribute(ServletString.JSP_ORDER_VALUE, orderBy.sqlName);
@@ -136,9 +138,8 @@ public class ComputerController {
 	@GetMapping("editComputer")
 	public String getEditedComputerPage(ModelMap model, @RequestParam Map<String, String> params) {
 		int computerId = Integer.parseInt(params.get("id"));
-
 		try {
-			model.addAttribute("computer", ComputerMapperDTO.toComputerDTO(computerService.getById(computerId)));
+			model.addAttribute("ComputerDTO", ComputerMapperDTO.toComputerDTO(computerService.getById(computerId)));
 			model.addAttribute("companyList", CompanyMapperDTO.toCompanyDTOList(companyService.getAll()));
 		} catch (ExceptionService e) {
 			log.error(e);
@@ -147,24 +148,21 @@ public class ComputerController {
 	}
 
 	@PostMapping("editComputer")
-	public String editComputer(ModelMap model, @RequestParam Map<String, String> params) {
-		ComputerDTO computerDTO = new ComputerDTO();
-		computerDTO.setId(Integer.parseInt(params.get("id")));
-		computerDTO.setName(params.get("computerName"));
-		computerDTO.setIntroduced(params.get("introduced"));
-		computerDTO.setDiscontinued(params.get("discontinued"));
-		String computerCompanyIdString = params.get("companyId");
+	public String editComputer(@ModelAttribute("ComputerDTO") @Validated(ComputerDTO.class) ComputerDTO computerDTO, BindingResult bindingResult, ModelMap model, @RequestParam Map<String, String> params) {
 		try {
-			if (!"0".equals(computerCompanyIdString)) {
-				computerDTO.setCompany(CompanyMapperDTO.toCompanyDTO(companyService.getCompanyById(Integer.valueOf(computerCompanyIdString))));
+			if (!bindingResult.hasErrors()) {
+				log.error(ComputerMapperDTO.toComputer(computerDTO));
+				computerService.update(ComputerMapperDTO.toComputer(computerDTO));
+				return "redirect:dashboard";
+			} else {
+				model.addAttribute(ServletString.COMPANY_LIST, CompanyMapperDTO.toCompanyDTOList(companyService.getAll()));
+				return "addComputer";
 			}
-			computerService.update(ComputerMapperDTO.toComputer(computerDTO));
+
 		} catch (NumberFormatException | ExceptionService e) {
 			log.error(e);
 			return "editComputer";
 		}
-
-		return "redirect:dashboard";
 	}
 
 	@GetMapping("addcomputer")
