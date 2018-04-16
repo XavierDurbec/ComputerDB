@@ -22,13 +22,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement(proxyTargetClass = true)
-@ComponentScan(basePackages = "com.excilys.xdurbec.formation.computerdatabase")
+@ComponentScan(basePackages = {"com.excilys.xdurbec.formation.computerdatabase.model", "com.excilys.xdurbec.formation.computerdatabase.dao", "com.excilys.xdurbec.formation.computerdatabase.service"})
 @PropertySource("classpath:config.properties")
 public class HibernateConf {
-	
+
 	@Autowired
 	private Environment env;
-	
+
 	@Bean
 	public DriverManagerDataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -47,20 +47,21 @@ public class HibernateConf {
 	}
 
 
-    @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
-        return new JpaTransactionManager(emf);
-    }
+	@Bean
+	public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
+		return new JpaTransactionManager(emf);
+	}
 
-    
-    @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DriverManagerDataSource dataSource) {
-        LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
-        emf.setDataSource(dataSource);
-        emf.setPackagesToScan("com.excilys.xdurbec.formation.computerdatabase.model");
-        emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
-        return emf;
-}
+	@Bean
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory(DriverManagerDataSource dataSource) {
+		LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
+		emf.setDataSource(dataSource);
+		emf.setPackagesToScan("com.excilys.xdurbec.formation.computerdatabase.model");
+		emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+
+		return emf;
+	}
 	
+
 }

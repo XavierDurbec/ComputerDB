@@ -6,7 +6,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-import com.excilys.xdurbec.formation.computerdatabase.servlet.dto.ComputerDTO;
+
+import com.excilys.xdurbec.formation.computerdatabase.dto.ComputerDTO;
 
 @Component
 public class ComputerValidator implements Validator {

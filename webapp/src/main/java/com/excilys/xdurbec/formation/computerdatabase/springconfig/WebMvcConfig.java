@@ -17,7 +17,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = { "com.excilys.xdurbec.formation.computerdatabase" })
+@ComponentScan(basePackages = { "com.excilys.xdurbec.formation.computerdatabase.controler" })
 public class WebMvcConfig implements WebMvcConfigurer  {
 
 	@Override

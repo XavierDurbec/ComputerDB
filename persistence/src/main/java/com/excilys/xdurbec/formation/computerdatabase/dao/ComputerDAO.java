@@ -1,6 +1,5 @@
 package com.excilys.xdurbec.formation.computerdatabase.dao;
 
-
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -17,6 +16,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.xdurbec.formation.computerdatabase.model.Computer;
+import com.excilys.xdurbec.formation.computerdatabase.model.ComputerAttributes;
+
 
 
 

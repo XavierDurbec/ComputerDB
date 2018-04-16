@@ -1,11 +1,14 @@
 package com.excilys.xdurbec.formation.computerdatabase.controler;
 
+import java.security.Principal;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,17 +16,16 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.validation.BindingResult;
 
-import com.excilys.xdurbec.formation.computerdatabase.dao.ComputerAttributes;
+import com.excilys.xdurbec.formation.computerdatabase.dto.CompanyDTO;
+import com.excilys.xdurbec.formation.computerdatabase.dto.CompanyMapperDTO;
+import com.excilys.xdurbec.formation.computerdatabase.dto.ComputerDTO;
+import com.excilys.xdurbec.formation.computerdatabase.dto.ComputerMapperDTO;
+import com.excilys.xdurbec.formation.computerdatabase.model.ComputerAttributes;
 import com.excilys.xdurbec.formation.computerdatabase.model.ComputerPage;
 import com.excilys.xdurbec.formation.computerdatabase.service.CompanyService;
 import com.excilys.xdurbec.formation.computerdatabase.service.ComputerService;
 import com.excilys.xdurbec.formation.computerdatabase.service.ExceptionService;
-import com.excilys.xdurbec.formation.computerdatabase.servlet.dto.CompanyDTO;
-import com.excilys.xdurbec.formation.computerdatabase.servlet.dto.CompanyMapperDTO;
-import com.excilys.xdurbec.formation.computerdatabase.servlet.dto.ComputerDTO;
-import com.excilys.xdurbec.formation.computerdatabase.servlet.dto.ComputerMapperDTO;
 
 
 @Controller
@@ -48,6 +50,12 @@ public class ComputerController {
 		binder.setValidator(computerValidator);
 	}
 
+	@GetMapping("/")
+	public String index(Model model, Principal principal) {
+		model.addAttribute("message", "You are logged in as " + principal.getName());
+		return "redirect:dashboard";
+	}
+
 	@GetMapping("dashboard")
 	public String getDashboardPage(ModelMap model, @RequestParam Map<String, String> params) {
 		int nbComputerByPage  = Integer.parseInt(params.getOrDefault(ServletString.NB_COMPUTER_BY_PAGE, "20"));
@@ -58,7 +66,7 @@ public class ComputerController {
 		ComputerAttributes orderBy = orderBySet(params.getOrDefault(ServletString.ORDER_TYPE, ""));
 		String oldOrderByString = params.getOrDefault("oldOrderBy", "");
 		String ascendingOrderString = params.getOrDefault("orderDirection", "ASC");
-				
+
 		boolean ascendingOrder = orderDirectionSet(orderBy, orderBySet(oldOrderByString), ascendingOrderString);
 		try {
 			ComputerPage computerPage = computerService.getComputerPage(pageNb, nbComputerByPage, filter, orderBy, ascendingOrder);

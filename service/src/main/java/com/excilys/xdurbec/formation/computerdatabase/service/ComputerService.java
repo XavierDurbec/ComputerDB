@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.xdurbec.formation.computerdatabase.dao.ComputerAttributes;
 import com.excilys.xdurbec.formation.computerdatabase.dao.ComputerDAO;
 import com.excilys.xdurbec.formation.computerdatabase.dao.ExceptionDAO;
 import com.excilys.xdurbec.formation.computerdatabase.model.Computer;
@@ -78,7 +77,7 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 		}
 	}
 
-	public ComputerPage getComputerPage(int pageNumber, int nbComputerByPage, String filter, ComputerAttributes orderBy, Boolean ascendingOrder) throws ExceptionService {
+	public ComputerPage getComputerPage(int pageNumber, int nbComputerByPage, String filter, com.excilys.xdurbec.formation.computerdatabase.model.ComputerAttributes orderBy, Boolean ascendingOrder) throws ExceptionService {
 		return new ComputerPage(pageNumber, nbComputerByPage, filter, orderBy, ascendingOrder);
 	}
 
