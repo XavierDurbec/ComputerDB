@@ -1,10 +1,12 @@
 package com.excilys.xdurbec.formation.computerdatabase.controler;
 
+import java.security.Principal;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -47,13 +49,13 @@ public class ComputerController {
 	private void initBinder(WebDataBinder binder) {
 		binder.setValidator(computerValidator);
 	}
-/*
+
 	@GetMapping("/")
 	public String index(Model model, Principal principal) {
 		model.addAttribute("message", "You are logged in as " + principal.getName());
 		return "redirect:dashboard";
 	}
-*/
+
 	@GetMapping("dashboard")
 	public String getDashboardPage(ModelMap model, @RequestParam Map<String, String> params) {
 		int nbComputerByPage  = Integer.parseInt(params.getOrDefault(ServletString.NB_COMPUTER_BY_PAGE, "20"));
