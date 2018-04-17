@@ -9,13 +9,16 @@
 		<version>1.0-SNAPSHOT</version>
 
 	</parent>
+	
 	<artifactId>webapp</artifactId>
+	<packaging>war</packaging>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
 	<dependencies>
+	
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>service</artifactId>
@@ -54,18 +57,15 @@
 			<artifactId>jstl-api</artifactId>
 		</dependency>
 
-
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jsp-api</artifactId>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>taglibs</groupId>
 			<artifactId>standard</artifactId>
 		</dependency>
 
 	</dependencies>
-
-	<packaging>war</packaging>
 </project>
