@@ -25,6 +25,7 @@
 			<button type="button" class="btn btn-default">FR</button></a> 
 					<a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${pageNb}&lang=en"><button
 					type="button" class="btn btn-default">EN</button></a> 
+			<a href="logout"><button type="button" class="btn btn-default">logOut</button></a> 
 		</div>
 	</header>
 	<section id="main">
