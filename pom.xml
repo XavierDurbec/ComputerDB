@@ -12,6 +12,16 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<spring-version>5.0.0.RELEASE</spring-version>
+		<hibernate-version>5.2.12.Final</hibernate-version>
+		<hikari-version>2.7.8</hikari-version>
+		<taglib-version>1.1.2</taglib-version>
+		<jstl-version>1.2</jstl-version>
+		<jsp-version>2.0</jsp-version>
+		<junit-version>4.12</junit-version>
+		<javax-version>3.0.1</javax-version>
+		<mysql-version>6.0.6</mysql-version>
+		<log4j-version>2.10.0</log4j-version>
 	</properties>
 
 	<modules>
@@ -48,107 +58,109 @@
 			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-core</artifactId>
-				<version>2.10.0</version>
+				<version>${log4j-version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-iostreams</artifactId>
-				<version>2.10.0</version>
+				<version>${log4j-version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-api</artifactId>
-				<version>2.10.0</version>
+				<version>${log4j-version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
-				<version>6.0.6</version>
+				<version>${mysql-version}</version>
 			</dependency>
 			
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>javax.servlet-api</artifactId>
-				<version>3.0.1</version>
+				<version>${javax-version}</version>
 				<scope>provided</scope>
 			</dependency>
+			
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.12</version>
+				<version>${junit-version}</version>
 				<scope>test</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>jsp-api</artifactId>
-				<version>2.0</version>
+				<version>${jsp-version}</version>
 				<scope>provided</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>javax.servlet.jsp.jstl</groupId>
 				<artifactId>jstl-api</artifactId>
-				<version>1.2</version>
+				<version>${jstl-version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>taglibs</groupId>
 				<artifactId>standard</artifactId>
-				<version>1.1.2</version>
+				<version>${taglib-version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.zaxxer</groupId>
 				<artifactId>HikariCP</artifactId>
-				<version>2.7.8</version>
+				<version>${hikari-version}</version>
 				<scope>compile</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-core</artifactId>
-				<version>5.2.12.Final</version>
+				<version>${hibernate-version}</version>
 			</dependency>
 			
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-core</artifactId>
-				<version>5.0.4.RELEASE</version>
+				<version>${spring-version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-webmvc</artifactId>
-				<version>5.0.4.RELEASE</version>
+				<version>${spring-version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-jdbc</artifactId>
-				<version>5.0.4.RELEASE</version>
+				<version>${spring-version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-orm</artifactId>
-				<version>5.0.4.RELEASE</version>
+				<version>${spring-version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-web</artifactId>
-				<version>5.0.4.RELEASE</version>
+				<version>${spring-version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-config</artifactId>
-				<version>5.0.4.RELEASE</version>
-			</dependency>
+				<version>${spring-version}</version>
+			</dependency> 
+			
 			
 		</dependencies>
 	</dependencyManagement>
