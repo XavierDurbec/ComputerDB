@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -158,6 +159,8 @@ public class ComputerController {
 		orderDirection = orderBy.equals(oldOrderBy) ? !orderDirection : orderDirection;
 		return orderDirection;
 	}
+	
+	
 
 	@GetMapping("editComputer")
 	public String getEditedComputerPage(ModelMap model, @RequestParam Map<String, String> params) {
@@ -175,7 +178,6 @@ public class ComputerController {
 	public String editComputer(@ModelAttribute("ComputerDTO") @Validated(ComputerDTO.class) ComputerDTO computerDTO, BindingResult bindingResult, ModelMap model, @RequestParam Map<String, String> params) {
 		try {
 			if (!bindingResult.hasErrors()) {
-				log.error(ComputerMapperDTO.toComputer(computerDTO));
 				computerService.update(ComputerMapperDTO.toComputer(computerDTO));
 				return "redirect:dashboard";
 			} else {

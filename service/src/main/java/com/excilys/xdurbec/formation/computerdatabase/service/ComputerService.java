@@ -2,6 +2,8 @@ package com.excilys.xdurbec.formation.computerdatabase.service;
 
 import java.util.List;
 
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,7 +56,6 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 		}
 	}
 
-
 	@Transactional
 	public void update(Computer entity) throws  ExceptionService {
 		if (entity.getCompany() == null || entity.getCompany().getId() == 0 || companyService.companyExistenceVerification(entity.getCompany().getId())) {
@@ -69,6 +70,7 @@ public class ComputerService extends EntityService implements EntityServiceCompo
 	}
 
 	@Transactional
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	public void deleteById(int id) throws  ExceptionService {
 		try {
 			computerDAO.deleteById(id);

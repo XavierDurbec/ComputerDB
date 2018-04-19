@@ -1,5 +1,6 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
 <!DOCTYPE html>
 
@@ -21,11 +22,13 @@
 				Database </a>
 		</div>
 		<div class="btn-group btn-group-sm pull-right" role="group">
-			<a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${pageNb}&lang=fr">
-			<button type="button" class="btn btn-default">FR</button></a> 
-					<a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${pageNb}&lang=en"><button
-					type="button" class="btn btn-default">EN</button></a> 
-			<a href="logout"><button type="button" class="btn btn-default">logOut</button></a> 
+			<a
+				href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${pageNb}&lang=fr">
+				<button type="button" class="btn btn-default">FR</button>
+			</a> <a
+				href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${pageNb}&lang=en"><button
+					type="button" class="btn btn-default">EN</button></a> <a href="logout"><button
+					type="button" class="btn btn-default">logOut</button></a>
 		</div>
 	</header>
 	<section id="main">
@@ -44,9 +47,10 @@
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="addcomputer">Add
-						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
-						onclick="$.fn.toggleEditMode();">Edit</a>
+					<a class="btn btn-success" id="addComputer" href="addcomputer">Add Computer</a> 
+					<sec:authorize access="hasRole('ADMIN')">
+						<a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
+					</sec:authorize>
 				</div>
 			</div>
 		</div>

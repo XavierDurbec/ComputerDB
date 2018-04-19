@@ -77,7 +77,6 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 			if (computer.getCompany() != null && computer.getCompany().getId() == 0) {
 				computer.setCompany(null);
 			}
-			System.out.println("Computer :" + computer);
 			CriteriaUpdate<Computer> update = cb.createCriteriaUpdate(Computer.class);
 			Root<Computer> model = update.from(Computer.class);
 			update.set(ComputerAttributes.NAME.sqlName, computer.getName());
