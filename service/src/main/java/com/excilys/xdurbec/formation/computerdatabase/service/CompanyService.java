@@ -49,8 +49,25 @@ public class CompanyService extends EntityService implements EntityServiceCompor
 	@Transactional
 	public void deleteCompany(int id) {
 		try {
+			log.error("ComputerDAO: " + companyDAO);
 			computerDAO.deleteByCompany(id);
 			companyDAO.delete(id);		
+		} catch (ExceptionDAO e) {
+			log.error(e);
+		}
+	}
+	
+	public void createCompany(Company company) {
+		try {
+			companyDAO.create(company);
+		} catch (ExceptionDAO e) {
+			log.error(e);
+		}
+	}
+	
+	public void updateCompany (Company company) {
+		try {
+			companyDAO.update(company);
 		} catch (ExceptionDAO e) {
 			log.error(e);
 		}

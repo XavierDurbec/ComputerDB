@@ -144,6 +144,7 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 
 	public void deleteByCompany(int companyId) throws ExceptionDAO {
 		try {
+			log.error("ID :" + companyId);
 			CriteriaDelete<Computer> delete = cb.createCriteriaDelete(Computer.class);
 			Root<Computer> model = delete.from(Computer.class);
 			delete.where(cb.equal(model.get(ComputerAttributes.COMPANY_NAME.sqlName).get(ConstantStringDAO.COMPANY_ID), companyId));

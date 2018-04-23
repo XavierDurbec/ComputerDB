@@ -9,12 +9,15 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.xdurbec.formation.computerdatabase.model.Company;
+import com.excilys.xdurbec.formation.computerdatabase.model.Computer;
+import com.excilys.xdurbec.formation.computerdatabase.model.ComputerAttributes;
 
 /**
  * Crude gestion of Company.
@@ -80,8 +83,27 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 		Root<Company> model = delete.from(Company.class);
 		delete.where(cb.equal(model.get("id"), id));
 		em.createQuery(delete).executeUpdate();
-		
-
 	}
 
+	public void create(Company company) throws ExceptionDAO {
+		try {
+			em.persist(company);
+		} catch (DataAccessException e) {
+			log.error(e);
+			throw new ExceptionDAO(ExceptionDAO.CREATE_ERROR);
+		}
+	}
+
+	public void update(Company company) throws ExceptionDAO {
+		try {			
+			CriteriaUpdate<Company> update = cb.createCriteriaUpdate(Company.class);
+			Root<Company> model = update.from(Company.class);
+			update.set(ComputerAttributes.NAME.sqlName, company.getName());
+			em.createQuery(update).executeUpdate();
+		} catch (DataAccessException e) {
+			log.error(e.getMessage());
+			throw new ExceptionDAO(ExceptionDAO.CREATE_ERROR);
+		}
+
+	}
 }

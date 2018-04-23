@@ -22,6 +22,7 @@
 		<javax-version>3.0.1</javax-version>
 		<mysql-version>6.0.6</mysql-version>
 		<log4j-version>2.10.0</log4j-version>
+		<jackson-version>2.9.5</jackson-version>
 	</properties>
 
 	<modules>
@@ -30,6 +31,7 @@
 		<module>service</module>
 		<module>binding</module>
 		<module>webapp</module>
+		<module>webservice</module>
 	</modules>
 
 	<build>
@@ -167,6 +169,27 @@
 				<version>${spring-version}</version>
 			</dependency>
 
+
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>${spring-version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson-version}</version>
+			</dependency>
+
+<!-- 
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-web</artifactId>
+				<version>2.0.1.RELEASE</version>
+			</dependency>
+	 -->
 		</dependencies>
 	</dependencyManagement>
 

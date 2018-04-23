@@ -37,20 +37,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.authorizeRequests()
-    .anyRequest()
-    .authenticated()
-     .and()
-    .formLogin()
-    .loginPage("/login")
-    .defaultSuccessUrl("/dashboard")
+    http
+    .authorizeRequests().anyRequest().permitAll()
     .and()
-    .logout()
-    .clearAuthentication(true)
-    .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) 
-    .deleteCookies("JSESSIONID")
-    .invalidateHttpSession(true)
-    .logoutSuccessUrl("/login")
-    .permitAll();
+    .formLogin().loginPage("/login").defaultSuccessUrl("/dashboard")
+    .and()
+    .logout().clearAuthentication(true).logoutRequestMatcher(new AntPathRequestMatcher("/logout")) 
+    .deleteCookies("JSESSIONID").invalidateHttpSession(true)
+    .logoutSuccessUrl("/login").permitAll()
+    .and().csrf().disable();
+   
     }
 }

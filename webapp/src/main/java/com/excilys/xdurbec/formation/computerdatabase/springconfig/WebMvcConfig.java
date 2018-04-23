@@ -1,4 +1,4 @@
-package com.excilys.xdurbec.formation.computerdatabase.springconfig;
+ package com.excilys.xdurbec.formation.computerdatabase.springconfig;
 
 import java.util.Locale;
 
@@ -17,7 +17,8 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = { "com.excilys.xdurbec.formation.computerdatabase.controler" })
+@ComponentScan(basePackages = { "com.excilys.xdurbec.formation.computerdatabase.controler, " 
+							 +  "com.excilys.xdurbec.formation.computerdatabase.rest"})
 public class WebMvcConfig implements WebMvcConfigurer  {
 
 	@Override

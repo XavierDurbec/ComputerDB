@@ -5,9 +5,7 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -59,7 +57,6 @@ public class ComputerController {
 		if (error != null) {
 			model.addAttribute("msg", "Invalid username and password!");
 		}
-
 		else if (logout != null) {
 			model.addAttribute("msg", "You've been logged out successfully.");
 		}
