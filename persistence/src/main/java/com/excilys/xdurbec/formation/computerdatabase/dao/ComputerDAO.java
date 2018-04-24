@@ -144,14 +144,12 @@ public class ComputerDAO extends EntityDAO implements EntityDAOComportment<Compu
 
 	public void deleteByCompany(int companyId) throws ExceptionDAO {
 		try {
-			log.error("ID :" + companyId);
-			CriteriaDelete<Computer> delete = cb.createCriteriaDelete(Computer.class);
-			Root<Computer> model = delete.from(Computer.class);
-			delete.where(cb.equal(model.get(ComputerAttributes.COMPANY_NAME.sqlName).get(ConstantStringDAO.COMPANY_ID), companyId));
-			em.createQuery(delete).executeUpdate();
+			CriteriaDelete<Computer> criteriaQuery = cb.createCriteriaDelete(Computer.class);
+			Root<Computer> model = criteriaQuery.from(Computer.class);
+			criteriaQuery.where(cb.equal(model.get("company").get("id"), companyId));
+			em.createQuery(criteriaQuery).executeUpdate();
 		} catch (DataAccessException e) {
-			log.error(e);
-			throw new ExceptionDAO(ExceptionDAO.DELETE_ERROR);
+			log.error(e.toString());
 		}
 	}
 

@@ -32,44 +32,44 @@ public class CompanyControlerRest {
 	private  Logger log = LogManager.getLogger(this.getClass());
 
 	private CompanyService companyService;
-	
+
 	public CompanyControlerRest(CompanyService companyService) {
 		this.companyService = companyService;
 	}
 
 	@GetMapping(value="/companies")
-    public  List<CompanyDTO> findAllCompanies() {
-        List<CompanyDTO> companiesDTO = new ArrayList<>();
+	public  List<CompanyDTO> findAllCompanies() {
+		List<CompanyDTO> companiesDTO = new ArrayList<>();
 		try {
 			companiesDTO = CompanyMapperDTO.toCompanyDTOList(companyService.getAll());
 		} catch (ExceptionService e) {
 			log.error(e);
 		}
-        return companiesDTO;
-    }
-	
+		return companiesDTO;
+	}
+
 	@GetMapping(value="/company/{id}")
-    public  CompanyDTO findCompanieById(@PathVariable("id") int id) {
+	public  CompanyDTO findCompanieById(@PathVariable("id") int id) {
 		try {
 			return CompanyMapperDTO.toCompanyDTO(companyService.getCompanyById(id));
 		} catch (ExceptionService e) {
 			log.error(e);
 		}
-        return null;
-    }
-	
+		return null;
+	}
+
 	@DeleteMapping(value="/company/delete/{id}")
 	public void  deleteCompany(@PathVariable("id") int id) {
-		companyService.deleteCompany(id);
+			companyService.deleteCompany(id);
 	}
-	
+
 
 	@PostMapping("/company/create")
 	public HttpStatus createCompany(@RequestBody CompanyDTO company) {
 		companyService.createCompany(CompanyMapperDTO.toCompany(company));
 		return HttpStatus.OK;
 	}
-	
+
 	@PutMapping("/company/update")
 	public HttpStatus updateCompany(@RequestBody CompanyDTO company) {
 		companyService.createCompany(CompanyMapperDTO.toCompany(company));

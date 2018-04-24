@@ -14,7 +14,7 @@ public class CompanyService extends EntityService implements EntityServiceCompor
 
 	public CompanyService(CompanyDAO companyDAO, ComputerDAO computerDAO) {
 		this.companyDAO = companyDAO;
-
+		this.computerDAO = computerDAO;
 	}
 
 	private CompanyDAO companyDAO;
@@ -49,7 +49,6 @@ public class CompanyService extends EntityService implements EntityServiceCompor
 	@Transactional
 	public void deleteCompany(int id) {
 		try {
-			log.error("ComputerDAO: " + companyDAO);
 			computerDAO.deleteByCompany(id);
 			companyDAO.delete(id);		
 		} catch (ExceptionDAO e) {
