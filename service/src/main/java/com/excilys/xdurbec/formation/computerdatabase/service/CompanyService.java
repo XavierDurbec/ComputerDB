@@ -56,6 +56,7 @@ public class CompanyService extends EntityService implements EntityServiceCompor
 		}
 	}
 	
+	@Transactional
 	public void createCompany(Company company) {
 		try {
 			companyDAO.create(company);
@@ -64,6 +65,7 @@ public class CompanyService extends EntityService implements EntityServiceCompor
 		}
 	}
 	
+	@Transactional
 	public void updateCompany (Company company) {
 		try {
 			companyDAO.update(company);

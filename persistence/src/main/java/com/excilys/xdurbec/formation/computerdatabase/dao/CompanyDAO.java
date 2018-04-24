@@ -11,6 +11,7 @@ import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
@@ -90,6 +91,7 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 		}
 	}
 
+	@Transactional
 	public void create(Company company) throws ExceptionDAO {
 		try {
 			em.persist(company);
@@ -99,11 +101,13 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 		}
 	}
 
+	@Transactional
 	public void update(Company company) throws ExceptionDAO {
 		try {			
 			CriteriaUpdate<Company> update = cb.createCriteriaUpdate(Company.class);
 			Root<Company> model = update.from(Company.class);
-			update.set(ComputerAttributes.NAME.sqlName, company.getName());
+			update.set("name", company.getName());
+			update.where(cb.equal(model.get("id"), company.getId()));
 			em.createQuery(update).executeUpdate();
 		} catch (DataAccessException e) {
 			log.error(e.getMessage());

@@ -72,7 +72,7 @@ public class CompanyControlerRest {
 
 	@PutMapping("/company/update")
 	public HttpStatus updateCompany(@RequestBody CompanyDTO company) {
-		companyService.createCompany(CompanyMapperDTO.toCompany(company));
+		companyService.updateCompany(CompanyMapperDTO.toCompany(company));
 		return HttpStatus.OK;
 	}
 }
