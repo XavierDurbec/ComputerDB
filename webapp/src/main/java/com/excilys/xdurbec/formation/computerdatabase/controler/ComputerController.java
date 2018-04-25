@@ -61,7 +61,6 @@ public class ComputerController {
 			model.addAttribute("msg", "You've been logged out successfully.");
 		}
 		return "login";
-
 	}
 
 	@GetMapping("/")

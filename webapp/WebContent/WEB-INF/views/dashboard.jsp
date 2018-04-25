@@ -1,10 +1,9 @@
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <!DOCTYPE html>
-
-
 <html>
 <head>
 <title>Computer Database</title>
@@ -34,22 +33,22 @@
 	<section id="main">
 		<div class="container">
 			<h1 id="homeTitle">
-				<c:out value="${computerCount} computers found." />
+				${computerCount} <spring:message code="computer.found" /> 
 			</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="dashboard" method="GET"
 						class="form-inline">
 						<input type="search" id="searchbox" name="search"
-							class="form-control" placeholder="Search name"
+							class="form-control" placeholder="<spring:message code="search"/>"
 							value="<c:out value ='${searchValue}'/>" /> <input type="submit"
-							id="searchsubmit" value="Filter by name" class="btn btn-primary" />
+							id="searchsubmit" value="<spring:message code="filter"/> " class="btn btn-primary" />
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="addcomputer">Add Computer</a> 
+					<a class="btn btn-success" id="addComputer" href="addcomputer"><spring:message code="addComputer" /></a> 
 					<sec:authorize access="hasRole('ADMIN')">
-						<a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();">Edit</a>
+						<a class="btn btn-default" id="editComputer" href="#" onclick="$.fn.toggleEditMode();"><spring:message code="edit" /> </a>
 					</sec:authorize>
 				</div>
 			</div>
@@ -77,15 +76,13 @@
 							</a>
 						</span></th>
 						<th><a
-							href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&oldOrderBy=${oldOrderBy}&orderType=name">Name</a></th>
+							href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&oldOrderBy=${oldOrderBy}&orderType=name"><spring:message code="computer.name" /> </a></th>
 						<th><a
-							href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&oldOrderBy=${oldOrderBy}&orderType=introduced">Introduced
-								date</a></th>
+							href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&oldOrderBy=${oldOrderBy}&orderType=introduced"><spring:message code="computer.introduced" /> </a></th>
 						<th><a
-							href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&oldOrderBy=${oldOrderBy}&orderType=discontinued">Discontinued
-								date</a></th>
+							href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&oldOrderBy=${oldOrderBy}&orderType=discontinued"><spring:message code="computer.discontinued"/> </a></th>
 						<th><a
-							href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&oldOrderBy=${oldOrderBy}&orderType=company">Company</a></th>
+							href="dashboard?orderDirection=${orderDirection}&nbComputerByPage=${computerByPage}&page${pageNb}&search=${searchValue}&oldOrderBy=${oldOrderBy}&orderType=company"><spring:message code="computer.company"/> </a></th>
 
 					</tr>
 				</thead>
@@ -121,7 +118,7 @@
 					</a></li>
 				</c:if>
 				<c:choose>
-					<c:when test="${maxPage <= 27}">
+					<c:when test="${maxPage <= 25}">
 						<c:forEach begin="1" end="${maxPage}" step="1" var="i">
 							<c:choose>
 								<c:when test="${i == pageNb}">
@@ -136,7 +133,7 @@
 						</c:forEach>
 					</c:when>
 
-					<c:when test="${maxPage > 27 && pageNb <= 10}">
+					<c:when test="${maxPage > 25 && pageNb <= 10}">
 						<c:forEach begin="1" end="15" step="1" var="i">
 							<c:choose>
 								<c:when test="${i == pageNb}">
@@ -157,7 +154,7 @@
 					</c:when>
 
 					<c:when
-						test="${maxPage > 27 && pageNb > 10 && pageNb < maxPage - 10}">
+						test="${maxPage > 25 && pageNb > 10 && pageNb < maxPage - 10}">
 						<c:forEach begin="1" end="5" step="1" var="i">
 							<li><a
 								href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}">${i}</a></li>
@@ -182,7 +179,7 @@
 						</c:forEach>
 					</c:when>
 
-					<c:when test="${maxPage > 27 && pageNb >= maxPage - 10}">
+					<c:when test="${maxPage > 25 && pageNb >= maxPage - 10}">
 						<c:forEach begin="1" end="5" step="1" var="i">
 							<li><a
 								href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=${computerByPage}&search=${searchValue}&page=${i}">${i}</a></li>
@@ -212,8 +209,7 @@
 			</ul>
 
 			<div class="btn-group btn-group-sm pull-right" role="group">
-				<a
-					href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=10&search=${searchValue}&page=${pageNb}"><button
+				<a href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=10&search=${searchValue}&page=${pageNb}"><button
 						type="button" class="btn btn-default">10</button></a> <a
 					href="dashboard?orderDirection=${orderDirection}&orderType=${orderValue}&nbComputerByPage=50&search=${searchValue}&page=${pageNb}"><button
 						type="button" class="btn btn-default">50</button></a> <a

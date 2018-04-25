@@ -40,14 +40,6 @@ public class HibernateConf {
 	}	
 
 	@Bean
-	public MessageSource messageSource() {
-		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-		messageSource.setBasename("/WEB-INF/classes/messages");
-		return messageSource;
-	}
-
-
-	@Bean
 	public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
 		return new JpaTransactionManager(emf);
 	}

@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <!DOCTYPE html>
 <html>
@@ -23,29 +24,29 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
-					<h1>Add Computer</h1>
+					<h1><spring:message code="add"/></h1>
 					<form:form action="addcomputer" modelAttribute="ComputerDTO" method="POST">
 						<fieldset>
 							<div class="form-group">
-								<label for="computerName">Computer name</label> 
+								<label for="computerName"><spring:message code="computerName"/></label> 
 								<form:input type="text" class="form-control" id="computerName" name="computerName"
-									placeholder="Computer name" pattern ="[A-Za-z1-9]{1,30}" path="name"/> 
+									 placeholder="Computer Name" pattern="[A-Za-z1-9]{1,30}" path="name"/> 
                                  <form:errors path="name"></form:errors>
 							</div>
 							<div class="form-group">
-								<label for="introduced">Introduced date</label> 
+								<label for="introduced"><spring:message code="computer.introduced"/></label> 
 							<form:input type="date" class="form-control" id="introduced" name="introduced"
 									placeholder="Introduced date" path="introduced"/>
 									<form:errors path="introduced"></form:errors>
 							</div>
 							<div class="form-group">
-								<label for="discontinued">Discontinued date</label> 
+								<label for="discontinued"><spring:message code="computer.discontinued"/></label> 
 								<form:input type="date" class="form-control" id="discontinued" name="discontinued"
 									placeholder="Discontinued date" path="discontinued"/>
 									<form:errors path="discontinued"></form:errors>
 							</div>
 							<div class="form-group">
-								<label for="companyId">Company</label> 
+								<label for="companyId"><spring:message code="computer.company"/></label> 
 								<form:select class="form-control" id="companyId" name="companyId" path="company.id">
 									<option value="0">--</option>
 									<c:forEach items="${companyList}" var="company">
@@ -56,8 +57,8 @@
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
-							<input type="submit" value="Add" class="btn btn-primary">
-							or <a href="dashboard" class="btn btn-default">Cancel</a>
+							<input type="submit" value="<spring:message code="add"/>" class="btn btn-primary">
+							or <a href="dashboard" class="btn btn-default"><spring:message code="cancel"/></a>
 						</div>
 					</form:form>
 				</div>
