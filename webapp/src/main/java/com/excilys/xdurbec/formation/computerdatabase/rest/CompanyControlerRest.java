@@ -58,19 +58,19 @@ public class CompanyControlerRest {
 		return null;
 	}
 
-	@DeleteMapping(value="/company/delete/{id}")
+	@DeleteMapping(value="/company/{id}")
 	public void  deleteCompany(@PathVariable("id") int id) {
 			companyService.deleteCompany(id);
 	}
 
 
-	@PostMapping("/company/create")
+	@PostMapping("/company")
 	public HttpStatus createCompany(@RequestBody CompanyDTO company) {
 		companyService.createCompany(CompanyMapperDTO.toCompany(company));
 		return HttpStatus.OK;
 	}
 
-	@PutMapping("/company/update")
+	@PutMapping("/company")
 	public HttpStatus updateCompany(@RequestBody CompanyDTO company) {
 		companyService.updateCompany(CompanyMapperDTO.toCompany(company));
 		return HttpStatus.OK;

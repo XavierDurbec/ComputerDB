@@ -81,7 +81,6 @@ public class CompanyDAO extends EntityDAO implements EntityDAOComportment<Compan
 
 	public void delete(Integer id) {
 		if(id != null) {
-			log.error("Delete dao " + id);
 			CriteriaDelete<Company> delete = cb.createCriteriaDelete(Company.class);
 			Root<Company> model = delete.from(Company.class);
 			delete.where(cb.equal(model.get("id"), id));
