@@ -72,6 +72,28 @@ public class ComputerController {
 
 	@GetMapping("dashboard")
 	public String getDashboardPage(ModelMap model, @RequestParam Map<String, String> params) {
+		dashboardHandle(model, params);
+		return "dashboard";
+	}
+
+
+	@PostMapping("dashboard")
+	public String deleteComputer(ModelMap model, @RequestParam Map<String, String> params) {
+		String computerListToDelete = params.get(ServletString.COMPUTER_SELECTED);
+		if (!computerListToDelete.equals(ServletString.VOID_STRING)) {
+			for (String computerIdString : computerListToDelete.split(",")) {
+				try {
+					computerService.deleteById(Integer.valueOf(computerIdString));
+				} catch (NumberFormatException | ExceptionService e) {
+					log.error(e);
+				}
+			}
+		}
+		dashboardHandle(model, params);
+		return "dashboard";
+	}
+
+	private void dashboardHandle(ModelMap model, @RequestParam Map<String, String> params) {
 		int nbComputerByPage  = Integer.parseInt(params.getOrDefault(ServletString.NB_COMPUTER_BY_PAGE, "20"));
 		String filter = params.getOrDefault(ServletString.NAME_SEARCHED, "");
 		int nbComputerPage = getNbComputerPage(filter, nbComputerByPage);
@@ -96,24 +118,7 @@ public class ComputerController {
 			model.addAttribute(ServletString.JSP_PAGE_NB, pageNb);
 		} catch (ExceptionService e) {
 			log.error(e);
-		}
-		return "dashboard";
-	}
-
-
-	@PostMapping("dashboard")
-	public String deleteComputer(ModelMap model, @RequestParam Map<String, String> params) {
-		String computerListToDelete = params.get(ServletString.COMPUTER_SELECTED);
-		if (!computerListToDelete.equals(ServletString.VOID_STRING)) {
-			for (String computerIdString : computerListToDelete.split(",")) {
-				try {
-					computerService.deleteById(Integer.valueOf(computerIdString));
-				} catch (NumberFormatException | ExceptionService e) {
-					log.error(e);
-				}
-			}
-		}
-		return "dashboard";
+		}	
 	}
 
 	private int getNbComputerPage(String filter, int nbComputerByPage) {
@@ -152,12 +157,16 @@ public class ComputerController {
 	}
 
 	private boolean orderDirectionSet(ComputerAttributes orderBy, ComputerAttributes oldOrderBy, String ascendingString) {
-		boolean orderDirection = ascendingString != null ? ascendingString.equals("DESC") ? false : true : true;
-		orderDirection = orderBy.equals(oldOrderBy) ? !orderDirection : orderDirection;
-		return orderDirection;
+		if(orderBy.equals(ComputerAttributes.ID)) {
+			return true;
+		} else {
+			boolean orderDirection = ascendingString != null ? ascendingString.equals("DESC") ? false : true : true;
+			return orderBy.equals(oldOrderBy) ? !orderDirection : true;
+
+		}
 	}
-	
-	
+
+
 
 	@GetMapping("editComputer")
 	public String getEditedComputerPage(ModelMap model, @RequestParam Map<String, String> params) {
